@@ -4,6 +4,7 @@ from csv import DictReader
 
 DEFAULT_DIR = '~/.config/tiger'
 DIR_ENV = 'TIGER_DIR'
+EXTENSION = '.list'
 
 def get_collection(name, columns):
     if DIR_ENV in os.environ:
@@ -15,7 +16,7 @@ def get_collection(name, columns):
         os.makedirs(dirdir)
     if not os.path.isdir(dirdir):
         raise RuntimeError("No directory at %s" % dirdir)
-    filename = os.path.join(dirdir, name + '.csv')
+    filename = os.path.join(dirdir, name + EXTENSION)
     if os.path.isfile(filename):
         with open(filename) as datafile:
             reader = DictReader(datafile, columns)
