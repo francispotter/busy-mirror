@@ -14,7 +14,9 @@ from tiger import get_collection
 def do(type):
     items = get_collection('tasks',['task'])
     if items:
-        return items[0]['task']
+        item = items[0]['task']
+        if item:
+            return item[0].capitalize() + item[1:]
 
 def run():
     parser = argparse.ArgumentParser(prog="get")
