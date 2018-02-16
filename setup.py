@@ -15,7 +15,7 @@ setup(name='Tiger',
     license='MIT',
     packages=find_packages(),
     entry_points={'console_scripts':[
-        'view=tiger.view:run',
+        'get=tiger.get:run',
         ]},
     # package_data={'lemur':['lemur.ini']},
     zip_safe=False)
