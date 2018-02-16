@@ -13,7 +13,8 @@ from tiger import get_collection
 
 def do(type):
     items = get_collection('tasks',['task'])
-    return items[0]['task']
+    if items:
+        return items[0]['task']
 
 def run():
     parser = argparse.ArgumentParser(prog="get")
