@@ -18,7 +18,7 @@ def do(itemtypename, arguments):
     return '\n'.join(texts)
 
 def run():
-    arguments, others = parse_command('get')
+    arguments, others = parse_command('get', Item.get_type_names(), 'task')
     result = do(arguments.type, others)
     if result: print(result)
 

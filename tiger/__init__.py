@@ -18,7 +18,7 @@ def directory():
     return result
 
 
-def parse_command(command):
+def parse_command(command, types, default):
     parser = ArgumentParser(prog=command)
-    parser.add_argument('type', default='task', choices=['task','tasks','plan'], nargs='?')
+    parser.add_argument('type', default=default, choices=types, nargs='?')
     return parser.parse_known_args()

@@ -21,6 +21,10 @@ class Item:
         return self.TYPES[name.lower()]
 
     @classmethod
+    def get_type_names(self):
+        return self.TYPES.keys()
+
+    @classmethod
     def load_collection(self):
         filename = os.path.join(directory(), self.filename + EXTENSION)
         if os.path.isfile(filename):
@@ -40,7 +44,6 @@ class Item:
             if indices:
                 if not is_plural: indices = indices[:1]
                 return [items[i] for i in indices]
-
 
 class Task(Item):
 
