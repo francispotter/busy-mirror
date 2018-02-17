@@ -13,7 +13,8 @@ class Item:
 
     @classmethod
     def register_type(self, newtype):
-        self.TYPES[newtype.__name__.lower()] = newtype
+        self.TYPES[newtype.__name__.lower()] = (newtype, False)
+        self.TYPES[newtype.filename.lower()] = (newtype, True)
 
     @classmethod
     def get_type(self, name):
@@ -30,8 +31,7 @@ class Item:
 
     @classmethod
     def get_selection(self, itemtypename, arguments):
-        mytype = self.get_type(itemtypename)
-        is_plural = mytype.is_plural
+        mytype, is_plural = self.get_type(itemtypename)
         items = mytype.load_collection()
         if items:
             default = None if is_plural else 1
@@ -44,7 +44,6 @@ class Item:
 
 class Task(Item):
 
-    is_plural = False
     filename = 'tasks'
     headings = ['description']
 
@@ -57,15 +56,8 @@ class Task(Item):
 
 Item.register_type(Task)
 
-class Tasks(Task):
-
-    is_plural = True
-
-Item.register_type(Tasks)
-
 class Plan(Item):
 
-    is_plural = False
     filename = 'plans'
     headings = ['date', 'task']
 
