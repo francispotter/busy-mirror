@@ -9,27 +9,28 @@ import argparse
 import re
 from csv import DictReader
 
-from tiger import get_collection
+from tiger import parse_command
 from tiger.selector import Selector
+from tiger.item import Item
 
 def do(itemtype, arguments):
-    is_plural = (itemtype == 'tasks')
-    items = get_collection('tasks',['task'])
+    mytype = Item.get_type(itemtype)
+    is_plural = mytype.is_plural
+    items = mytype.load_collection()
     if items:
         default = None if is_plural else 1
         selector = Selector(arguments, default)
-        indices = selector.indices([i['task'] for i in items])
+        indices = selector.indices([i.text for i in items])
         if indices:
             if not is_plural: indices = indices[:1]
-            results = [items[i]['task'] for i in indices]
+            results = [items[i].text for i in indices]
             texts = [r[0].capitalize() + r[1:] for r in results]
             return '\n'.join(texts)
 
 def run():
-    parser = argparse.ArgumentParser(prog="get")
-    parser.add_argument('type', default='task', choices=['task','tasks'], nargs='?')
-    arguments, others = parser.parse_known_args()
-    print(do(arguments.type, others))
+    arguments, others = parse_command('get')
+    result = do(arguments.type, others)
+    if result: print(result)
 
 if __name__=='__main__':
     run()
