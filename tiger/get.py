@@ -10,22 +10,12 @@ import re
 from csv import DictReader
 
 from tiger import parse_command
-from tiger.selector import Selector
 from tiger.item import Item
 
-def do(itemtype, arguments):
-    mytype = Item.get_type(itemtype)
-    is_plural = mytype.is_plural
-    items = mytype.load_collection()
-    if items:
-        default = None if is_plural else 1
-        selector = Selector(arguments, default)
-        indices = selector.indices([i.text for i in items])
-        if indices:
-            if not is_plural: indices = indices[:1]
-            results = [items[i].text for i in indices]
-            texts = [r[0].capitalize() + r[1:] for r in results]
-            return '\n'.join(texts)
+def do(itemtypename, arguments):
+    selection = Item.get_selection(itemtypename, arguments)
+    texts = [s.text[0].capitalize() + s.text[1:] for s in selection]
+    return '\n'.join(texts)
 
 def run():
     arguments, others = parse_command('get')

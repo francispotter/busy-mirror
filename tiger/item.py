@@ -3,6 +3,7 @@ import os
 from csv import DictReader
 
 from tiger import directory
+from tiger.selector import Selector
 
 EXTENSION = '.list'
 
@@ -26,6 +27,20 @@ class Item:
                 reader = DictReader(datafile, self.headings)
                 if reader:
                     return [self(**d) for d in reader]
+
+    @classmethod
+    def get_selection(self, itemtypename, arguments):
+        mytype = self.get_type(itemtypename)
+        is_plural = mytype.is_plural
+        items = mytype.load_collection()
+        if items:
+            default = None if is_plural else 1
+            selector = Selector(arguments, default)
+            indices = selector.indices([i.text for i in items])
+            if indices:
+                if not is_plural: indices = indices[:1]
+                return [items[i] for i in indices]
+
 
 class Task(Item):
 
