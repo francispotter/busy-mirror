@@ -16,6 +16,7 @@ setup(name='Tiger',
     packages=find_packages(),
     entry_points={'console_scripts':[
         'get=tiger.get:run',
+        'list=tiger.list:run',
         ]},
     # package_data={'lemur':['lemur.ini']},
     zip_safe=False)

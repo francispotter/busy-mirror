@@ -29,7 +29,7 @@ class Item:
         filename = os.path.join(directory(), self.filename + EXTENSION)
         if os.path.isfile(filename):
             with open(filename) as datafile:
-                reader = DictReader(datafile, self.headings)
+                reader = DictReader(datafile, self.headings, delimiter="|")
                 if reader:
                     return [self(**d) for d in reader]
 
@@ -75,6 +75,6 @@ class Plan(Item):
 
     @property
     def text(self):
-        return self.date + ' | ' + self.task
+        return "%s | %s" % (self.date, self.task)
 
 Item.register_type(Plan)
