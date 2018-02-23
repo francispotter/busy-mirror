@@ -43,7 +43,12 @@ class Item:
             indices = selector.indices([i.text for i in items])
             if indices:
                 if not is_plural: indices = indices[:1]
-                return [items[i] for i in indices]
+                return [(i+1, items[i]) for i in indices]
+
+    @property
+    def title(self):
+        return self.text[0].capitalize() + self.text[1:]
+
 
 class Task(Item):
 
