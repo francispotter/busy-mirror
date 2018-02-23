@@ -2,7 +2,6 @@
 View a single item or a list of items with line numbers
 '''
 
-
 import os
 import sys
 
@@ -15,7 +14,7 @@ def do(itemtypename, arguments):
     return '\n'.join(texts)
 
 def run():
-    arguments, others = parse_command('list', Item.get_type_names(), 'task')
+    arguments, others = parse_command('list', Item.get_type_names(), 'tasks')
     result = do(arguments.type, others)
     if result: print(result)
 
