@@ -1,11 +1,8 @@
 
 import os
-from csv import DictReader
 
-from tiger import directory
 from tiger.selector import Selector
-
-EXTENSION = '.list'
+from .queue import Queue
 
 class Item:
 
@@ -24,26 +21,21 @@ class Item:
     def get_type_names(self):
         return self.TYPES.keys()
 
-    @classmethod
-    def load_collection(self):
-        filename = os.path.join(directory(), self.filename + EXTENSION)
-        if os.path.isfile(filename):
-            with open(filename) as datafile:
-                reader = DictReader(datafile, self.headings, delimiter="|")
-                if reader:
-                    return [self(**d) for d in reader]
+    # @classmethod
+    # def load_collection(self):
+    #     filename = os.path.join(directory(), self.filename + EXTENSION)
+    #     if os.path.isfile(filename):
+    #         with open(filename) as datafile:
+    #             reader = DictReader(datafile, self.headings, delimiter="|")
+    #             if reader:
+    #                 return [self(**d) for d in reader]
 
     @classmethod
     def get_selection(self, itemtypename, arguments):
-        mytype, is_plural = self.get_type(itemtypename)
-        items = mytype.load_collection()
-        if items:
-            default = None if is_plural else 1
-            selector = Selector(arguments, default)
-            indices = selector.indices([i.text for i in items])
-            if indices:
-                if not is_plural: indices = indices[:1]
-                return [(i+1, items[i]) for i in indices]
+        itemclass, is_plural = self.get_type(itemtypename)
+        queue = Queue(itemclass)
+        queue.load()
+        return queue.select(arguments, is_plural)
 
     @property
     def title(self):
