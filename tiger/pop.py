@@ -7,12 +7,16 @@ import os
 import sys
 
 from tiger import parse_command
-from tiger.item import Item
+from .item import Item
+from .queue import Queue
 
 def do(itemtypename, arguments):
-    selection = Item.get_selection(itemtypename, arguments)
-    texts = [s.title for i,s in selection]
-    return '\n'.join(texts)
+    itemclass, is_plural = Item.get_type(itemtypename)
+    queue = Queue(itemclass)
+    queue.load()
+    indices = queue.indices(arguments, is_plural)
+    queue.pop(indices)
+    queue.save()
 
 def run():
     arguments, others = parse_command('pop', Item.get_type_names(), 'tasks')

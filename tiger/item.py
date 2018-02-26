@@ -30,6 +30,8 @@ class Item:
     #             if reader:
     #                 return [self(**d) for d in reader]
 
+
+    # Really this method should go away
     @classmethod
     def get_selection(self, itemtypename, arguments):
         itemclass, is_plural = self.get_type(itemtypename)
