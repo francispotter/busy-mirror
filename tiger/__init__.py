@@ -16,9 +16,3 @@ def directory():
     if not os.path.isdir(result):
         raise RuntimeError("No directory at %s" % result)
     return result
-
-
-def parse_command(command, types, default):
-    parser = ArgumentParser(prog=command)
-    parser.add_argument('type', default=default, choices=types, nargs='?')
-    return parser.parse_known_args()
