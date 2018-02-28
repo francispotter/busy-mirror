@@ -11,7 +11,7 @@ from tiger.item import Item
 
 class Command:
 
-    # Define 'command' and 'default_type'
+    # Define 'command'
 
     type_choices = Item.get_type_names()
 
@@ -20,8 +20,7 @@ class Command:
     @classmethod
     def run(self):
         parser = ArgumentParser(prog=self.command)
-        parser.add_argument('type', default=self.default_type,
-            choices=self.type_choices, nargs='?')
+        parser.add_argument('type', choices=self.type_choices)
         arguments, others = parser.parse_known_args()
         result = self.do(arguments.type, others)
         if result: print(result)

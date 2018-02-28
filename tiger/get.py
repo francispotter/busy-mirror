@@ -13,7 +13,6 @@ from tiger.item import Item
 class GetCommand(Command):
 
     command = 'get'
-    default_type = 'task'
 
     def do(itemtypename, arguments):
         selection = Item.get_selection(itemtypename, arguments)
