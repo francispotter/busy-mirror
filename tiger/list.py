@@ -2,12 +2,8 @@
 View a single item or a list of items with line numbers
 '''
 
-import os
-import sys
-
 from .command import Command
-
-from tiger.item import Item
+from .item import Item
 
 class ListCommand(Command):
 
@@ -18,5 +14,4 @@ class ListCommand(Command):
         texts = ["%6i  %s" % (i, s.title) for i,s in selection]
         return '\n'.join(texts)
 
-if __name__=='__main__':
-    ListCommand.run()
+ListCommand.run(__name__)

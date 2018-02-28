@@ -2,13 +2,8 @@
 View a single item or a list of items
 '''
 
-
-import os
-import sys
-from argparse import ArgumentParser
-
 from .command import Command
-from tiger.item import Item
+from .item import Item
 
 class GetCommand(Command):
 
@@ -19,6 +14,4 @@ class GetCommand(Command):
         texts = [s.title for i,s in selection]
         return '\n'.join(texts)
 
-
-if __name__=='__main__':
-    GetCommand.run()
+GetCommand.run(__name__)
