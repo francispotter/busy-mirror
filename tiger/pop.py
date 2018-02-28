@@ -18,5 +18,5 @@ class PopCommand(Command):
         queue.pop(indices)
         queue.save()
 
-def run(): PopCommand.run(__name__)
-run()
+def run(): PopCommand.run()
+if __name__ == '__main__': run()

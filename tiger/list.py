@@ -14,5 +14,5 @@ class ListCommand(Command):
         texts = ["%6i  %s" % (i, s.title) for i,s in selection]
         return '\n'.join(texts)
 
-def run(): ListCommand.run(__name__)
-run()
+def run(): ListCommand.run()
+if __name__ == '__main__': run()

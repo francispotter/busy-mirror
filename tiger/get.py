@@ -14,5 +14,5 @@ class GetCommand(Command):
         texts = [s.title for i,s in selection]
         return '\n'.join(texts)
 
-def run(): GetCommand.run(__name__)
-run()
+def run(): GetCommand.run()
+if __name__ == '__main__': run()
