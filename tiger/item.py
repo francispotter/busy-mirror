@@ -21,15 +21,6 @@ class Item:
     def get_type_names(self):
         return self.TYPES.keys()
 
-    # @classmethod
-    # def load_collection(self):
-    #     filename = os.path.join(directory(), self.filename + EXTENSION)
-    #     if os.path.isfile(filename):
-    #         with open(filename) as datafile:
-    #             reader = DictReader(datafile, self.headings, delimiter="|")
-    #             if reader:
-    #                 return [self(**d) for d in reader]
-
 
     # Really this method should go away
     @classmethod

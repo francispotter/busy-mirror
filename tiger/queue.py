@@ -46,11 +46,8 @@ class Queue:
     def indices(self, arguments, is_plural=True):
         indices = []
         if self.items:
-            default = None if is_plural else 1
-            selector = Selector(arguments, default)
+            selector = Selector(arguments, is_plural, 1)
             indices = selector.indices([i.text for i in self.items])
-            if indices:
-                if not is_plural: indices = indices[:1]
         return indices
 
     def select(self, arguments, is_plural=True):
