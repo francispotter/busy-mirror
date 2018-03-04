@@ -12,29 +12,6 @@ class Item:
     def __init__(self, text=''):
         self.text = text
 
-    @classmethod
-    def register_type(self, newtype):
-        self.TYPES[newtype.__name__.lower()] = (newtype, False)
-        self.TYPES[newtype.filename.lower()] = (newtype, True)
-
-    @classmethod
-    def get_type(self, name):
-        return self.TYPES[name.lower()]
-
-    @classmethod
-    def get_type_names(self):
-        return self.TYPES.keys()
-
-    # @classmethod
-    # def load_collection(self):
-    #     filename = os.path.join(directory(), self.filename + EXTENSION)
-    #     if os.path.isfile(filename):
-    #         with open(filename) as datafile:
-    #             reader = DictReader(datafile, self.headings, delimiter="|")
-    #             if reader:
-    #                 return [self(**d) for d in reader]
-
-
     # Really this method should go away
     @classmethod
     def get_selection(self, itemtypename, arguments):
@@ -50,7 +27,6 @@ class Item:
 
 class Task(Item):
 
-    filename = 'tasks'
     headings = ['description']
 
     def __init__(self, description=''):
@@ -60,11 +36,8 @@ class Task(Item):
     def text(self):
         return self.description
 
-Item.register_type(Task)
-
 class Plan(Item):
 
-    filename = 'plans'
     headings = ['date', 'task']
 
     def __init__(self, date=None, task=None):
@@ -74,5 +47,3 @@ class Plan(Item):
     @property
     def text(self):
         return "%s | %s" % (self.date, self.task)
-
-Item.register_type(Plan)
