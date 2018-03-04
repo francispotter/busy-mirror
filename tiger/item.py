@@ -2,33 +2,15 @@
 import os
 
 from tiger.selector import Selector
-from .queue import Queue
 
 class Item:
 
     TYPES = {}
-
-    @classmethod
-    def register_type(self, newtype):
-        self.TYPES[newtype.__name__.lower()] = (newtype, False)
-        self.TYPES[newtype.filename.lower()] = (newtype, True)
-
-    @classmethod
-    def get_type(self, name):
-        return self.TYPES[name.lower()]
-
-    @classmethod
-    def get_type_names(self):
-        return self.TYPES.keys()
+    headings = ['text']
 
 
-    # Really this method should go away
-    @classmethod
-    def get_selection(self, itemtypename, arguments):
-        itemclass, is_plural = self.get_type(itemtypename)
-        queue = Queue(itemclass)
-        queue.load()
-        return queue.select(arguments, is_plural)
+    def __init__(self, text=''):
+        self.text = text
 
     @property
     def title(self):
@@ -37,7 +19,6 @@ class Item:
 
 class Task(Item):
 
-    filename = 'tasks'
     headings = ['description']
 
     def __init__(self, description=''):
@@ -47,11 +28,8 @@ class Task(Item):
     def text(self):
         return self.description
 
-Item.register_type(Task)
-
 class Plan(Item):
 
-    filename = 'plans'
     headings = ['date', 'task']
 
     def __init__(self, date=None, task=None):
@@ -61,5 +39,3 @@ class Plan(Item):
     @property
     def text(self):
         return "%s | %s" % (self.date, self.task)
-
-Item.register_type(Plan)
