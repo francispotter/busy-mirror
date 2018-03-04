@@ -87,16 +87,17 @@ class Queue:
     def selection(self, arguments, plural=True):
         return [self.item(i) for i in self.indices(arguments, plural)]
 
+    def split(self, indices):
+        inlist = [t for i,t in enumerate(self.items) if i in indices]
+        outlist = [t for i,t in enumerate(self.items) if i not in indices]
+        return (inlist, outlist)
+
     def pop(self, indices):
-        oldlist = self.items
-        hilist = [t for i,t in enumerate(oldlist) if i in indices]
-        lolist = [t for i,t in enumerate(oldlist) if i not in indices]
+        hilist, lolist = self.split(indices)
         self.items = hilist + lolist
 
     def drop(self, indices):
-        oldlist = self.items
-        lolist = [t for i,t in enumerate(oldlist) if i in indices]
-        hilist = [t for i,t in enumerate(oldlist) if i not in indices]
+        lolist, hilist = self.split(indices)
         self.items = hilist + lolist
 
     @property
