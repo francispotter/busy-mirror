@@ -14,27 +14,17 @@ class Selector:
             if criterium_type.match(word):
                 return criterium_type(word)
 
-    def __init__(self, args, default=None):
-        self.all = False
+    def __init__(self, args):
         self.criteria = [c for c in [self.get_criterium(w) for w in args] if c]
-        if not self.criteria:
-            if default == None:
-                self.all = True
-            else:
-                self.criteria = [self.get_criterium(default)]
 
     def hit(self, index, value):
-        return self.all or \
-            any([c.hit(index, value) for c in self.criteria])
+        if self.criteria:
+            return any([c.hit(index, value) for c in self.criteria])
+        else:
+            return True
 
     def indices(self, elements):
         return [i for i, t in enumerate(elements) if self.hit(i, t)]
-
-    # @staticmethod
-    # def select(elements, arguments, default=None):
-    #     selector = Selector(arguments, default)
-    #     indices = selector.indices(elements)
-    #     return indices
 
 class IndexCriterium:
     def match(word):  return str(word).isdigit()

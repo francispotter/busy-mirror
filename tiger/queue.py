@@ -71,14 +71,12 @@ class Queue:
             for item in self.items:
                 writer.writerow(vars(item))
 
-    def indices(self, arguments, is_plural=True):
+    def indices(self, arguments, plural=True):
         indices = []
         if self.items:
-            default = None if is_plural else 1
-            selector = Selector(arguments, default)
+            selector = Selector(arguments)
             indices = selector.indices([i.text for i in self.items])
-            if indices:
-                if not is_plural: indices = indices[:1]
+            indices = indices[:1] if (indices and not plural) else indices
         return indices
 
     def item(self, index):
@@ -99,6 +97,10 @@ class Queue:
     def drop(self, indices):
         lolist, hilist = self.split(indices)
         self.items = hilist + lolist
+
+    def clear(self, indices):
+        killlist, keeplist = self.split(indices)
+        self.items = keeplist
 
     @property
     def length(self): return len(self.items)
