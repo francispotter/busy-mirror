@@ -93,6 +93,15 @@ class Queue:
         lolist = [t for i,t in enumerate(oldlist) if i not in indices]
         self.items = hilist + lolist
 
+    def drop(self, indices):
+        oldlist = self.items
+        lolist = [t for i,t in enumerate(oldlist) if i in indices]
+        hilist = [t for i,t in enumerate(oldlist) if i not in indices]
+        self.items = hilist + lolist
+
+    @property
+    def length(self): return len(self.items)
+
 class ItemQueue(Queue):
 
     itemclass = Item

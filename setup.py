@@ -18,6 +18,7 @@ setup(name='Tiger',
         'get=tiger.get:run',
         'list=tiger.list:run',
         'pop=tiger.pop:run',
+        'drop=tiger.drop:run'
         ]},
     # package_data={'lemur':['lemur.ini']},
     zip_safe=False)

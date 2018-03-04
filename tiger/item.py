@@ -12,14 +12,6 @@ class Item:
     def __init__(self, text=''):
         self.text = text
 
-    # Really this method should go away
-    @classmethod
-    def get_selection(self, itemtypename, arguments):
-        itemclass, is_plural = self.get_type(itemtypename)
-        queue = Queue(itemclass)
-        queue.load()
-        return queue.select(arguments, is_plural)
-
     @property
     def title(self):
         return self.text[0].capitalize() + self.text[1:]
