@@ -9,9 +9,10 @@ class ListCommand(Command):
 
     command = 'list'
 
-    def do(itemtypename, arguments):
-        selection = Item.get_selection(itemtypename, arguments)
-        texts = ["%6i  %s" % (i, s.title) for i,s in selection]
+    def do(queue, arguments, plural=True):
+        queue.load()
+        indices = queue.indices(arguments, plural)
+        texts = ["%6i  %s" % (i+1, queue.item(i).title) for i in indices]
         return '\n'.join(texts)
 
 def run(): ListCommand.run(__name__)

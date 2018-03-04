@@ -9,9 +9,10 @@ class GetCommand(Command):
 
     command = 'get'
 
-    def do(itemtypename, arguments):
-        selection = Item.get_selection(itemtypename, arguments)
-        texts = [s.title for i,s in selection]
+    def do(queue, arguments, plural=True):
+        queue.load()
+        selection = queue.selection(arguments, plural)
+        texts = [s.text for s in selection]
         return '\n'.join(texts)
 
 def run(): GetCommand.run(__name__)

@@ -2,11 +2,15 @@
 import os
 
 from tiger.selector import Selector
-from .queue import Queue
 
 class Item:
 
     TYPES = {}
+    headings = ['text']
+
+
+    def __init__(self, text=''):
+        self.text = text
 
     @classmethod
     def register_type(self, newtype):

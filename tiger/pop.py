@@ -10,11 +10,9 @@ class PopCommand(Command):
 
     command = 'pop'
 
-    def do(itemtypename, arguments):
-        itemclass, is_plural = Item.get_type(itemtypename)
-        queue = Queue(itemclass)
+    def do(queue, arguments, plural=True):
         queue.load()
-        indices = queue.indices(arguments, is_plural)
+        indices = queue.indices(arguments, plural)
         queue.pop(indices)
         queue.save()
 
