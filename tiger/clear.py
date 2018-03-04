@@ -17,5 +17,5 @@ class ClearCommand(Command):
         queue.drop(indices)
         queue.save()
 
-def run(): DropCommand.run(__name__)
-run()
+def run(): ClearCommand.run()
+if __name__ == '__main__': run()

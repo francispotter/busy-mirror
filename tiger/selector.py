@@ -24,8 +24,7 @@ class Selector:
             return True
 
     def indices(self, elements):
-        result = [i for i, t in enumerate(elements) if self.hit(i, t)]
-        return result if self.plural else result[:1]
+        return [i for i, t in enumerate(elements) if self.hit(i, t)]
 
 class IndexCriterium:
     def match(word):  return str(word).isdigit()

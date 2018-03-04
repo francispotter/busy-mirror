@@ -18,14 +18,13 @@ class Command:
     # Method that's called when run from the command line.
 
     @classmethod
-    def run(self, module=None):
-        if module == '__main__':
-            parser = ArgumentParser(prog=self.command)
-            parser.add_argument('--queue', '-q', action='store')
-            parser.add_argument('type', choices=Queue.get_typenames(),
-                nargs='?', default='items')
-            arguments, others = parser.parse_known_args()
-            queuetype, plural = Queue.parse_typename(arguments.type)
-            queue = queuetype(arguments.queue)
-            result = self.do(queue, others, plural)
-            if result: print(result)
+    def run(self):
+        parser = ArgumentParser(prog=self.command)
+        parser.add_argument('--queue', '-q', action='store')
+        parser.add_argument('type', choices=Queue.get_typenames(),
+            nargs='?', default='items')
+        arguments, others = parser.parse_known_args()
+        queuetype, plural = Queue.parse_typename(arguments.type)
+        queue = queuetype(arguments.queue)
+        result = self.do(queue, others, plural)
+        if result: print(result)

@@ -17,5 +17,5 @@ class DropCommand(Command):
         queue.drop(indices)
         queue.save()
 
-def run(): DropCommand.run(__name__)
-run()
+def run(): DropCommand.run()
+if __name__ == '__main__': run()
