@@ -1,5 +1,6 @@
 '''
 A set of items in order
+Indices are all zero-based
 '''
 
 import os
@@ -61,9 +62,12 @@ class Queue:
     def load(self):
         if os.path.isfile(self.filename):
             with open(self.filename) as datafile:
-                reader = DictReader(datafile, self.headings, delimiter="|")
-                if reader:
-                    self.items = [self.itemclass(**d) for d in reader if d]
+                self.read(datafile)
+
+    def read(self, stream):
+        reader = DictReader(stream, self.headings, delimiter="|")
+        if reader:
+            self.items += [self.itemclass(**d) for d in reader if d]
 
     def save(self):
         with open(self.filename, 'w') as datafile:
@@ -71,7 +75,7 @@ class Queue:
             for item in self.items:
                 writer.writerow(vars(item))
 
-    def indices(self, arguments, plural=True):
+    def indices(self, arguments, plural=False):
         indices = []
         if self.items:
             selector = Selector(arguments)
@@ -89,6 +93,9 @@ class Queue:
         inlist = [t for i,t in enumerate(self.items) if i in indices]
         outlist = [t for i,t in enumerate(self.items) if i not in indices]
         return (inlist, outlist)
+
+
+    # The basic operations
 
     def pop(self, indices):
         hilist, lolist = self.split(indices)
