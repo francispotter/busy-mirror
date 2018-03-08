@@ -14,7 +14,7 @@ class ClearCommand(Command):
         queue.load()
         if not (arguments or plural): arguments = [1]
         indices = queue.indices(arguments, plural)
-        queue.drop(indices)
+        queue.clear(indices)
         queue.save()
 
 def run(): ClearCommand.run()
