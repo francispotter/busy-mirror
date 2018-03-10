@@ -17,5 +17,6 @@ setup(name='Tiger',
     license='MIT',
     packages=find_packages(),
     entry_points={'console_scripts':[f"{n}=tiger.{n}:run" for n in COMMANDS]},
+    data_files=[('/usr/share/shellzoo/zshrc/',['tiger.sh'])],
     # package_data={'lemur':['lemur.ini']},
     zip_safe=False)
