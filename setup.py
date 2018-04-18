@@ -11,8 +11,6 @@ command_files = [f for f in os.listdir(commands_dir) if f[0] != '_']
 commands = [f.split('.')[0] for f in command_files]
 scripts = [f"{n}=tiger.commands.{n}:run" for n in commands]
 
-print(commands)
-
 setup(name='Tiger',
     version=version,
     description='Terrific taskmaster',

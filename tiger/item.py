@@ -1,5 +1,6 @@
 
 import os
+from datetime import datetime as DateTime
 
 from tiger.selector import Selector
 
@@ -33,9 +34,9 @@ class Plan(Item):
     headings = ['date', 'task']
 
     def __init__(self, date=None, task=None):
-        self.date = date
+        self.date = DateTime.strptime(date, '%Y-%m-%d').date()
         self.task = task
 
     @property
     def text(self):
-        return "%s | %s" % (self.date, self.task)
+        return "%s | %s" % (self.date.strftime('%Y-%m-%d'), self.task)
