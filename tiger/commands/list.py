@@ -2,8 +2,8 @@
 View a single item or a list of items with line numbers
 '''
 
-from .command import Command
-from .item import Item
+from ..command import Command
+from ..item import Item
 
 class ListCommand(Command):
 

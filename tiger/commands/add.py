@@ -7,9 +7,9 @@ If nothing indicated, then the end of the queue
 
 import sys
 
-from .command import Command
-from .item import Item
-from .queue import Queue
+from ..command import Command
+from ..item import Item
+from ..queue import Queue
 
 class AddCommand(Command):
 

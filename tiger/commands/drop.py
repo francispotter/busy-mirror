@@ -2,20 +2,20 @@
 Move items to the bottom
 '''
 
-from .command import Command
-from .item import Item
-from .queue import Queue
+from ..command import Command
+from ..item import Item
+from ..queue import Queue
 
-class ClearCommand(Command):
+class DropCommand(Command):
 
-    command = 'clear'
+    command = 'drop'
 
     def do(queue, arguments, plural=True):
         queue.load()
         if not (arguments or plural): arguments = [1]
         indices = queue.indices(arguments, plural)
-        queue.clear(indices)
+        queue.drop(indices)
         queue.save()
 
-def run(): ClearCommand.run()
+def run(): DropCommand.run()
 if __name__ == '__main__': run()

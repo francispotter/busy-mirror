@@ -2,8 +2,8 @@
 View a single item or a list of items
 '''
 
-from .command import Command
-from .item import Item
+from ..command import Command
+from ..item import Item
 
 class GetCommand(Command):
 

@@ -1,0 +1,2 @@
+#!/bin/sh
+TIGER_DIR=sandbox python3 -m tiger.commands.$1 $2

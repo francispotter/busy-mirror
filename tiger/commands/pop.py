@@ -2,9 +2,9 @@
 Move items to the top
 '''
 
-from .command import Command
-from .item import Item
-from .queue import Queue
+from ..command import Command
+from ..item import Item
+from ..queue import Queue
 
 class PopCommand(Command):
 
