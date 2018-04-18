@@ -6,7 +6,12 @@ from setuptools import find_packages
 with open(os.path.join(os.path.dirname(__file__),'version')) as versionfile:
     version = versionfile.read().strip()
 
-COMMANDS = ['get','list','pop','drop','clear','add']
+commands_dir = os.path.join(os.path.dirname(__file__),'tiger','commands')
+command_files = [f for f in os.listdir(commands_dir) if f[0] != '_']
+commands = [f.split('.')[0] for f in command_files]
+scripts = [f"{n}=tiger.commands.{n}:run" for n in commands]
+
+print(commands)
 
 setup(name='Tiger',
     version=version,
@@ -16,7 +21,7 @@ setup(name='Tiger',
     author_email='tiger@hathersage.group',
     license='MIT',
     packages=find_packages(),
-    entry_points={'console_scripts':[f"{n}=tiger.{n}:run" for n in COMMANDS]},
+    entry_points={'console_scripts':scripts},
     data_files=[('/usr/share/shellzoo/zshrc/',['tiger.sh'])],
     # package_data={'lemur':['lemur.ini']},
     zip_safe=False)

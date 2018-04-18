@@ -6,16 +6,16 @@ from ..command import Command
 from ..item import Item
 from ..queue import Queue
 
-class ClearCommand(Command):
+class DeleteCommand(Command):
 
-    command = 'clear'
+    command = 'delete'
 
     def do(queue, arguments, plural=True):
         queue.load()
         if not (arguments or plural): arguments = [1]
         indices = queue.indices(arguments, plural)
-        queue.clear(indices)
+        queue.delete(indices)
         queue.save()
 
-def run(): ClearCommand.run()
+def run(): DeleteCommand.run()
 if __name__ == '__main__': run()

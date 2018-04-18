@@ -105,7 +105,7 @@ class Queue:
         lolist, hilist = self.split(indices)
         self.items = hilist + lolist
 
-    def clear(self, indices):
+    def delete(self, indices):
         killlist, keeplist = self.split(indices)
         self.items = keeplist
 
