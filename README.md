@@ -2,6 +2,8 @@
 
 ## The terrific taskmaster
 
+_This is the version of tiger I'm using (mostly) now_
+
 ## Installation
 
 Run this:
