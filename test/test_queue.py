@@ -1,30 +1,12 @@
 from unittest import TestCase
 
-from tiger.queue import ItemQueue
-from tiger.queue import TaskQueue
-from tiger.item import Task
+from tiger2.queue import Queue
 
 class TestQueue(TestCase):
 
-    def test_read(self):
-        q = ItemQueue('f')
-        q.read(['a'])
-        v = q.item(0).text
-        self.assertEqual(v, 'a')
-
-    def test_task_queue(self):
-        q = TaskQueue()
-        q.read(['a'])
-        t = q.item(0)
-        self.assertIsInstance(t, Task)
-
-    def test_active_task(self):
-        q = TaskQueue()
-        q.read(['a','b'])
-        a = q.active_task()
-        self.assertEqual(a.description, 'a')
-
-    def test_active_task_if_none(self):
-        q = TaskQueue()
-        a = q.active_task()
-        self.assertIsNone(a)
+    def test_list(self):
+        q = Queue()
+        q.add('a')
+        q.add('b')
+        i = q.list()
+        self.assertEqual(i[0], (1, 'a'))
