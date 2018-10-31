@@ -9,6 +9,7 @@ from argparse import ArgumentParser
 
 from .item import Item
 from .queue import Queue
+from .queue import TaskQueue
 
 class Command:
 
@@ -28,3 +29,17 @@ class Command:
         queue = queuetype(arguments.queue)
         result = self.do(queue, others, plural)
         if result: print(result)
+
+def active():
+    queue = TaskQueue()
+    queue.load()
+    task = queue.active_task()
+    return task.text
+
+def tiger():
+    parser = ArgumentParser()
+    parser.add_argument('command', choices=['active'],
+        default='active', nargs='?')
+    arguments, others = parser.parse_known_args()
+    if arguments.command == 'active':
+        print(active())
