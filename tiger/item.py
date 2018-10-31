@@ -6,9 +6,7 @@ from tiger.selector import Selector
 
 class Item:
 
-    TYPES = {}
     headings = ['text']
-
 
     def __init__(self, text=''):
         self.text = text

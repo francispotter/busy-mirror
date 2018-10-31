@@ -126,6 +126,9 @@ class TaskQueue(Queue):
     typenames = {'tasks': True, 'task': False}
     default_filename = 'tasks.list'
 
+    def active_task(self):
+        return self.item(0) if self.items else None
+
 Queue.add_type(TaskQueue)
 
 class PlanQueue(Queue):
