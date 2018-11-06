@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from tiger2.queue import TaskQueue
-from tiger2.item import Task
-from tiger2.commander import Commander
+from tiger.queue import TaskQueue
+from tiger.item import Task
+from tiger.commander import Commander
 
 class TestCommander(TestCase):
 

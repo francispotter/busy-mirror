@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from tiger2.item import Item
+from tiger.item import Item
 
 class TestItem(TestCase):
 
