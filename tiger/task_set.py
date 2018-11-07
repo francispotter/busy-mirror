@@ -9,9 +9,6 @@ class TaskSet:
         self.todo = todo or Queue()
         self.plan = plan or Queue()
 
-    def add_todo(self, task):
-        self.todo.add(task)
-
     def get_todo(self):
         return self.todo.get()
 

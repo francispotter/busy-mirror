@@ -8,7 +8,7 @@ class TestCommander(TestCase):
 
     def test_list(self):
         q = TaskSet()
-        q.add_todo(Task('a'))
+        q.add(Task('a'))
         c = Commander(q)
         o = c.handle_command('list')
         self.assertEqual('     1  a', o)
@@ -17,5 +17,5 @@ class TestCommander(TestCase):
         q = TaskSet()
         c = Commander(q)
         c.handle_command('add','--task','g')
-        s = q.list_todo()
+        s = q.list()
         self.assertEqual(str(s[0][1]), 'g')

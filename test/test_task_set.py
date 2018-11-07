@@ -8,7 +8,7 @@ class TestTaskSet(TestCase):
 
     def test_get(self):
         q = TaskSet()
-        q.add_todo(Task('a'))
+        q.add(Task('a'))
         t = q.get_todo()
         self.assertEqual(str(t),'a')
 
