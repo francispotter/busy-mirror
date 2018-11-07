@@ -1,8 +1,9 @@
 
 from argparse import ArgumentParser
 
-from .queue import TaskQueue
+from .queue import Queue
 from .task import Task
+from .task_set import TaskSet
 
 class Command:
 
@@ -60,13 +61,13 @@ AddCommand.register(subparser_set)
 
 class Commander:
 
-    def __init__(self, todo=TaskQueue()):
-        self._todo = todo
+    def __init__(self, taskset=TaskSet()):
+        self._taskset = taskset
 
     def handle_command(self, *args):
         parsed = PARSER.parse_args(args)
         command = parsed.command
-        method = getattr(self._todo, command.command.lower())
+        method = getattr(self._taskset, command.command.lower())
         arguments = command.arguments(parsed)
         result = method(**arguments)
         return command.output(result)

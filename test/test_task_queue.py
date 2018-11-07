@@ -1,12 +1,12 @@
 from unittest import TestCase
 
-from tiger.queue import TaskQueue
+from tiger.queue import Queue
 from tiger.task import Task
 
-class TestTaskQueue(TestCase):
+class TestQueue(TestCase):
 
     def test_task_list(self):
-        q = TaskQueue()
+        q = Queue()
         q.add(Task('a'))
         q.add(Task('b'))
         i = q.list()

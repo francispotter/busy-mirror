@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 
 from .task import Item
 from .queue import Queue
-from .queue import TaskQueue
+from .queue import Queue
 
 class Command:
 
@@ -31,7 +31,7 @@ class Command:
         if result: print(result)
 
 def active():
-    queue = TaskQueue()
+    queue = Queue()
     queue.load()
     task = queue.active_task()
     return task.text

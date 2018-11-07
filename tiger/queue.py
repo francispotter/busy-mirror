@@ -22,15 +22,3 @@ class Queue:
                 self._items.remove(item)
         else:
             self._items.remove(items)
-
-class TaskQueue(Queue):
-
-    def add(self, task='', **kwargs):
-        assert isinstance(task, Task)
-        self._items.append(task)
-
-class PlanQueue(Queue):
-
-    def add(self, plan):
-        assert isinstance(plan, Plan)
-        self._items.append(plan)

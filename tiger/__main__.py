@@ -1,8 +1,8 @@
 import sys
 
 from .commander import Commander
-from .queue import TaskQueue
+from .queue import Queue
 
-todo = TaskQueue()
+todo = Queue()
 commander = Commander(todo=todo)
 commander.handle_command(sys.argv)

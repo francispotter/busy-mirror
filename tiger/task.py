@@ -6,8 +6,10 @@ DONE_STATE = 'd'
 
 class Task:
 
-    def __init__(self, description=None):
-        self._description = description or ''
+    def __init__(self, description):
+        if not description:
+            raise RuntimeError("Task requires a description")
+        self._description = description
         self._state = TODO_STATE
         self._plan_date = None
 
@@ -24,6 +26,8 @@ class Task:
             self._plan_date = date
         elif isinstance(date, tuple):
             self._plan_date = Date(*date)
+        else:
+            raise RuntimeError("Plan requires a date")
 
 
     @property
