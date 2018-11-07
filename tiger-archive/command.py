@@ -7,7 +7,7 @@ import os
 import sys
 from argparse import ArgumentParser
 
-from .item import Item
+from .task import Item
 from .queue import Queue
 from .queue import TaskQueue
 

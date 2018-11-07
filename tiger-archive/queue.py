@@ -8,9 +8,9 @@ from csv import DictReader
 from csv import DictWriter
 
 from .selector import Selector
-from .item import Item
-from .item import Task
-from .item import Plan
+from .task import Item
+from .task import Task
+from .task import Plan
 
 DEFAULT_DIR = '~/.config/tiger'
 DIR_ENV = 'TIGER_DIR'

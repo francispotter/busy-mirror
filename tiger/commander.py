@@ -2,7 +2,7 @@
 from argparse import ArgumentParser
 
 from .queue import TaskQueue
-from .item import Task
+from .task import Task
 
 class Command:
 

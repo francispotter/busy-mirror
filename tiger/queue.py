@@ -1,6 +1,6 @@
 
-from .item import Task
-from .item import Plan
+from .task import Task
+from .task import Plan
 
 class Queue:
 

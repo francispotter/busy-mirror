@@ -1,19 +1,19 @@
 from unittest import TestCase
 import datetime
 
-from tiger.data import Data
-from tiger.item import Task
+from tiger.task_set import TaskSet
+from tiger.task import Task
 
-class TestData(TestCase):
+class TestTaskSet(TestCase):
 
     def test_get(self):
-        q = Data()
+        q = TaskSet()
         q.todo.add(Task('a'))
         t = q.todo.get()
         self.assertEqual(str(t),'a')
 
     def test_list(self):
-        q = Data()
+        q = TaskSet()
         q.todo.add(Task('a'))
         q.todo.add(Task('b'))
         s = q.todo.list()
@@ -23,7 +23,7 @@ class TestData(TestCase):
         self.assertIsInstance(s[1][1], Task)
 
     def test_defer(self):
-        q = Data()
+        q = TaskSet()
         q.todo.add(Task('a'))
         d = datetime.date(2018,12,25)
         q.defer(d)

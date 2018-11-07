@@ -2,7 +2,7 @@ from unittest import TestCase
 import datetime
 
 from tiger.queue import PlanQueue
-from tiger.item import Plan
+from tiger.task import Plan
 
 class TestPlanQueue(TestCase):
 

@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from tiger.queue import TaskQueue
-from tiger.item import Task
+from tiger.task import Task
 
 class TestTaskQueue(TestCase):
 

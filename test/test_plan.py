@@ -1,8 +1,8 @@
 from unittest import TestCase
 import datetime
 
-from tiger.item import Plan
-from tiger.item import Task
+from tiger.task import Plan
+from tiger.task import Task
 
 class TestPlan(TestCase):
 

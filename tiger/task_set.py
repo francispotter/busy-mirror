@@ -1,9 +1,9 @@
 from .queue import TaskQueue
 from .queue import PlanQueue
 
-from .item import Plan
+from .task import Plan
 
-class Data:
+class TaskSet:
 
     def __init__(self, todo=None, plan=None):
         self.todo = todo or TaskQueue()
