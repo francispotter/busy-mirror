@@ -28,3 +28,14 @@ class TestTaskSet(TestCase):
         d = datetime.date(2018,12,25)
         s.defer(d)
         self.assertEqual(s.get('plan').plan_date.year, 2018)
+
+    def test_pop(self):
+        s = TaskSet()
+        t1 = Task('a')
+        t2 = Task('b')
+        s.add(t1)
+        s.add(t2)
+        s.pop()
+        i = s.list()
+        self.assertEqual(len(i), 2)
+        self.assertEqual(str(i[0][1]), 'b')

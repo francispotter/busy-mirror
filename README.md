@@ -26,7 +26,7 @@ Otherwise, the first positional argument is a command, which is one of the follo
 | `complete` | `co` | Complete the current task and do the followon thing             | YES | Active task |
 | `start` | `st` | Set the `TIGER_ROOT` environment variable                          | -   | - |
 | `drop` | `dr` | Drop a task to the bottom of the order                              | YES | Active task |
-| `pop` | `po` | Pop a task to the top of the order                                   | YES | None |
+| `pop` | `po` | Pop a task to the top of the order                                   | YES | Last task |
 | `add` | `ad` | Add a new task                                                       | -   | - |
 | `delete` | `de` | Delete a task, without marking it complete                        | YES | Active task |
 | `edit` | `ed` | Edit task                                                           | YES | Active task |
@@ -34,7 +34,7 @@ Otherwise, the first positional argument is a command, which is one of the follo
 
 ## Designating tasks
 
-For some commands, it's possible to designate tasks to be acted upon. Desgnating tasks is always optional, although in the case of the `pop` command, nothing will happen if no tasks are designated.
+For some commands, it's possible to designate tasks to be acted upon. Desgnating tasks is always optional.
 
 Tasks are identified by number, which is the line number of that task within the list of tasks.
 

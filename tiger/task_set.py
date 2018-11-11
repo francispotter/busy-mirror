@@ -27,3 +27,6 @@ class TaskSet:
         t.convert_to_plan(date)
         self.plan.add(t)
         self.todo.remove(t)
+
+    def pop(self):
+        self.todo.pop()

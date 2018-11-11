@@ -9,6 +9,10 @@ class Queue:
     def get(self):
         return self._items[0] if self._items else None
 
+    def pop(self):
+        if self._items:
+            self._items.insert(0, self._items.pop(-1))
+
     def list(self, **kwargs):
         return [(i+1, t) for i,t in enumerate(self._items)]
 
