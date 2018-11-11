@@ -19,3 +19,10 @@ class TestCommander(TestCase):
         c.handle_command('add','--task','g')
         s = q.list()
         self.assertEqual(str(s[0][1]), 'g')
+
+    def test_list_plans(self):
+        s = TaskSet()
+        t = Task('a')
+        s.add(t)
+        c = Commander(s)
+        o = c.handle_command('list','--plan')

@@ -29,6 +29,12 @@ class ListCommand(Command):
     command = 'list'
 
     @classmethod
+    def register(self, subparser_set):
+        subparser = super().register(subparser_set)
+        subparser.add_argument('--plan', action='store_true')
+        return subparser
+
+    @classmethod
     def output(self, result):
         texts = ["%6i  %s" % (i, t) for i,t in result]
         return '\n'.join(texts)
@@ -67,7 +73,7 @@ class Commander:
     def handle_command(self, *args):
         parsed = PARSER.parse_args(args)
         command = parsed.command
-        method = getattr(self._taskset, command.command.lower())
         arguments = command.arguments(parsed)
+        method = getattr(self._taskset, command.command.lower())
         result = method(**arguments)
         return command.output(result)
