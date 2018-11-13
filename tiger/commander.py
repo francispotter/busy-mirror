@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 
 from .queue import Queue
 from .task import Task
-from .task_set import TaskSet
+from .system import System
 
 class Command:
 
@@ -67,7 +67,7 @@ AddCommand.register(subparser_set)
 
 class Commander:
 
-    def __init__(self, taskset=TaskSet()):
+    def __init__(self, taskset=System()):
         self._taskset = taskset
 
     def handle_command(self, *args):

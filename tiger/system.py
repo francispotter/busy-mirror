@@ -1,6 +1,6 @@
 from .queue import Queue
 
-class TaskSet:
+class System:
 
     def __init__(self, *tasks):
         self.todo = Queue(*tasks)
