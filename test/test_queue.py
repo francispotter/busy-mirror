@@ -35,3 +35,8 @@ class TestQueue(TestCase):
         q = Queue('a','b','c','d')
         q.drop()
         self.assertEqual(str(q.get(1)), 'b')
+
+    def test_delete(self):
+        q = Queue('a','b','c')
+        q.delete(2,3)
+        self.assertEqual(q.count(), 1)

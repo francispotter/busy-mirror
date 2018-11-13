@@ -33,10 +33,17 @@ class Queue:
     def pop(self, *criteria):
         hilist, lolist = self._split(*criteria or [len(self._items)])
         self._items = hilist + lolist
+        return hilist
 
     def drop(self, *criteria):
         lolist, hilist = self._split(*criteria or [1])
         self._items = hilist + lolist
+        return lolist
+
+    def delete(self, *criteria):
+        killlist, keeplist = self._split(*criteria)
+        self._items = keeplist
+        return killlist
 
     def list(self, *criteria):
         return [(i+1, self._items[i]) for i in self.select(*criteria)]
