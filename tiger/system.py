@@ -1,35 +1,35 @@
 from .queue import Queue
+from .task import Task
 
 class System:
 
-    def __init__(self, *tasks):
-        self.todo = Queue(*tasks)
-        self.plan = Queue()
+    def __init__(self, *items):
+        self._todos = Queue()
+        self._plans = Queue()
+        self.add_todos(*items)
 
-    def _queue(self, task_type):
-        if task_type=='todo':
-            return self.todo
-        elif task_type=='plan':
-            return self.plan
-        raise RuntimeError('Unknown task type %s' % task_type)
-
-    def get(self, task_type='todo', criteria=1):
-        return self._queue(task_type).get(criteria)
+    def get_todo(self, index=1):
+        return self._todos.get(index)
 
     def select(self, *criteria):
-        return self._queue('todo').select(*criteria)
+        return self._todos.select(*criteria)
 
-    def list(self):
-        return self.todo.list()
+    def list_todos(self):
+        return self._todos.list()
 
-    def add(self, task):
-        return self.todo.add(task)
+    def count_todos(self):
+        return self._todos.count()
+
+    def add_todos(self, *items):
+        for item in items:
+            task = item if isinstance(item, Task) else Task(item)
+            self._todos.add(task)
 
     def defer(self, date):
-        t = self.todo.get()
+        t = self._todos.get()
         t.convert_to_plan(date)
-        self.plan.add(t)
-        self.todo.remove(t)
+        self._plans.add(t)
+        self._todos.remove(t)
 
     def pop(self):
-        self.todo.pop()
+        self._todos.pop()

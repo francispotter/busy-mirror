@@ -7,8 +7,8 @@ DONE_STATE = 'd'
 class Task:
 
     def __init__(self, description):
-        if not description:
-            raise RuntimeError("Task requires a description")
+        assert isinstance(description, str)
+        assert description
         self._description = description
         self._state = TODO_STATE
         self._plan_date = None

@@ -14,7 +14,7 @@ class TestTask(TestCase):
         self.assertEqual(t.description, 'a')
 
     def test_task_requires_description(self):
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(AssertionError):
             t = Task('')
 
     def test_plan(self):

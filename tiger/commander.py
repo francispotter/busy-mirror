@@ -5,75 +5,60 @@ from .queue import Queue
 from .task import Task
 from .system import System
 
+class Commander:
+
+    def __init__(self, system=System()):
+        self._system = system
+
+    def handle(self, *args):
+        parsed = self._parser.parse_args(args)
+        command = parsed.command(self._system)
+        return command.execute(parsed)
+
+    @classmethod
+    def register(self, command_class):
+        if not hasattr(self, '_parser'):
+            self._parser = ArgumentParser()
+            self._subparsers = self._parser.add_subparsers()
+        subparser = self._subparsers.add_parser(command_class.command)
+        subparser.set_defaults(command=command_class)
+        command_class.register(subparser)
+
+
 class Command:
 
-    @classmethod
-    def register(self, subparser_set):
-        subparser = subparser_set.add_parser(self.command)
-        subparser.set_defaults(command=self)
-        return subparser
-
-    @classmethod
-    def arguments(self, parsed):
-        return {}
-
-    @classmethod
-    def output(self, result):
-        return result
-
-PARSER = ArgumentParser()
-subparser_set = PARSER.add_subparsers()
+    def __init__(self, system):
+        self._system = system
 
 class ListCommand(Command):
 
     command = 'list'
 
     @classmethod
-    def register(self, subparser_set):
-        subparser = super().register(subparser_set)
-        subparser.add_argument('--plan', action='store_true')
-        return subparser
+    def register(self, parser):
+        parser.add_argument('--plans', action='store_true')
 
-    @classmethod
-    def output(self, result):
+    def execute(self, parsed):
+        result = self._system.list_todos()
         texts = ["%6i  %s" % (i, t) for i,t in result]
         return '\n'.join(texts)
 
+Commander.register(ListCommand)
 
-ListCommand.register(subparser_set)
 
 class AddCommand(Command):
 
     command = 'add'
 
     @classmethod
-    def register(self, subparser_set):
-        subparser = super().register(subparser_set)
-        subparser.add_argument('--task')
+    def register(self, parser):
+        parser.add_argument('--task')
 
-    @classmethod
-    def arguments(self, parsed):
-        result = super().arguments(parsed)
+    def execute(self, parsed):
         if hasattr(parsed, 'task'):
             task = Task(parsed.task)
         else:
             task = Task(input('Task: '))
-        result['task'] = task
-        return result
+        self._system.add_todos(task)
 
-
-AddCommand.register(subparser_set)
-
-
-class Commander:
-
-    def __init__(self, taskset=System()):
-        self._taskset = taskset
-
-    def handle_command(self, *args):
-        parsed = PARSER.parse_args(args)
-        command = parsed.command
-        arguments = command.arguments(parsed)
-        method = getattr(self._taskset, command.command.lower())
-        result = method(**arguments)
-        return command.output(result)
+Commander.register(AddCommand)
