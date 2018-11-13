@@ -20,14 +20,14 @@ class TestTask(TestCase):
     def test_plan(self):
         t = Task('a')
         d = datetime.date(2018,12,1)
-        t.convert_to_plan(d)
+        t.as_plan(d)
 
     def test_plan_as_tuple(self):
         t = Task('b')
-        t.convert_to_plan((2018,12,1))
+        t.as_plan((2018,12,1))
         self.assertEqual(t.plan_date.month, 12)
 
     def test_plan_requires_date(self):
         t = Task('c')
         with self.assertRaises(RuntimeError):
-            t.convert_to_plan('foo')
+            t.as_plan('foo')

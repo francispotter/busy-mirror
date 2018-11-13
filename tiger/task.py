@@ -20,7 +20,7 @@ class Task:
     def description(self):
         return self._description
 
-    def convert_to_plan(self, date):
+    def as_plan(self, date):
         self._state = PLAN_STATE
         if isinstance(date, Date):
             self._plan_date = date
@@ -28,6 +28,7 @@ class Task:
             self._plan_date = Date(*date)
         else:
             raise RuntimeError("Plan requires a date")
+        return self
 
 
     @property

@@ -22,12 +22,13 @@ class TestSystem(TestCase):
         self.assertEqual(str(i[0][1]), 'a')
         self.assertIsInstance(i[1][1], Task)
 
-    # def test_defer(self):
-    #     s = System()
-    #     s.add_todos(Task('a'))
-    #     d = datetime.date(2018,12,25)
-    #     s.defer(d)
-    #     self.assertEqual(s('plan').plan_date.year, 2018)
+    def test_defer(self):
+        s = System()
+        s.add_todos(Task('a'))
+        d = datetime.date(2018,12,25)
+        s.defer(d)
+        self.assertEqual(s.count_plans(), 1)
+        self.assertEqual(s.get_plan(1).plan_date.year, 2018)
 
     def test_pop(self):
         s = System()
@@ -64,8 +65,20 @@ class TestSystem(TestCase):
         t = s.select(1,3)
         self.assertEqual(len(t), 2)
 
-    # def test_list_plans(self):
-    #     s = System('a','b')
-    #     t = s.get_todo(1)
-    #     t.convert_to_plan((2018,12,4))
-    #     self.assertEqual(s.count_plans(), 1)
+    def test_list_plans(self):
+        s = System('a','b')
+        s.defer((2018,12,4))
+        self.assertEqual(s.count_plans(), 1)
+
+    def test_defer_by_index(self):
+        s = System('a','b')
+        s.defer((2018,12,4),2)
+        t = s.get_todo()
+        self.assertEqual(s.count_plans(),1)
+        self.assertEqual(str(t), 'a')
+
+    def test_defer_multiple(self):
+        s = System('a','b','c')
+        s.defer((2018,12,5),1,3)
+        p = s.get_plan(2)
+        self.assertEqual(str(p), 'c')
