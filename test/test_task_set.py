@@ -39,3 +39,24 @@ class TestTaskSet(TestCase):
         i = s.list()
         self.assertEqual(len(i), 2)
         self.assertEqual(str(i[0][1]), 'b')
+
+    def test_by_number(self):
+        s = TaskSet()
+        s.add(Task('a'))
+        s.add(Task('b'))
+        t = s.get(criteria=2)
+        self.assertEqual(str(t), 'b')
+
+    def test_create_with_string(self):
+        s = TaskSet()
+        s.add('a')
+        self.assertEqual(str(s.get()), 'a')
+
+    def test_create_with_multiple_strings(self):
+        s = TaskSet('a','b','c')
+        self.assertEqual(str(s.get(criteria=2)), 'b')
+
+    def test_select_multiple(self):
+        s = TaskSet('a','b','c')
+        t = s.select(1,3)
+        self.assertEqual(len(t), 2)

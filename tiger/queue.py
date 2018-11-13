@@ -1,20 +1,45 @@
+'''
+Method calls on queue use indices that start at 1
+'''
+
+
+from .selector import Selector
+
 class Queue:
 
-    def __init__(self):
-        self._items = []
+    def __init__(self, *items):
+        self._items = items or []
 
-    def add(self, item='', **kwargs):
-        self._items.append(item)
+    def count(self):
+        return len(self._items)
 
-    def get(self):
-        return self._items[0] if self._items else None
+    def add(self, *items):
+        for item in items:
+            self._items.append(item)
 
-    def pop(self):
-        if self._items:
-            self._items.insert(0, self._items.pop(-1))
+    def get(self, index=1):
+        return self._items[index-1] if self._items else None
 
-    def list(self, **kwargs):
-        return [(i+1, t) for i,t in enumerate(self._items)]
+    def select(self, *criteria):
+        selector = Selector(criteria)
+        return selector.indices([str(i) for i in self._items])
+
+    def _split(self, *criteria):
+        indices = self.select(*criteria)
+        inlist = [t for i,t in enumerate(self._items) if i in indices]
+        outlist = [t for i,t in enumerate(self._items) if i not in indices]
+        return (inlist, outlist)
+
+    def pop(self, *criteria):
+        hilist, lolist = self._split(*criteria or [len(self._items)])
+        self._items = hilist + lolist
+
+    def drop(self, *criteria):
+        lolist, hilist = self._split(*criteria or [1])
+        self._items = hilist + lolist
+
+    def list(self, *criteria):
+        return [(i+1, self._items[i]) for i in self.select(*criteria)]
 
     def remove(self, items):
         if isinstance(items, list):
