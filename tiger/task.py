@@ -4,6 +4,10 @@ TODO_STATE = 't'
 PLAN_STATE = 'p'
 DONE_STATE = 'd'
 
+TODO_SCHEMA = ['description']
+
+PLAN_SCHEMA = ['description', 'plan_date']
+
 class Task:
 
     def __init__(self, description):
