@@ -3,6 +3,7 @@ import datetime
 
 from tiger.task import Task
 
+
 class TestTask(TestCase):
 
     def test_task(self):
