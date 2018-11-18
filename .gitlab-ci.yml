@@ -1,5 +1,4 @@
 test:
+  image: python
   script:
-  - apt-get update -qy
-  - apt-get install -y python3.6-dev
   - make test
