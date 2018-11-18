@@ -1,5 +1,5 @@
 test:
   script:
   - apt-get update -qy
-  - apt-get install -y python3-dev
+  - apt-get install -y python3.6-dev
   - make test
