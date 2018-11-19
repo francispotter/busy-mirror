@@ -6,6 +6,7 @@ from tiger.queue_file import QueueFile
 from tiger.queue import Queue
 from tiger.task import Task
 from tiger.task import TODO_SCHEMA
+from tiger.task import PLAN_SCHEMA
 
 class TestQueueFile(TestCase):
 
@@ -32,3 +33,13 @@ class TestQueueFile(TestCase):
             f.save(q1)
             q2 = f.load()
             self.assertEqual(str(q2.get()), 'a')
+
+    def test_plan_file(self):
+        with TemporaryDirectory() as d:
+            p = Path(d) / 'plan.txt'
+            t = Task('a').as_plan((2019,2,3))
+            q1 = Queue(t)
+            f = QueueFile(p, Task, PLAN_SCHEMA)
+            f.save(q1)
+            q2 = f.load()
+            self.assertEqual(q2.get().plan_date.day, 3)

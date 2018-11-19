@@ -31,4 +31,9 @@ class TestTask(TestCase):
     def test_plan_requires_date(self):
         t = Task('c')
         with self.assertRaises(RuntimeError):
-            t.as_plan('foo')
+            t.as_plan(54)
+
+    def test_plan_with_date_as_string(self):
+        t = Task ('d')
+        t.as_plan('2019-04-05')
+        self.assertEqual(t.plan_date.day, 5)

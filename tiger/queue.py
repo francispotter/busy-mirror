@@ -1,4 +1,5 @@
 '''
+A queue is unaware of the classes of its contents
 Method calls on queue use indices that start at 1
 '''
 
