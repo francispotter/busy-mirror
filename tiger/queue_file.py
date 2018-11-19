@@ -1,4 +1,5 @@
 from csv import DictReader
+from csv import DictWriter
 
 from .queue import Queue
 
@@ -17,3 +18,10 @@ class QueueFile:
                     tasks = [self._item_class(**d) for d in reader if d]
                     return Queue(*tasks)
         return Queue()
+
+    def save(self, queue):
+        with open(self._path, 'w') as datafile:
+            writer = DictWriter(datafile, self._schema, delimiter="|")
+            for item in queue.all():
+                values = dict([(f, getattr(item,f)) for f in self._schema])
+                writer.writerow(values)

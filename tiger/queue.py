@@ -10,6 +10,9 @@ class Queue:
     def __init__(self, *items):
         self._items = items or []
 
+    def all(self):
+        return self._items
+
     def count(self):
         return len(self._items)
 
