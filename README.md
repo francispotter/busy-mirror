@@ -1,10 +1,10 @@
-# Tiger
+# Todo
 
 A command-line task and plan management tool.
 
 ## Introduction
 
-Tiger is a system for keeping track of tasks. Some of the guiding philosophies:
+Todo is a system for keeping track of tasks. Some of the guiding philosophies:
 
 - Everything is based on a POSIX command line interface, making it easy to use from the terminal prompt on Linux and MacOS systems
 - Data is stored in easily edited files, so if the tool doesn't do something you want, you can just edit the files

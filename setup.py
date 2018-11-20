@@ -11,15 +11,15 @@ command_files = [f for f in os.listdir(commands_dir) if f[0] != '_']
 commands = [f.split('.')[0] for f in command_files]
 scripts = [f"{n}=todo.commands.{n}:run" for n in commands]
 
-setup(name='Tiger',
+setup(name='Todo',
     version=version,
-    description='Terrific taskmaster',
-    url='http://github.com/shellzoo/todo',
-    author='The Hathersage Group, Inc.',
-    author_email='todo@hathersage.group',
+    description='Command-line task and plan management tool',
+    url='http://gitlab.com/francispotter/todo',
+    author='Francis Potter',
+    author_email='todo@fpotter.com',
     license='MIT',
     packages=find_packages(),
     entry_points={'console_scripts':scripts},
-    data_files=[('/usr/share/shellzoo/zshrc/',['todo.sh'])],
+    # data_files=[('/usr/share/shellzoo/zshrc/',['todo.sh'])],
     # package_data={'lemur':['lemur.ini']},
     zip_safe=False)
