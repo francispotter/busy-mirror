@@ -3,9 +3,9 @@ from .task import Task
 
 class System:
 
-    def __init__(self, *items):
-        self._todos = Queue()
-        self._plans = Queue()
+    def __init__(self, *items, todos=None, plans=None):
+        self._todos = todos if todos else Queue()
+        self._plans = plans if plans else Queue()
         self.add_todos(*items)
 
     def get_todo(self, index=1):
