@@ -2,11 +2,11 @@ from unittest import TestCase
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from tiger.queue_file import QueueFile
-from tiger.queue import Queue
-from tiger.task import Task
-from tiger.task import TODO_SCHEMA
-from tiger.task import PLAN_SCHEMA
+from todo.queue_file import QueueFile
+from todo.queue import Queue
+from todo.task import Task
+from todo.task import TODO_SCHEMA
+from todo.task import PLAN_SCHEMA
 
 class TestQueueFile(TestCase):
 

@@ -36,7 +36,7 @@ def active():
     task = queue.active_task()
     return task.text
 
-def tiger():
+def todo():
     parser = ArgumentParser()
     parser.add_argument('command', choices=['active'],
         default='active', nargs='?')

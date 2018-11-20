@@ -1,7 +1,7 @@
 from unittest import TestCase
 import datetime
 
-from tiger.task import Task
+from todo.task import Task
 
 
 class TestTask(TestCase):

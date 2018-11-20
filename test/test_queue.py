@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from tiger.queue import Queue
+from todo.queue import Queue
 
 class TestQueue(TestCase):
 

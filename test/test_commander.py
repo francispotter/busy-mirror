@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from tiger.task import Task
-from tiger.commander import Commander
-from tiger.system import System
+from todo.task import Task
+from todo.commander import Commander
+from todo.system import System
 
 class TestCommander(TestCase):
 

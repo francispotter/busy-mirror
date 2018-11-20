@@ -12,7 +12,7 @@ Tiger is a system for keeping track of tasks. Some of the guiding philosophies:
 
 ## Commands
 
-The main command is `tiger` (typically shortened with an alias to `ti`).
+The main command is `todo`.
 
 When called without any arguments, the command returns the current task.
 
@@ -38,15 +38,15 @@ For some commands, it's possible to designate tasks to be acted upon. Desgnating
 
 Tasks are identified by number, which is the line number of that task within the list of tasks.
 
-`tiger list` lists all the tasks
+`todo list` lists all the tasks
 
-`tiger list 5` shows only task number 5
+`todo list 5` shows only task number 5
 
-`tiger list 3-7` shows tasks 3-7
+`todo list 3-7` shows tasks 3-7
 
-`tiger list 3-` show tasks 3 through the end
+`todo list 3-` show tasks 3 through the end
 
-`tiger list 3 5 7 9` shows the tasks designated
+`todo list 3 5 7 9` shows the tasks designated
 
 _some way to indicate the last task?_
 
@@ -79,14 +79,14 @@ Deferral is about scheduling a task to reappear on the task list on a future dat
 Example:
 
 ```
-tiger defer 4-6 --for 4 days
+todo defer 4-6 --for 4 days
 ```
 
 ## The `then` option
 
 The `--then` option is most useful with the `add` command. For example, the following command allows you to pop the new tasks to the top.
 
-`tiger add --multiple --then pop`
+`todo add --multiple --then pop`
 
 The `--then` option requires an argment, which must be one of:
 
@@ -121,7 +121,7 @@ Go to the store --> friday
 Note that if you add multiple with pop, they stay in order.
 
 ```
-tiger add --multiple --pop
+todo add --multiple --pop
 Go to the store
 Go to the bank
 ```
@@ -129,7 +129,7 @@ Go to the bank
 Then:
 
 ```
-tiger list 1-2
+todo list 1-2
     1 Go to the store
     2 Go to the bank
 ```
@@ -137,7 +137,7 @@ tiger list 1-2
 Task descriptions always come from stdin. To read from a file, try:
 
 ```
-cat list-of-tasks.txt | tiger add --multiple
+cat list-of-tasks.txt | todo add --multiple
 ```
 
 ## Data storage
@@ -150,11 +150,11 @@ Tiger requires a "root", which is the directory containing the two data files:
 
 Technically, they are pipe-delimited data files, though `todo.txt` only has one field.
 
-How to tell tiger its root (in order)
+How to tell todo its root (in order)
 
 - The `--root` option
 - The `TIGER_ROOT` environment variable
-- Otherwise, `~/.tiger` which will be generated as needed
+- Otherwise, `~/.todo` which will be generated as needed
 
 
 The "root" setup allows you to have separate task queues for separate projects.

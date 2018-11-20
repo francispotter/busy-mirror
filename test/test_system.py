@@ -1,8 +1,8 @@
 from unittest import TestCase
 import datetime
 
-from tiger.system import System
-from tiger.task import Task
+from todo.system import System
+from todo.task import Task
 
 class TestSystem(TestCase):
 

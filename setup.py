@@ -6,20 +6,20 @@ from setuptools import find_packages
 with open(os.path.join(os.path.dirname(__file__),'version')) as versionfile:
     version = versionfile.read().strip()
 
-commands_dir = os.path.join(os.path.dirname(__file__),'tiger','commands')
+commands_dir = os.path.join(os.path.dirname(__file__),'todo','commands')
 command_files = [f for f in os.listdir(commands_dir) if f[0] != '_']
 commands = [f.split('.')[0] for f in command_files]
-scripts = [f"{n}=tiger.commands.{n}:run" for n in commands]
+scripts = [f"{n}=todo.commands.{n}:run" for n in commands]
 
 setup(name='Tiger',
     version=version,
     description='Terrific taskmaster',
-    url='http://github.com/shellzoo/tiger',
+    url='http://github.com/shellzoo/todo',
     author='The Hathersage Group, Inc.',
-    author_email='tiger@hathersage.group',
+    author_email='todo@hathersage.group',
     license='MIT',
     packages=find_packages(),
     entry_points={'console_scripts':scripts},
-    data_files=[('/usr/share/shellzoo/zshrc/',['tiger.sh'])],
+    data_files=[('/usr/share/shellzoo/zshrc/',['todo.sh'])],
     # package_data={'lemur':['lemur.ini']},
     zip_safe=False)

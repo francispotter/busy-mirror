@@ -12,7 +12,7 @@ from .task import Item
 from .task import Task
 from .task import Plan
 
-DEFAULT_DIR = '~/.config/tiger'
+DEFAULT_DIR = '~/.config/todo'
 DIR_ENV = 'TIGER_DIR'
 
 
