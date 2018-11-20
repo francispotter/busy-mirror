@@ -3,7 +3,7 @@ from csv import DictWriter
 
 from .queue import Queue
 
-class QueueFile:
+class File:
 
     def __init__(self, path, item_class, schema):
         self._path = path
