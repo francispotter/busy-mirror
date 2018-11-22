@@ -1,28 +1,43 @@
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from .system import System
 from .task import Task
-from .task import TODO_SCHEMA
-from .task import PLAN_SCHEMA
-from .file import File
+from .file import TodoFile, PlanFile
 
 TODO_FILE_NAME = 'todo.txt'
 PLAN_FILE_NAME = 'plan.txt'
 
 class Root:
 
-    def __init__(self, directory):
-        assert Path(directory).is_dir()
-        self._directory = Path(directory)
-        self._todo_file = self._file(TODO_FILE_NAME, TODO_SCHEMA)
-        self._plan_file = self._file(PLAN_FILE_NAME, PLAN_SCHEMA)
-        todo_queue = self._todo_file.queue
-        plan_queue = self._plan_file.queue
-        self.system = System(todos=todo_queue, plans=plan_queue)
+    @property
+    def path(self):
+        if not hasattr(self, '_path'):
+            self._path = Path(TemporaryDirectory())
+        return self._path
 
-    def _file(self, filename, schema):
-        path = self._directory / filename
-        return File(path, Task, schema)
+    @path.setter
+    def path(self, value):
+        assert isinstance(value, Path)
+        self._path = value
+
+    def __init__(self, path = None):
+        if path: self.path = path
+
+
+    @property
+    def system(self):
+        if not hasattr(self, '_system'):
+            self._todo_file = self._file(TODO_FILE_NAME, TodoFile)
+            self._plan_file = self._file(PLAN_FILE_NAME, PlanFile)
+            todo_queue = self._todo_file.queue
+            plan_queue = self._plan_file.queue
+            self._system = System(todos=todo_queue, plans=plan_queue)
+        return self._system
+
+    def _file(self, filename, file_class):
+        path = self.path / filename
+        return file_class(path)
 
     def save(self):
         self._todo_file.save()

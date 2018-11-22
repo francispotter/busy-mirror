@@ -25,10 +25,7 @@ class System:
 
     def count_plans(self): return self._plans.count()
 
-    def add_todos(self, *items):
-        for item in items:
-            task = item if isinstance(item, Task) else Task(item)
-            self._todos.add(task)
+    def add_todos(self, *items): self._todos.add(*items)
 
     def defer(self, date, *criteria):
         indices = self._todos.select(*(criteria or [1]))

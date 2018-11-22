@@ -37,3 +37,7 @@ class TestTask(TestCase):
         t = Task ('d')
         t.as_plan('2019-04-05')
         self.assertEqual(t.plan_date.day, 5)
+
+    def test_create_task_with_dict(self):
+        t = Task(plan_date=(2019,4,15), description='a')
+        self.assertEqual(t.plan_date.month, 4)

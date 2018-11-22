@@ -1,15 +1,13 @@
-'''
-A queue is unaware of the classes of its contents
-Method calls on queue use indices that start at 1
-'''
-
+# Method calls on queue use indices that start at 1
 
 from .selector import Selector
+from .task import Task
 
 class Queue:
 
     def __init__(self, *items):
-        self._items = items or []
+        self._items = []
+        self.add(*items)
 
     def all(self):
         return self._items
@@ -19,7 +17,7 @@ class Queue:
 
     def add(self, *items):
         for item in items:
-            self._items.append(item)
+            self._items.append(Task.create(item))
 
     def get(self, index=1):
         return self._items[index-1] if self._items else None

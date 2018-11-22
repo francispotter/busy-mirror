@@ -5,10 +5,6 @@ TODO_STATE = 't'
 PLAN_STATE = 'p'
 DONE_STATE = 'd'
 
-TODO_SCHEMA = ['description']
-
-PLAN_SCHEMA = ['description', 'plan_date']
-
 class Task:
 
     def __init__(self, description=None, plan_date=None):
@@ -37,7 +33,15 @@ class Task:
             raise RuntimeError("Plan requires a date")
         return self
 
-
     @property
     def plan_date(self):
         return self._plan_date
+
+    @classmethod
+    def create(self, value):
+        if isinstance(value, self):
+            return value
+        elif isinstance(value, str):
+            return self(value)
+        elif isinstance(value, dict):
+            return self(**value)

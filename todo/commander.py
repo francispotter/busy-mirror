@@ -1,24 +1,39 @@
 
 from argparse import ArgumentParser
+from tempfile import TemporaryDirectory
 
 from .queue import Queue
 from .task import Task
 from .system import System
+from .root import Root
 
 class Commander:
 
-    def __init__(self, system=System()):
-        self._system = system
-
     def handle(self, *args):
         parsed = self._parser.parse_args(args)
-        command = parsed.command(self._system)
+        if parsed.root: self.root = Root(parsed.root)
+        command = parsed.command(self.system)
         return command.execute(parsed)
+
+    @property
+    def root(self):
+        if not hasattr(self, '_root'): self.root = Root()
+        return self._root
+
+    @root.setter
+    def root(self, value):
+        assert isinstance(value, Root)
+        self._root = value
+
+    # @property
+    # def system(self):
+    #     .....
 
     @classmethod
     def register(self, command_class):
         if not hasattr(self, '_parser'):
             self._parser = ArgumentParser()
+            self._parser.add_argument('--root', action='store')
             self._subparsers = self._parser.add_subparsers()
         subparser = self._subparsers.add_parser(command_class.command)
         subparser.set_defaults(command=command_class)
