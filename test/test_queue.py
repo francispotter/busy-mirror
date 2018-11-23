@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from todo.queue import Queue
+from busy.queue import Queue
 
 class TestQueue(TestCase):
 

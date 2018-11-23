@@ -2,10 +2,10 @@ from unittest import TestCase
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from todo.file import TodoFile
-from todo.file import PlanFile
-from todo.queue import Queue
-from todo.task import Task
+from busy.file import TodoFile
+from busy.file import PlanFile
+from busy.queue import Queue
+from busy.task import Task
 
 class TestFile(TestCase):
 

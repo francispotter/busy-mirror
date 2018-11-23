@@ -2,9 +2,9 @@ from unittest import TestCase
 from tempfile import TemporaryDirectory
 from pathlib import Path
 
-from todo.task import Task
-from todo.commander import Commander
-from todo.system import System
+from busy.task import Task
+from busy.commander import Commander
+from busy.system import System
 
 # class TestCommander(TestCase):
 

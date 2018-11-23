@@ -1,10 +1,12 @@
-# Todo
+# Busy
 
 A command-line task and plan management tool.
 
+**Note: This is a work in progress and only partially complete**
+
 ## Introduction
 
-Todo is a system for keeping track of tasks. Some of the guiding philosophies:
+Busy is a system for keeping track of tasks. Some of the guiding philosophies:
 
 - Everything is based on a POSIX command line interface, making it easy to use from the terminal prompt on Linux and MacOS systems
 - Data is stored in easily edited files, so if the tool doesn't do something you want, you can just edit the files
@@ -12,7 +14,7 @@ Todo is a system for keeping track of tasks. Some of the guiding philosophies:
 
 ## Commands
 
-The main command is `todo`.
+The main command is `busy`.
 
 When called without any arguments, the command returns the current task.
 
@@ -38,15 +40,15 @@ For some commands, it's possible to designate tasks to be acted upon. Desgnating
 
 Tasks are identified by number, which is the line number of that task within the list of tasks.
 
-`todo list` lists all the tasks
+`busy list` lists all the tasks
 
-`todo list 5` shows only task number 5
+`busy list 5` shows only task number 5
 
-`todo list 3-7` shows tasks 3-7
+`busy list 3-7` shows tasks 3-7
 
-`todo list 3-` show tasks 3 through the end
+`busy list 3-` show tasks 3 through the end
 
-`todo list 3 5 7 9` shows the tasks designated
+`busy list 3 5 7 9` shows the tasks designated
 
 _some way to indicate the last task?_
 
@@ -79,14 +81,14 @@ Deferral is about scheduling a task to reappear on the task list on a future dat
 Example:
 
 ```
-todo defer 4-6 --for 4 days
+busy defer 4-6 --for 4 days
 ```
 
 ## The `then` option
 
 The `--then` option is most useful with the `add` command. For example, the following command allows you to pop the new tasks to the top.
 
-`todo add --multiple --then pop`
+`busy add --multiple --then pop`
 
 The `--then` option requires an argment, which must be one of:
 
@@ -121,7 +123,7 @@ Go to the store --> friday
 Note that if you add multiple with pop, they stay in order.
 
 ```
-todo add --multiple --pop
+busy add --multiple --pop
 Go to the store
 Go to the bank
 ```
@@ -129,7 +131,7 @@ Go to the bank
 Then:
 
 ```
-todo list 1-2
+busy list 1-2
     1 Go to the store
     2 Go to the bank
 ```
@@ -137,7 +139,7 @@ todo list 1-2
 Task descriptions always come from stdin. To read from a file, try:
 
 ```
-cat list-of-tasks.txt | todo add --multiple
+cat list-of-tasks.txt | busy add --multiple
 ```
 
 ## Data storage
@@ -150,11 +152,11 @@ Tiger requires a "root", which is the directory containing the two data files:
 
 Technically, they are pipe-delimited data files, though `todo.txt` only has one field.
 
-How to tell todo its root (in order)
+How to tell busy its root (in order)
 
 - The `--root` option
-- The `TIGER_ROOT` environment variable
-- Otherwise, `~/.todo` which will be generated as needed
+- The `BUSY_ROOT` environment variable
+- Otherwise, `~/.busy` which will be generated as needed
 
 
 The "root" setup allows you to have separate task queues for separate projects.

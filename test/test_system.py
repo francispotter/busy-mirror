@@ -1,8 +1,8 @@
 from unittest import TestCase
 import datetime
 
-from todo.system import System
-from todo.task import Task
+from busy.system import System
+from busy.task import Task
 
 class TestSystem(TestCase):
 
