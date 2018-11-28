@@ -62,7 +62,7 @@ _some way to indicate the last task?_
 | `--current`  | `-c` | Include current tasks - tasks for today or earlier |
 | `--multiple` | `-m` | Handle more than one task (only for `add`) |
 | `--then`     | ??   | Do another command after completing the first command |
-| `--task`     | `-t` | Provide the task description (only for `new`) |
+| `--task`     | `-t` | Provide the task description (only for `add`) |
 
 
 ## Deferral

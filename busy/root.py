@@ -12,14 +12,14 @@ class Root:
 
     @property
     def path(self):
-        if not hasattr(self, '_path'):
-            self._path = Path(TemporaryDirectory())
         return self._path
 
     @path.setter
     def path(self, value):
-        assert isinstance(value, Path)
-        self._path = value
+        assert not hasattr(self, '_path')
+        path = Path(value) if isinstance(value, str) else value
+        assert isinstance(path, Path) and path.is_dir()
+        self._path = path
 
     def __init__(self, path = None):
         if path: self.path = path

@@ -9,25 +9,26 @@ from .root import Root
 
 class Commander:
 
+    def __init__(self, *args, root=None):
+        if root: self.root = Root(root)
+
     def handle(self, *args):
         parsed = self._parser.parse_args(args)
         if parsed.root: self.root = Root(parsed.root)
-        command = parsed.command(self.system)
-        return command.execute(parsed)
+        if hasattr(parsed, 'command'):
+            command = parsed.command(self.root)
+            return command.execute(parsed)
 
     @property
     def root(self):
-        if not hasattr(self, '_root'): self.root = Root()
+        if not hasattr(self, '_root'): self._root = Root()
         return self._root
 
     @root.setter
     def root(self, value):
+        assert not hasattr(self, '_path')
         assert isinstance(value, Root)
         self._root = value
-
-    # @property
-    # def system(self):
-    #     .....
 
     @classmethod
     def register(self, command_class):
@@ -42,8 +43,8 @@ class Commander:
 
 class Command:
 
-    def __init__(self, system):
-        self._system = system
+    def __init__(self, root):
+        self._root = root
 
 class ListCommand(Command):
 
@@ -54,7 +55,7 @@ class ListCommand(Command):
         parser.add_argument('--plans', action='store_true')
 
     def execute(self, parsed):
-        result = self._system.list_todos()
+        result = self._root.system.list_todos()
         texts = ["%6i  %s" % (i, t) for i,t in result]
         return '\n'.join(texts)
 
@@ -74,6 +75,7 @@ class AddCommand(Command):
             task = Task(parsed.task)
         else:
             task = Task(input('Task: '))
-        self._system.add_todos(task)
+        self._root.system.add_todos(task)
+        self._root.save()
 
 Commander.register(AddCommand)

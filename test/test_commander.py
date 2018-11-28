@@ -6,13 +6,29 @@ from busy.task import Task
 from busy.commander import Commander
 from busy.system import System
 
-# class TestCommander(TestCase):
+class TestCommander(TestCase):
 
-    # def test_list(self):
-    #     c = Commander()
-    #     c.system.add_todos(Task('a'))
-    #     o = c.handle('list')
-    #     self.assertEqual('     1  a', o)
+    def test_with_root_param(self):
+        with TemporaryDirectory() as t:
+            c = Commander(root=t)
+            o = c.handle('add','--task','a')
+            x = Path(t, 'todo.txt').read_text()
+            self.assertEqual(x, 'a\n')
+
+    def test_with_root_option(self):
+        with TemporaryDirectory() as t:
+            c = Commander()
+            c.handle('--root', t)
+            c.handle('add','--task','a')
+            x = Path(t, 'todo.txt').read_text()
+            self.assertEqual(x, 'a\n')
+
+    def test_list(self):
+        with TemporaryDirectory() as t:
+            c = Commander(root=t)
+            c.handle('add','--task','a')
+            o = c.handle('list')
+            self.assertEqual(o, '     1  a')
 #
 #     def test_add(self):
 #         c = Commander()
