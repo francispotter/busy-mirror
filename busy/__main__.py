@@ -9,4 +9,4 @@ def main():
         raise RuntimeError(msg)
     print(Commander().handle(*sys.argv[1:]))
 
-main()
+if __name__ == '__main__': main()
