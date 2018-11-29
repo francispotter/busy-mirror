@@ -170,3 +170,19 @@ The "root" setup allows you to have separate task queues for separate projects.
 - Domain model (item/queue/etc)
 - Operations layer: pure python
 - Command layer: handles commands, options, and files - with output to text
+
+## Development
+
+Although it requires Python 3.6.5 or higher, Busy is designed to function with the Python standard library without any additional pip modules.
+
+However, we use coverage during unit testing, so:
+
+```
+pip3 install coverage
+```
+
+Then to run the test suite:
+
+```
+make test
+```
