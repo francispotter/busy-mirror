@@ -19,5 +19,5 @@ setup(name='Busy',
     author_email='busy@fpotter.com',
     license='MIT',
     packages=find_packages(),
-    entry_points={'console_scripts':['busy=busy:main']},
+    entry_points={'console_scripts':['busy=busy.__main__:main']},
     zip_safe=False)
