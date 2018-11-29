@@ -3,3 +3,5 @@ __pycache__/
 .idea/
 delete_me.*
 .coverage
+*,cover
+htmlcov/

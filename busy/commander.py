@@ -71,7 +71,7 @@ class AddCommand(Command):
         parser.add_argument('--task')
 
     def execute(self, parsed):
-        if hasattr(parsed, 'task'):
+        if hasattr(parsed, 'task') and parsed.task:
             task = Task(parsed.task)
         else:
             task = Task(input('Task: '))

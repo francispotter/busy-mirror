@@ -1,6 +1,8 @@
 from unittest import TestCase
 from tempfile import TemporaryDirectory
 from pathlib import Path
+from unittest import mock
+from io import StringIO
 
 from busy.task import Task
 from busy.commander import Commander
@@ -29,6 +31,16 @@ class TestCommander(TestCase):
             c.handle('add','--task','a')
             o = c.handle('list')
             self.assertEqual(o, '     1  a')
+
+    def test_add_by_input(self):
+        with TemporaryDirectory() as t:
+            c = Commander(root=t)
+            with mock.patch('sys.stdin', StringIO('g')):
+                c.handle('add')
+                x = Path(t, 'todo.txt').read_text()
+                self.assertEqual(x, 'g\n')
+
+
 #
 #     def test_add(self):
 #         c = Commander()

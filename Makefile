@@ -5,7 +5,7 @@ test:
 
 cover:
 	python3 -m coverage run --source=busy -m unittest -v
-	python3 -m coverage report
+	python3 -m coverage report -m
 
 install:
 	sudo pip3 install --upgrade .
