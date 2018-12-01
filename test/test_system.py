@@ -16,7 +16,7 @@ class TestSystem(TestCase):
         s = System()
         s.add_todos(Task('a'))
         s.add_todos(Task('b'))
-        i = s.list_todos()
+        i, m = s.list()
         self.assertEqual(len(i), 2)
         self.assertEqual(i[1][0], 2)
         self.assertEqual(str(i[0][1]), 'a')
@@ -37,7 +37,7 @@ class TestSystem(TestCase):
         s.add_todos(t1)
         s.add_todos(t2)
         s.pop()
-        i = s.list_todos()
+        i, m = s.list()
         self.assertEqual(len(i), 2)
         self.assertEqual(str(i[0][1]), 'b')
 

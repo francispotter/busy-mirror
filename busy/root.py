@@ -3,10 +3,8 @@ from tempfile import TemporaryDirectory
 
 from .system import System
 from .task import Task
-from .file import TodoFile, PlanFile
-
-TODO_FILE_NAME = 'todo.txt'
-PLAN_FILE_NAME = 'plan.txt'
+from .file import TodoFile
+from .file import PlanFile
 
 class Root:
 
@@ -24,20 +22,15 @@ class Root:
     def __init__(self, path = None):
         if path: self.path = path
 
-
     @property
     def system(self):
         if not hasattr(self, '_system'):
-            self._todo_file = self._file(TODO_FILE_NAME, TodoFile)
-            self._plan_file = self._file(PLAN_FILE_NAME, PlanFile)
+            self._todo_file = TodoFile(self.path)
+            self._plan_file = PlanFile(self.path)
             todo_queue = self._todo_file.queue
             plan_queue = self._plan_file.queue
             self._system = System(todos=todo_queue, plans=plan_queue)
         return self._system
-
-    def _file(self, filename, file_class):
-        path = self.path / filename
-        return file_class(path)
 
     def save(self):
         self._todo_file.save()

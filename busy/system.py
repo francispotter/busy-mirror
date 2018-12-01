@@ -1,11 +1,12 @@
-from .queue import Queue
+from .queue import TodoQueue
+from .queue import PlanQueue
 from .task import Task
 
 class System:
 
     def __init__(self, *items, todos=None, plans=None):
-        self._todos = todos if todos else Queue()
-        self._plans = plans if plans else Queue()
+        self._todos = todos if todos else TodoQueue()
+        self._plans = plans if plans else PlanQueue()
         self.add_todos(*items)
 
     def get_todo(self, index=1):
@@ -17,9 +18,9 @@ class System:
     def select(self, *criteria):
         return self._todos.select(*criteria)
 
-    def list_todos(self): return self._todos.list()
-
-    def list_plans(self): return self._plans.list()
+    def list(self, which='todo'):
+        queue = getattr(self, f'_{which}s')
+        return queue.list(), queue
 
     def count_todos(self): return self._todos.count()
 

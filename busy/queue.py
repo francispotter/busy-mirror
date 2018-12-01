@@ -49,3 +49,11 @@ class Queue:
 
     def list(self, *criteria):
         return [(i+1, self._items[i]) for i in self.select(*criteria)]
+
+class TodoQueue(Queue):
+    schema = ['description']
+    listfmt = "{1.description}"
+
+class PlanQueue(Queue):
+    schema = ['plan_date', 'description']
+    listfmt = "{1.plan_date:%Y-%m-%d}  {1.description}"

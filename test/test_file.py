@@ -10,34 +10,36 @@ from busy.task import Task
 class TestFile(TestCase):
 
     def test_load_tasks(self):
-        p = Path(__file__).parent.joinpath('test_tasks.txt')
-        f = TodoFile(p)
-        q = f.queue
-        self.assertIsInstance(q, Queue)
-        self.assertEqual(str(q.get()), 'a')
-        self.assertIsInstance(q.get(), Task)
+        with TemporaryDirectory() as d:
+            p = Path(d) / 'todo.txt'
+            p.write_text('a\nb\n')
+            f = TodoFile(Path(d))
+            q = f.queue
+            self.assertIsInstance(q, Queue)
+            self.assertEqual(str(q.get()), 'a')
+            self.assertIsInstance(q.get(), Task)
 
     def test_load_if_not_there(self):
-        p = Path(__file__).parent.joinpath('not_there.txt')
-        f = TodoFile(p)
-        q = f.queue
-        self.assertIsInstance(q, Queue)
-        self.assertEqual(q.count(), 0)
+        with TemporaryDirectory() as d:
+            f = TodoFile(Path(d))
+            q = f.queue
+            self.assertIsInstance(q, Queue)
+            self.assertEqual(q.count(), 0)
 
     def test_save_tasks(self):
         with TemporaryDirectory() as d:
             p = Path(d) / 'todo.txt'
-            f1 = TodoFile(p)
+            f1 = TodoFile(Path(d))
             q1 = f1.queue
             q1.add(Task('a'))
             f1.save()
-            f2 = TodoFile(p)
+            f2 = TodoFile(Path(d))
             q2 = f2.queue
             self.assertEqual(str(q2.get()), 'a')
 
     def test_plan_file(self):
         with TemporaryDirectory() as d:
-            p = Path(d) / 'plan.txt'
+            p = Path(d)
             f = PlanFile(p)
             t = Task('a').as_plan((2019,2,3))
             f.queue.add(t)
@@ -49,5 +51,5 @@ class TestFile(TestCase):
         with TemporaryDirectory() as d:
             p = Path(d) / 'plan.txt'
             p.write_text('2018-12-01|a\n2018-12-09|b')
-            q = PlanFile(p).queue
+            q = PlanFile(Path(d)).queue
             self.assertEqual(q.get().plan_date.month, 12)

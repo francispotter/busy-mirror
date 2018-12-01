@@ -40,6 +40,15 @@ class TestCommander(TestCase):
                 x = Path(t, 'todo.txt').read_text()
                 self.assertEqual(x, 'g\n')
 
+    def test_list_plans(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'plan.txt')
+            p.write_text('2019-01-04|g\n2019-02-05|p')
+            c = Commander(root=t)
+            o = c.handle('list','--plan')
+            self.assertEqual(o, '     1  2019-01-04  g\n     2  2019-02-05  p')
+
+
 
 #
 #     def test_add(self):
@@ -47,13 +56,6 @@ class TestCommander(TestCase):
 #         c.handle('add','--task','g')
 #         s = c.system.list_todos()
 #         self.assertEqual(str(s[0][1]), 'g')
-#
-#     def test_list_plans(self):
-#         s = System()
-#         t = Task('a')
-#         s.add_todos(t)
-#         c = Commander(s)
-#         o = c.handle('list','--plan')
 #
 #     def test_root_option(self):
 #         with TemporaryDirectory() as d:

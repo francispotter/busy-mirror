@@ -2,9 +2,6 @@
 from argparse import ArgumentParser
 from tempfile import TemporaryDirectory
 
-from .queue import Queue
-from .task import Task
-from .system import System
 from .root import Root
 
 class Commander:
@@ -55,8 +52,10 @@ class ListCommand(Command):
         parser.add_argument('--plans', action='store_true')
 
     def execute(self, parsed):
-        result = self._root.system.list_todos()
-        texts = ["%6i  %s" % (i, t) for i,t in result]
+        which = 'plan' if parsed.plans else 'todo'
+        tasklist, queue = self._root.system.list(which)
+        fmtstring = "{0:>6}  " + queue.listfmt
+        texts = [fmtstring.format(i, t) for i,t in tasklist]
         return '\n'.join(texts)
 
 Commander.register(ListCommand)
@@ -72,9 +71,9 @@ class AddCommand(Command):
 
     def execute(self, parsed):
         if hasattr(parsed, 'task') and parsed.task:
-            task = Task(parsed.task)
+            task = parsed.task
         else:
-            task = Task(input('Task: '))
+            task = input('Task: ')
         self._root.system.add_todos(task)
         self._root.save()
 
