@@ -49,10 +49,3 @@ class Queue:
 
     def list(self, *criteria):
         return [(i+1, self._items[i]) for i in self.select(*criteria)]
-
-    def remove(self, items):
-        if isinstance(items, list):
-            for item in items:
-                self._items.remove(item)
-        else:
-            self._items.remove(items)
