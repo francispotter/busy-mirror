@@ -44,3 +44,10 @@ class TestFile(TestCase):
             f.save()
             q2 = PlanFile(p).queue
             self.assertEqual(q2.get().plan_date.day, 3)
+
+    def test_plan_file_format(self):
+        with TemporaryDirectory() as d:
+            p = Path(d) / 'plan.txt'
+            p.write_text('2018-12-01|a\n2018-12-09|b')
+            q = PlanFile(p).queue
+            self.assertEqual(q.get().plan_date.month, 12)

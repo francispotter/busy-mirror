@@ -38,4 +38,4 @@ class TodoFile(File):
 class PlanFile(File):
 
     def __init__(self, path):
-        super().__init__(path, ['description', 'plan_date'])
+        super().__init__(path, ['plan_date', 'description'])
