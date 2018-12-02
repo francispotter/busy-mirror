@@ -82,3 +82,9 @@ class TestSystem(TestCase):
         s.defer((2018,12,5),1,3)
         p = s.get_plan(2)
         self.assertEqual(str(p), 'c')
+
+    def test_list_subset(self):
+        s = System('a','b','c')
+        i, m = s.list(criteria=(2,3))
+        self.assertEqual(len(i), 2)
+        self.assertEqual(str(i[1][1]), 'c')

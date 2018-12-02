@@ -10,7 +10,8 @@ class Commander:
         if root: self.root = Root(root)
 
     def handle(self, *args):
-        parsed = self._parser.parse_args(args)
+        parsed, remaining = self._parser.parse_known_args(args)
+        parsed.criteria = remaining
         if parsed.root: self.root = Root(parsed.root)
         if hasattr(parsed, 'command'):
             command = parsed.command(self.root)
@@ -53,7 +54,7 @@ class ListCommand(Command):
 
     def execute(self, parsed):
         which = 'plan' if parsed.plans else 'todo'
-        tasklist, queue = self._root.system.list(which)
+        tasklist, queue = self._root.system.list(which, parsed.criteria)
         fmtstring = "{0:>6}  " + queue.listfmt
         texts = [fmtstring.format(i, t) for i,t in tasklist]
         return '\n'.join(texts)

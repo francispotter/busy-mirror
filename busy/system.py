@@ -18,9 +18,9 @@ class System:
     def select(self, *criteria):
         return self._todos.select(*criteria)
 
-    def list(self, which='todo'):
+    def list(self, which='todo', criteria=[]):
         queue = getattr(self, f'_{which}s')
-        return queue.list(), queue
+        return queue.list(*criteria), queue
 
     def count_todos(self): return self._todos.count()
 

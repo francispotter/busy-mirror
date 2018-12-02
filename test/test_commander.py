@@ -48,6 +48,13 @@ class TestCommander(TestCase):
             o = c.handle('list','--plan')
             self.assertEqual(o, '     1  2019-01-04  g\n     2  2019-02-05  p')
 
+    def test_list_with_criteria(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\nb\nc\nd')
+            c = Commander(root=t)
+            o = c.handle('list','2','4')
+            self.assertEqual(o, '     2  b\n     4  d')
 
 
 #
