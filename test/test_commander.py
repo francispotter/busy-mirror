@@ -55,19 +55,3 @@ class TestCommander(TestCase):
             c = Commander(root=t)
             o = c.handle('list','2','4')
             self.assertEqual(o, '     2  b\n     4  d')
-
-
-#
-#     def test_add(self):
-#         c = Commander()
-#         c.handle('add','--task','g')
-#         s = c.system.list_todos()
-#         self.assertEqual(str(s[0][1]), 'g')
-#
-#     def test_root_option(self):
-#         with TemporaryDirectory() as d:
-#             c = Commander()
-#             o = c.handle('--root',d,'add','--task','a')
-#             p = Path(d) / 'todo.txt'
-#             r = p.read_text()
-#             assertEqual(r, 'a')
