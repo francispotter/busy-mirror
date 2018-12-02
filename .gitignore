@@ -5,3 +5,4 @@ delete_me.*
 .coverage
 *,cover
 htmlcov/
+coverage.xml
