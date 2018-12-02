@@ -36,7 +36,7 @@ Otherwise, the first positional argument is a command, which is one of the follo
 
 ## Designating tasks
 
-For some commands, it's possible to designate tasks to be acted upon. Desgnating tasks is always optional.
+For some commands, it's possible to designate tasks to be acted upon. Designating tasks is always optional.
 
 Tasks are identified by number, which is the line number of that task within the list of tasks.
 
@@ -50,7 +50,17 @@ Tasks are identified by number, which is the line number of that task within the
 
 `busy list 3 5 7 9` shows the tasks designated
 
-_some way to indicate the last task?_
+`busy list -` shows the last task
+
+`busy list -4` is an error! Use `busy list 1-4` instead.
+
+`busy list admin` list all the tasks with the `#admin` hashtag somewhere in their description.
+
+Task designation criteria are additive -- that is, a logical OR. So:
+
+`busy list admin sales 3 4` will list all the admin tasks, sales tasks, and tasks 3 and 4.
+
+Note the result is always in the order the tasks appear in the queue, regardless of the order the criteria are provided.
 
 ## Command line options
 

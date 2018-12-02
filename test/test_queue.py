@@ -46,3 +46,26 @@ class TestQueue(TestCase):
     def test_create_with_array_of_dict(self):
         q = Queue({'description':'a'})
         self.assertEqual(str(q.get()), 'a')
+
+    def test_list_with_range(self):
+        q = Queue('a','b','c')
+        t = q.select('2-3')
+        self.assertEqual(len(t), 2)
+
+    def test_list_with_range_ending(self):
+        q = Queue('a','b','c','d')
+        t = q.list('2-')
+        self.assertEqual(len(t), 3)
+        self.assertEqual(str(t[0][1]), 'b')
+
+    def test_list_only_end(self):
+        q = Queue('a','b','c','d')
+        t = q.list('-')
+        self.assertEqual(len(t), 1)
+        self.assertEqual(str(t[0][1]), 'd')
+
+    # def test_list_range_starting_fail(self):
+    #     q = Queue('a','b','c','d')
+    #     t = q.list('-2')
+    #     self.assertEqual(len(t), 1)
+    #     self.assertEqual(str(t[0][1]), 'd')

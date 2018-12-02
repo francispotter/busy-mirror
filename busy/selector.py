@@ -17,26 +17,45 @@ class Selector:
     def __init__(self, args):
         self.criteria = [c for c in [self.get_criterium(w) for w in args] if c]
 
-    def hit(self, index, value):
+    def hit(self, index, value, count):
         if self.criteria:
-            return any([c.hit(index, value) for c in self.criteria])
+            return any([c.hit(index, value, count) for c in self.criteria])
         else:
             return True
 
     def indices(self, elements):
-        return [i for i, t in enumerate(elements) if self.hit(i, t)]
+        enumeration = enumerate(elements)
+        count = len(elements)
+        return [i for i, t in enumeration if self.hit(i, t, count)]
 
 class IndexCriterium:
     def match(word):  return str(word).isdigit()
     def __init__(self, word):  self.index = int(word) - 1
-    def hit(self, index, value):  return index == self.index
+    def hit(self, index, value, count):  return index == self.index
 
 Selector.add_criterium_type(IndexCriterium)
 
+class RangeCriterium:
+    def match(word):  return '-' in str(word)
+
+    def __init__(self, word):
+        split = word.split('-')
+        self.start = int(split[0]) - 1 if split[0] else None
+        self.end = int(split[1]) - 1 if split[1] else None
+
+    def hit(self, index, value, count):
+        if self.start == None and self.end == None:
+            return index == count - 1
+        elif self.end == None:
+            return index >= self.start
+        else:
+            return index >= self.start and index <= self.end
+
+Selector.add_criterium_type(RangeCriterium)
 
 class TagCriterium:
     def match(word):  return str(word).isidentifier()
     def __init__(self, word):  self.tag = str(word).lower()
-    def hit(self, index, value):  return '#'+self.tag in value
+    def hit(self, index, value, count):  return '#'+self.tag in value
 
 Selector.add_criterium_type(TagCriterium)
