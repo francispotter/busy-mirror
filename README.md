@@ -10,18 +10,16 @@ Busy is a system for keeping track of tasks. Some of the guiding philosophies:
 
 - Everything is based on a POSIX command line interface, making it easy to use from the terminal prompt on Linux and MacOS systems
 - Data is stored in easily edited files, so if the tool doesn't do something you want, you can just edit the files
-- There's an interactive option so you don't have to remember commands
 
 ## Commands
 
 The main command is `busy`.
 
-When called without any arguments, the command returns the current task.
-
 Otherwise, the first positional argument is a command, which is one of the following.
 
 | **Command** | **Shortened** |  **Description** |                                    **Designate tasks?** | **Default** |
 | --- | ---| --- | -:- |
+| `get`    | `ge` | Get the active task, no options                                   | -   | Active task       |
 | `list` | `li` | List tasks in order, with sequence numbers                          | YES | All current tasks |
 | `add` | `ad` | Add a new task                                                       | -   | - |
 | `drop` | `dr` | Drop a task to the bottom of the order                              | YES | Active task |

@@ -110,3 +110,16 @@ class PopCommand(Command):
         self._root.save()
 
 Commander.register(PopCommand)
+
+
+class GetCommand(Command):
+
+    command = 'get'
+
+    def execute(self, parsed):
+        if parsed.criteria:
+            print("The `get` command only returns the active task - repeat without criteria")
+        else:
+            return str(self._system.todos.get() or '')
+
+Commander.register(GetCommand)
