@@ -8,14 +8,14 @@ class TestSystem(TestCase):
 
     def test_get(self):
         q = System()
-        q.add_todos(Task('a'))
-        t = q.get_todo()
+        q.add(Task('a'))
+        t = q.todos.get()
         self.assertEqual(str(t),'a')
 
     def test_list(self):
         s = System()
-        s.add_todos(Task('a'))
-        s.add_todos(Task('b'))
+        s.add(Task('a'))
+        s.add(Task('b'))
         i, m = s.list()
         self.assertEqual(len(i), 2)
         self.assertEqual(i[1][0], 2)
@@ -24,18 +24,18 @@ class TestSystem(TestCase):
 
     def test_defer(self):
         s = System()
-        s.add_todos(Task('a'))
+        s.add(Task('a'))
         d = datetime.date(2018,12,25)
         s.defer(d)
-        self.assertEqual(s.count_plans(), 1)
-        self.assertEqual(s.get_plan(1).plan_date.year, 2018)
+        self.assertEqual(s.plans.count(), 1)
+        self.assertEqual(s.plans.get(1).plan_date.year, 2018)
 
     def test_pop(self):
         s = System()
         t1 = Task('a')
         t2 = Task('b')
-        s.add_todos(t1)
-        s.add_todos(t2)
+        s.add(t1)
+        s.add(t2)
         s.pop()
         i, m = s.list()
         self.assertEqual(len(i), 2)
@@ -43,44 +43,44 @@ class TestSystem(TestCase):
 
     def test_by_number(self):
         s = System()
-        s.add_todos(Task('a'))
-        s.add_todos(Task('b'))
-        t = s.get_todo(2)
+        s.add(Task('a'))
+        s.add(Task('b'))
+        t = s.todos.get(2)
         self.assertEqual(str(t), 'b')
 
     def test_create_with_string(self):
         s = System()
-        s.add_todos('a')
-        self.assertEqual(str(s.get_todo()), 'a')
-        self.assertIsInstance(s.get_todo(), Task)
+        s.add('a')
+        self.assertEqual(str(s.todos.get()), 'a')
+        self.assertIsInstance(s.todos.get(), Task)
 
     def test_create_with_multiple_strings(self):
         s = System('a','b','c')
-        self.assertIsInstance(s.get_todo(), Task)
-        self.assertEqual(s.count_todos(), 3)
-        self.assertEqual(str(s.get_todo(2)), 'b')
+        self.assertIsInstance(s.todos.get(), Task)
+        self.assertEqual(s.todos.count(), 3)
+        self.assertEqual(str(s.todos.get(2)), 'b')
 
     def test_select_multiple(self):
         s = System('a','b','c')
-        t = s.select(1,3)
+        t = s.todos.select(1,3)
         self.assertEqual(len(t), 2)
 
     def test_list_plans(self):
         s = System('a','b')
         s.defer((2018,12,4))
-        self.assertEqual(s.count_plans(), 1)
+        self.assertEqual(s.plans.count(), 1)
 
     def test_defer_by_index(self):
         s = System('a','b')
         s.defer((2018,12,4),2)
-        t = s.get_todo()
-        self.assertEqual(s.count_plans(),1)
+        t = s.todos.get()
+        self.assertEqual(s.plans.count(),1)
         self.assertEqual(str(t), 'a')
 
     def test_defer_multiple(self):
         s = System('a','b','c')
         s.defer((2018,12,5),1,3)
-        p = s.get_plan(2)
+        p = s.plans.get(2)
         self.assertEqual(str(p), 'c')
 
     def test_list_subset(self):

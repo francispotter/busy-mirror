@@ -75,7 +75,7 @@ class AddCommand(Command):
             task = parsed.task
         else:
             task = input('Task: ')
-        self._root.system.add_todos(task)
+        self._root.system.add(task)
         self._root.save()
 
 Commander.register(AddCommand)
