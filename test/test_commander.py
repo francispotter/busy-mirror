@@ -55,3 +55,12 @@ class TestCommander(TestCase):
             c = Commander(root=t)
             o = c.handle('list','2','4')
             self.assertEqual(o, '     2  b\n     4  d')
+
+    def test_drop(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\nb\nc\nd')
+            c = Commander(root=t)
+            c.handle('drop','2','4')
+            o = p.read_text()
+            self.assertEqual(o, 'a\nc\nb\nd\n')

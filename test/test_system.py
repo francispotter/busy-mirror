@@ -16,7 +16,7 @@ class TestSystem(TestCase):
         s = System()
         s.add(Task('a'))
         s.add(Task('b'))
-        i, m = s.list()
+        i = s.todos.list()
         self.assertEqual(len(i), 2)
         self.assertEqual(i[1][0], 2)
         self.assertEqual(str(i[0][1]), 'a')
@@ -37,7 +37,7 @@ class TestSystem(TestCase):
         s.add(t1)
         s.add(t2)
         s.pop()
-        i, m = s.list()
+        i = s.todos.list()
         self.assertEqual(len(i), 2)
         self.assertEqual(str(i[0][1]), 'b')
 
@@ -83,8 +83,22 @@ class TestSystem(TestCase):
         p = s.plans.get(2)
         self.assertEqual(str(p), 'c')
 
-    def test_list_subset(self):
+    def test_list_by_criteria(self):
         s = System('a','b','c')
-        i, m = s.list(criteria=(2,3))
+        i = s.todos.list(2,3)
         self.assertEqual(len(i), 2)
         self.assertEqual(str(i[1][1]), 'c')
+
+    def test_drop(self):
+        s = System('a','b','c')
+        s.drop()
+        self.assertEqual(str(s.todos.get()), 'b')
+        self.assertEqual(str(s.todos.get(3)), 'a')
+
+    def test_drop_by_criteria(self):
+        s = System('a','b','c','d')
+        s.drop('2-3')
+        self.assertEqual(str(s.todos.get(1)), 'a')
+        self.assertEqual(str(s.todos.get(2)), 'd')
+        self.assertEqual(str(s.todos.get(3)), 'b')
+        self.assertEqual(str(s.todos.get(4)), 'c')

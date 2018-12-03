@@ -44,6 +44,15 @@ class Command:
     def __init__(self, root):
         self._root = root
 
+    @classmethod
+    def register(self, parser):
+        pass
+
+    @property
+    def _system(self):
+        return self._root.system
+
+
 class ListCommand(Command):
 
     command = 'list'
@@ -53,8 +62,8 @@ class ListCommand(Command):
         parser.add_argument('--plans', action='store_true')
 
     def execute(self, parsed):
-        which = 'plan' if parsed.plans else 'todo'
-        tasklist, queue = self._root.system.list(which, parsed.criteria)
+        queue = self._system.plans if parsed.plans else self._system.todos
+        tasklist = queue.list(*parsed.criteria)
         fmtstring = "{0:>6}  " + queue.listfmt
         texts = [fmtstring.format(i, t) for i,t in tasklist]
         return '\n'.join(texts)
@@ -79,3 +88,14 @@ class AddCommand(Command):
         self._root.save()
 
 Commander.register(AddCommand)
+
+
+class DropCommand(Command):
+
+    command = 'drop'
+
+    def execute(self, parsed):
+        self._system.drop(*parsed.criteria)
+        self._root.save()
+
+Commander.register(DropCommand)

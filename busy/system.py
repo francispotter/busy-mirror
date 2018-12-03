@@ -9,10 +9,6 @@ class System:
         self.plans = plans if plans else PlanQueue()
         self.add(*items)
 
-    def list(self, which='todo', criteria=[]):
-        queue = getattr(self, f'{which}s')
-        return queue.list(*criteria), queue
-
     def add(self, *items):
         self.todos.add(*items)
 
@@ -24,3 +20,6 @@ class System:
 
     def pop(self):
         self.todos.pop()
+
+    def drop(self, *criteria):
+        self.todos.drop(*criteria)
