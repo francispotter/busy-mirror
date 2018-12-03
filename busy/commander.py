@@ -44,13 +44,13 @@ class Command:
     def __init__(self, root):
         self._root = root
 
-    @classmethod
-    def register(self, parser):
-        pass
-
     @property
     def _system(self):
         return self._root.system
+
+    @classmethod
+    def register(self, parser):
+        pass
 
 
 class ListCommand(Command):
@@ -99,3 +99,14 @@ class DropCommand(Command):
         self._root.save()
 
 Commander.register(DropCommand)
+
+
+class PopCommand(Command):
+
+    command = 'pop'
+
+    def execute(self, parsed):
+        self._system.pop(*parsed.criteria)
+        self._root.save()
+
+Commander.register(PopCommand)

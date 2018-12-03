@@ -18,8 +18,8 @@ class System:
         self.plans.add(*plans)
         self.todos.delete(*criteria)
 
-    def pop(self):
-        self.todos.pop()
+    def pop(self, *criteria):
+        self.todos.pop(*criteria)
 
     def drop(self, *criteria):
         self.todos.drop(*criteria)
