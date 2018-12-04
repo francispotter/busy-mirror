@@ -72,6 +72,7 @@ Note the result is always in the order the tasks appear in the queue, regardless
 | `--then`     | ??   | Do another command after completing the first command |
 | `--task`     | `-t` | Provide the task description (only for `add`) |
 | `--yes`      | `-y` | Don't require confirmation of deletions |
+| `--today`    | `-t` | Activate tasks for today or earlier (only for `activate`) |
 
 ## Deferral
 
