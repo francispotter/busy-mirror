@@ -1,5 +1,8 @@
 from datetime import date as Date
 from datetime import datetime as DateTime
+from datetime import timedelta as TimeDelta
+
+from .future import date_for
 
 TODO_STATE = 't'
 PLAN_STATE = 'p'
@@ -21,16 +24,9 @@ class Task:
     def description(self):
         return self._description
 
-    def as_plan(self, date):
+    def as_plan(self, time_info):
         self._state = PLAN_STATE
-        if isinstance(date, Date):
-            self._plan_date = date
-        elif isinstance(date, tuple):
-            self._plan_date = Date(*date)
-        elif isinstance(date, str):
-            self._plan_date = DateTime.strptime(date, '%Y-%m-%d').date()
-        else:
-            raise RuntimeError("Plan requires a date")
+        self._plan_date = date_for(time_info)
         return self
 
     @property

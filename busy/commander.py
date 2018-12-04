@@ -136,3 +136,20 @@ class GetCommand(Command):
             return str(self._system.todos.get() or '')
 
 Commander.register(GetCommand)
+
+
+class DeferCommand(Command):
+
+    command = 'defer'
+
+    @classmethod
+    def register(self, parser):
+        parser.add_argument('--to','--for',dest='time_info')
+
+    def execute(self, parsed):
+        if hasattr(parsed, 'time_info') and parsed.time_info:
+            date = parsed.time_info
+        self._root.system.defer(date, *parsed.criteria)
+        self._root.save()
+
+Commander.register(DeferCommand)

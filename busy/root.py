@@ -8,6 +8,9 @@ from .file import PlanFile
 
 class Root:
 
+    def __init__(self, path=None):
+        if path: self.path = path
+
     @property
     def path(self):
         return self._path
@@ -19,17 +22,14 @@ class Root:
         assert isinstance(path, Path) and path.is_dir()
         self._path = path
 
-    def __init__(self, path = None):
-        if path: self.path = path
-
     @property
     def system(self):
         if not hasattr(self, '_system'):
             self._todo_file = TodoFile(self.path)
             self._plan_file = PlanFile(self.path)
-            todo_queue = self._todo_file.queue
-            plan_queue = self._plan_file.queue
-            self._system = System(todos=todo_queue, plans=plan_queue)
+            todos = self._todo_file.queue
+            plans = self._plan_file.queue
+            self._system = System(todos=todos, plans=plans)
         return self._system
 
     def save(self):

@@ -66,8 +66,7 @@ Note the result is always in the order the tasks appear in the queue, regardless
 | --- | --- | ---|
 | `--help`     | `-h` | Describes usage of the command |
 | `--root`     | `-r` | Defines the root for only this command |
-| `--plan`     | `-p` | Include tasks that are scheduled for a future date |
-| `--current`  | `-c` | Include current tasks - tasks for today or earlier |
+| `--plan`     | `-p` | Include tasks that are scheduled for a future date (only for `list`) |
 | `--multiple` | `-m` | Handle more than one task (only for `add`) |
 | `--then`     | ??   | Do another command after completing the first command |
 | `--task`     | `-t` | Provide the task description (only for `add`) |
@@ -195,8 +194,15 @@ Then to run the test suite:
 make test
 ```
 
+Or to run test coverage:
+
+```
+make cover
+```
+
 ## To Do
 
+- List the tasks to be deleted if asking for confirmation as input
 - Pull today's plans (in the right order)
 - `undo` command
 - Delete plans
