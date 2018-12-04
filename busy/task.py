@@ -29,6 +29,10 @@ class Task:
         self._plan_date = date_for(time_info)
         return self
 
+    def as_todo(self):
+        self._state = TODO_STATE
+        return self
+
     @property
     def plan_date(self):
         return self._plan_date

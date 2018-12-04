@@ -160,3 +160,10 @@ class DeferCommand(Command):
         self._root.save()
 
 Commander.register(DeferCommand)
+
+
+class ActivateCommand(Command):
+
+    command = 'activate'
+
+Commander.register(ActivateCommand)

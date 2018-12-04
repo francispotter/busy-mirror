@@ -24,11 +24,12 @@ Otherwise, the first positional argument is a command, which is one of the follo
 | `add` | `ad` | Add a new task                                                       | -   | - |
 | `drop` | `dr` | Drop a task to the bottom of the order                              | YES | Active task |
 | `pop` | `po` | Pop a task to the top of the order                                   | YES | Last task |
-| `delete` | `de` | Delete a task, without marking it complete                        | YES | Active task |
+| `delete` | `xx` | Delete a task, without marking it complete                        | YES | Active task |
 | `defer` | `de` | Push a task to a later date                                        | YES | Active task |
 | `edit` | `ed` | Edit task                                                           | YES | Active task |
 | `manage` | `ma` | Pull up the current list of tasks (today or earlier) in an editor | -   | All current tasks |
 | `complete` | `co` | Complete the current task and do the followon thing             | YES | Active task |
+| `activate` | `ac` | Make a plan active                                              | YES - plans | - |
 
 (We've previously had a `start` command; still deciding whether it fits in the new model.)
 
