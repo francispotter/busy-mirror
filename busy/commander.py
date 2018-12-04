@@ -52,6 +52,11 @@ class Command:
     def register(self, parser):
         pass
 
+    def execute(self, parsed):
+        method = getattr(self._system, self.command)
+        result = method(*parsed.criteria)
+        self._root.save()
+        return result
 
 class ListCommand(Command):
 
@@ -90,26 +95,34 @@ class AddCommand(Command):
 Commander.register(AddCommand)
 
 
-class DropCommand(Command):
-
-    command = 'drop'
-
-    def execute(self, parsed):
-        self._system.drop(*parsed.criteria)
-        self._root.save()
-
+class DropCommand(Command): command = 'drop'
 Commander.register(DropCommand)
 
 
-class PopCommand(Command):
+class PopCommand(Command): command = 'pop'
+Commander.register(PopCommand)
 
-    command = 'pop'
+
+class DeleteCommand(Command):
+
+    command = 'delete'
+
+    @classmethod
+    def register(self, parser):
+        parser.add_argument('--yes', action='store_true')
 
     def execute(self, parsed):
-        self._system.pop(*parsed.criteria)
-        self._root.save()
+        if hasattr(parsed, 'yes') and parsed.yes:
+            confirmed = True
+        else:
+            confirmed = input('Delete? (Y/n) ').startswith('Y')
+        if not confirmed:
+            print("Deletion must be confirmed")
+        else:
+            self._root.system.delete(*parsed.criteria)
+            self._root.save()
 
-Commander.register(PopCommand)
+Commander.register(DeleteCommand)
 
 
 class GetCommand(Command):

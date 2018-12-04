@@ -24,8 +24,8 @@ Otherwise, the first positional argument is a command, which is one of the follo
 | `add` | `ad` | Add a new task                                                       | -   | - |
 | `drop` | `dr` | Drop a task to the bottom of the order                              | YES | Active task |
 | `pop` | `po` | Pop a task to the top of the order                                   | YES | Last task |
-| `defer` | `de` | Push a task to a later date                                        | YES | Active task |
 | `delete` | `de` | Delete a task, without marking it complete                        | YES | Active task |
+| `defer` | `de` | Push a task to a later date                                        | YES | Active task |
 | `edit` | `ed` | Edit task                                                           | YES | Active task |
 | `manage` | `ma` | Pull up the current list of tasks (today or earlier) in an editor | -   | All current tasks |
 | `complete` | `co` | Complete the current task and do the followon thing             | YES | Active task |
@@ -71,7 +71,7 @@ Note the result is always in the order the tasks appear in the queue, regardless
 | `--multiple` | `-m` | Handle more than one task (only for `add`) |
 | `--then`     | ??   | Do another command after completing the first command |
 | `--task`     | `-t` | Provide the task description (only for `add`) |
-
+| `--yes`      | `-y` | Don't require confirmation of deletions |
 
 ## Deferral
 
@@ -194,3 +194,10 @@ Then to run the test suite:
 ```
 make test
 ```
+
+## To Do
+
+- Pull today's plans (in the right order)
+- `undo` command
+- Delete plans
+- Pull specific plans
