@@ -163,3 +163,11 @@ class TestCommander(TestCase):
                 self.assertEqual(o, 'a\nc\nd\n')
                 o2 = Path(t, 'plan.txt').read_text()
                 self.assertEqual(o2, '2019-02-16|b\n')
+
+    def test_get_with_criteria(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\nb\nc\nd')
+            c = Commander(root=t)
+            with self.assertRaises(RuntimeError):
+                c.handle('get','3-4')

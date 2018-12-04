@@ -131,7 +131,9 @@ class GetCommand(Command):
 
     def execute(self, parsed):
         if parsed.criteria:
-            print("The `get` command only returns the active task - repeat without criteria")
+            message = ("The `get` command only returns the active task - "
+                "repeat without criteria")
+            raise RuntimeError(message)
         else:
             return str(self._system.todos.get() or '')
 
