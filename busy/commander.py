@@ -1,12 +1,17 @@
-
 from argparse import ArgumentParser
 from tempfile import TemporaryDirectory
+import sys
 
 from .root import Root
+from . import PYTHON_VERSION
 
 class Commander:
 
     def __init__(self, *args, root=None):
+        if sys.version_info < PYTHON_VERSION:
+            message = ("Busy requires Python version %i.%i.%i or higher" %
+                PYTHON_VERSION)
+            raise RuntimeError(message)
         if root: self.root = Root(root)
 
     def handle(self, *args):

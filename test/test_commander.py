@@ -171,3 +171,8 @@ class TestCommander(TestCase):
             c = Commander(root=t)
             with self.assertRaises(RuntimeError):
                 c.handle('get','3-4')
+
+    def test_version_info(self):
+        with mock.patch('sys.version_info', (1,2,3)):
+            with self.assertRaises(RuntimeError):
+                Commander()
