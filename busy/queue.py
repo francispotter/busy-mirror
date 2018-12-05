@@ -24,7 +24,7 @@ class Queue:
 
     def select(self, *criteria):
         selector = Selector(criteria)
-        return selector.indices([str(i) for i in self._items])
+        return selector.indices(self._items)
 
     def _split(self, *criteria):
         indices = self.select(*criteria)

@@ -56,6 +56,6 @@ Selector.add_criterium_type(RangeCriterium)
 class TagCriterium:
     def match(word):  return str(word).isidentifier()
     def __init__(self, word):  self.tag = str(word).lower()
-    def hit(self, index, value, count):  return '#'+self.tag in value
+    def hit(self, index, value, count):  return '#'+self.tag in str(value)
 
 Selector.add_criterium_type(TagCriterium)
