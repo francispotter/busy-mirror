@@ -2,6 +2,8 @@ from .queue import TodoQueue
 from .queue import PlanQueue
 from .task import Task
 
+import busy.future
+
 class System:
 
     def __init__(self, *items, todos=None, plans=None):
@@ -28,7 +30,11 @@ class System:
         self.todos.delete(*criteria)
 
     def activate(self, *criteria, today=False):
-        indices = self.plans.select(*criteria)
+        if today:
+            func = lambda t: t.plan_date <= busy.future.today()
+            indices = self.plans.select(func)
+        else:
+            indices = self.plans.select(*criteria)
         tasks = [self.plans.get(i+1).as_todo() for i in indices]
         self.todos.add(*tasks)
-        self.plans.delete(*criteria)
+        self.plans.delete(*indices)

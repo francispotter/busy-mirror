@@ -28,6 +28,14 @@ class Selector:
         count = len(elements)
         return [i for i, t in enumeration if self.hit(i, t, count)]
 
+class IntCriterium:
+    def match(arg):  return type(arg) == int
+    def __init__(self, arg):  self.index = arg
+    def hit(self, index, value, count):  return index == self.index
+
+Selector.add_criterium_type(IntCriterium)
+
+
 class IndexCriterium:
     def match(word):  return str(word).isdigit()
     def __init__(self, word):  self.index = int(word) - 1
@@ -59,3 +67,11 @@ class TagCriterium:
     def hit(self, index, value, count):  return '#'+self.tag in str(value)
 
 Selector.add_criterium_type(TagCriterium)
+
+
+class FunctionCriterium:
+    def match(arg):  return type(arg) == type(lambda : None)
+    def __init__(self, arg):  self.func = arg
+    def hit(self, index, value, count): return self.func(value)
+
+Selector.add_criterium_type(FunctionCriterium)
