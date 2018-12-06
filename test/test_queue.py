@@ -63,6 +63,11 @@ class TestQueue(TestCase):
         t = q.list('-')
         self.assertEqual(len(t), 1)
         self.assertEqual(str(t[0][1]), 'd')
+    #
+    # def test_select_by_index_list(self):
+    #     q = Queue('a','b','c','d')
+    #     t = q.select([1,2])
+    #     self.assertEqual(t, [1,2])
 
     # def test_list_range_starting_fail(self):
     #     q = Queue('a','b','c','d')

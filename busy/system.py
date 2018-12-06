@@ -27,7 +27,7 @@ class System:
         indices = self.todos.select(*(criteria or [1]))
         plans = [self.todos.get(i+1).as_plan(date) for i in indices]
         self.plans.add(*plans)
-        self.todos.delete(*criteria)
+        self.todos.delete(*[i+1 for i in indices])
 
     def activate(self, *criteria, today=False):
         if today:
@@ -37,4 +37,4 @@ class System:
             indices = self.plans.select(*criteria)
         tasks = [self.plans.get(i+1).as_todo() for i in indices]
         self.todos.add(*tasks)
-        self.plans.delete(*indices)
+        self.plans.delete(*[i+1 for i in indices])

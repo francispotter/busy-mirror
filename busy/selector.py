@@ -28,20 +28,14 @@ class Selector:
         count = len(elements)
         return [i for i, t in enumeration if self.hit(i, t, count)]
 
-class IntCriterium:
-    def match(arg):  return type(arg) == int
-    def __init__(self, arg):  self.index = arg
-    def hit(self, index, value, count):  return index == self.index
 
-Selector.add_criterium_type(IntCriterium)
-
-
-class IndexCriterium:
+class NumberCriterium:
     def match(word):  return str(word).isdigit()
     def __init__(self, word):  self.index = int(word) - 1
     def hit(self, index, value, count):  return index == self.index
 
-Selector.add_criterium_type(IndexCriterium)
+Selector.add_criterium_type(NumberCriterium)
+
 
 class RangeCriterium:
     def match(word):  return '-' in str(word)
@@ -60,6 +54,7 @@ class RangeCriterium:
             return index >= self.start and index <= self.end
 
 Selector.add_criterium_type(RangeCriterium)
+
 
 class TagCriterium:
     def match(word):  return str(word).isidentifier()
