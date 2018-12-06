@@ -8,6 +8,8 @@ A command-line task and plan management tool.
 
 Busy is a system for keeping track of tasks. Some of the guiding philosophies:
 
+- There are "active" tasks, which is an ordered list of things to work on, and there are "plans", which are things that have been deferred to a specific future date
+- The "current" task is the top of the "active" task list, so it's the thing to do right now
 - Everything is based on a POSIX command line interface, making it easy to use from the terminal prompt on Linux and MacOS systems
 - Data is stored in easily edited files, so if the tool doesn't do something you want, you can just edit the files
 
@@ -19,16 +21,16 @@ Otherwise, the first positional argument is a command, which is one of the follo
 
 | **Command** | **Shortened** |  **Description** |                                    **Designate tasks?** | **Default** |
 | --- | ---| --- | -:- |
-| `get`    | `ge` | Get the active task, no options                                   | -   | Active task       |
-| `list` | `li` | List tasks in order, with sequence numbers                          | YES | All current tasks |
-| `add` | `ad` | Add a new task                                                       | -   | - |
-| `drop` | `dr` | Drop a task to the bottom of the order                              | YES | Active task |
-| `pop` | `po` | Pop a task to the top of the order                                   | YES | Last task |
-| `delete` | `xx` | Delete a task, without marking it complete                        | YES | Active task |
-| `defer` | `de` | Push a task to a later date                                        | YES | Active task |
-| `edit` | `ed` | Edit task                                                           | YES | Active task |
-| `manage` | `ma` | Pull up the current list of tasks (today or earlier) in an editor | -   | All current tasks |
-| `complete` | `co` | Complete the current task and do the followon thing             | YES | Active task |
+| `get`    | `ge` | Get the current task, no options                                  | -   | Current task       |
+| `list` | `li` | List active tasks (or plans, with an option) in order, with sequence numbers | YES | All active tasks |
+| `add` | `ad` | Add a new active task, with option to defer it                       | -   | - |
+| `drop` | `dr` | Drop a task to the bottom of the active order                       | YES | Current task |
+| `pop` | `po` | Pop a task or tasks to the top of the active order                   | YES | The last task on the active list |
+| `delete` | `xx` | Delete a task, without marking it complete                        | YES | Current task |
+| `defer` | `de` | Convert an active task into a plan for a specific later date       | YES | Current task |
+| `edit` | `ed` | Edit task                                                           | YES | Current task |
+| `manage` | `ma` | Pull up the active list of tasks (today or earlier) in an editor  | -   | All active tasks |
+| `complete` | `co` | Complete the current task (or designated tasks) and do the followon action | YES | Current task |
 | `activate` | `ac` | Make a plan active                                              | YES - plans | - |
 
 (We've previously had a `start` command; still deciding whether it fits in the new model.)
