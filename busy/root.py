@@ -1,5 +1,6 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
+import os
 
 from .system import System
 from .task import Task
@@ -13,6 +14,8 @@ class Root:
 
     @property
     def path(self):
+        if not hasattr(self, '_path'):
+            self._path = Path(os.environ.get('BUSY_ROOT'))
         return self._path
 
     @path.setter

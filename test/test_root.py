@@ -1,6 +1,7 @@
 from unittest import TestCase
 from tempfile import TemporaryDirectory
 from pathlib import Path
+from unittest import mock
 
 from busy.system import System
 from busy.root import Root
@@ -30,3 +31,12 @@ class TestRoot(TestCase):
             r.save()
             r2 = Root(Path(td))
             self.assertEqual(str(r2.system.todos.get()),'a')
+
+    def test_env_var_as_backup(self):
+        with TemporaryDirectory() as td:
+            with mock.patch.dict('os.environ', {'BUSY_ROOT': td}):
+                sd1 = Root()
+                sd1.system.add('a')
+                sd1.save()
+                f = Path(td) / 'todo.txt'
+                self.assertEqual(f.read_text(),'a\n')
