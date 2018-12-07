@@ -63,6 +63,12 @@ class Command:
         self._root.save()
         return result
 
+    def _list(self, queue, tasklist):
+        fmtstring = "{0:>6}  " + queue.listfmt
+        texts = [fmtstring.format(i, t) for i,t in tasklist]
+        return '\n'.join(texts)
+
+
 class ListCommand(Command):
 
     command = 'list'
@@ -74,9 +80,7 @@ class ListCommand(Command):
     def execute(self, parsed):
         queue = self._system.plans if parsed.plans else self._system.todos
         tasklist = queue.list(*parsed.criteria)
-        fmtstring = "{0:>6}  " + queue.listfmt
-        texts = [fmtstring.format(i, t) for i,t in tasklist]
-        return '\n'.join(texts)
+        return self._list(queue, tasklist)
 
 Commander.register(ListCommand)
 
@@ -178,3 +182,25 @@ class ActivateCommand(Command):
         self._root.save()
 
 Commander.register(ActivateCommand)
+
+
+class StartCommand(Command):
+
+    command = 'start'
+
+    @classmethod
+    def register(self, parser):
+        parser.add_argument('project', action='store', nargs='?')
+
+    def execute(self, parsed):
+        if parsed.criteria:
+            raise RuntimeError('Start takes only an optional project name')
+        self._system.activate(today=True)
+        queue = self._system.todos
+        project = parsed.project or queue.get().project
+        result = queue.pop(project)
+        self._root.save()
+        return self._list(queue, queue.list(project))
+
+
+Commander.register(StartCommand)
