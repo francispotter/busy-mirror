@@ -41,3 +41,7 @@ class TestTask(TestCase):
     def test_create_task_with_dict(self):
         t = Task(plan_date=(2019,4,15), description='a')
         self.assertEqual(t.plan_date.month, 4)
+
+    def test_tags(self):
+        t = Task('f #a')
+        self.assertEqual(t.tags, set(['a']))

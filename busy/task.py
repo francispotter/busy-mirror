@@ -1,6 +1,7 @@
 from datetime import date as Date
 from datetime import datetime as DateTime
 from datetime import timedelta as TimeDelta
+import re
 
 from .future import date_for
 
@@ -45,3 +46,8 @@ class Task:
             return self(value)
         elif isinstance(value, dict):
             return self(**value)
+
+    @property
+    def tags(self):
+        words = self.description.split()
+        return set([w[1:].lower() for w in words if w.startswith('#')])
