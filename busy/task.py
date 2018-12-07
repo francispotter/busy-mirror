@@ -50,4 +50,9 @@ class Task:
     @property
     def tags(self):
         words = self.description.split()
-        return set([w[1:].lower() for w in words if w.startswith('#')])
+        return [w[1:].lower() for w in words if w.startswith('#')]
+
+    @property
+    def project(self):
+        tags = self.tags
+        return tags[0] if tags else None

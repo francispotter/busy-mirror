@@ -44,4 +44,8 @@ class TestTask(TestCase):
 
     def test_tags(self):
         t = Task('f #a')
-        self.assertEqual(t.tags, set(['a']))
+        self.assertEqual(t.tags, ['a'])
+
+    def test_project(self):
+        t = Task("k #oNe #two")
+        self.assertEqual(t.project, 'one')
