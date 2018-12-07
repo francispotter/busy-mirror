@@ -33,6 +33,7 @@ Otherwise, the first positional argument is a command, which is one of the follo
 | `complete` | `co` | Complete the current task (or designated tasks) and do the followon action | YES | Current task |
 | `activate` | `ac` | Make a plan or plans active, include a 'today' option           | YES - plans | - |
 | `start`    | `st` | Starts work on a particular project (see below)                 | -   | - |
+| `projects` | `pr` | List all the active projects, with the number of tags for each  | -   | - |
 
 ### Tags and the `start` command
 

@@ -51,3 +51,17 @@ class TestCommandStart(TestCase):
                 p2 = Path(t, 'todo.txt')
                 self.assertEqual(p2.read_text(), 'x #g\n')
                 self.assertEqual(o, '     1  x #g')
+
+    def test_start_fails_gracefully_if_no_todos(self):
+        with TemporaryDirectory() as t:
+            c = Commander(root=t)
+            with self.assertRaises(RuntimeError):
+                c.handle('start', 'g')
+
+    def test_start_fails_gracefully_if_no_project_at_top(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\nb #g')
+            c = Commander(root=t)
+            with self.assertRaises(RuntimeError):
+                c.handle('start')
