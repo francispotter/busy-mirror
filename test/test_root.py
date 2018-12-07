@@ -40,3 +40,13 @@ class TestRoot(TestCase):
                 sd1.save()
                 f = Path(td) / 'todo.txt'
                 self.assertEqual(f.read_text(),'a\n')
+
+    def test_user_root(self):
+        with TemporaryDirectory() as td:
+            with mock.patch.dict('os.environ', clear=True):
+                with mock.patch('pathlib.Path.home', lambda : Path(td)):
+                    sd1 = Root()
+                    sd1.system.add('a')
+                    sd1.save()
+                    f = Path(td) / '.busy' / 'todo.txt'
+                    self.assertEqual(f.read_text(),'a\n')

@@ -15,7 +15,9 @@ class Root:
     @property
     def path(self):
         if not hasattr(self, '_path'):
-            self._path = Path(os.environ.get('BUSY_ROOT'))
+            env_var = os.environ.get('BUSY_ROOT')
+            self._path = Path(env_var if env_var else Path.home() / '.busy')
+            if not self._path.is_dir(): self._path.mkdir()
         return self._path
 
     @path.setter
