@@ -31,9 +31,31 @@ Otherwise, the first positional argument is a command, which is one of the follo
 | `edit` | `ed` | Edit task                                                           | YES | Current task |
 | `manage` | `ma` | Pull up the active list of tasks (today or earlier) in an editor  | -   | All active tasks |
 | `complete` | `co` | Complete the current task (or designated tasks) and do the followon action | YES | Current task |
-| `activate` | `ac` | Make a plan active                                              | YES - plans | - |
+| `activate` | `ac` | Make a plan or plans active, include a 'today' option           | YES - plans | - |
+| `start`    | `st` | Starts work on a particular project (see below)                 | -   | - |
 
-(We've previously had a `start` command; still deciding whether it fits in the new model.)
+### Tags and the `start` command
+
+Tasks can have tags, which are designated with space-separated hashtags in the task description, for example:
+
+```
+go to the supermarket #errands
+```
+
+Tags can be used in task designation, for example:
+
+```
+busy pop errands
+```
+
+A task can have no tags, one tag, or more than one tag. If it has tags, the first tag is considered to be its "project" for the purposes of the `start` command.
+
+The `start` command is used to start work on a project. If an argument is passed to the command, that's the chosen project. Otherwise the chosen project is the project of the current task. The command basically combines steps:
+
+- Calls `activate --today` so the active task list is up-to-date
+- Calls `pop` on the project
+- Calls `list` on the project
+
 
 ## Designating tasks
 
