@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from tempfile import TemporaryDirectory
 import sys
+from tempfile import TemporaryFile
 
 from .root import Root
 from . import PYTHON_VERSION
@@ -208,3 +209,19 @@ class StartCommand(Command):
 
 
 Commander.register(StartCommand)
+
+
+class ManageCommand(Command):
+
+    command = 'manage'
+
+    def execute(self, parsed):
+        tasks = [x[1] for x in self._system.todos.list()]
+        with TemporaryFile() as tempfile:
+            Path(tempfile).write_text('\n'.join(tasks))
+            if busy.editor(tempfile)
+                tasks = Path(tempfile).read_text().split('\n')
+                # TODO: Leave off here
+
+
+Commander.register(ManageCommand)

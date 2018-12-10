@@ -28,12 +28,12 @@ Otherwise, the first positional argument is a command, which is one of the follo
 | `pop` | `po` | Pop a task or tasks to the top of the active order                   | YES | The last task on the active list |
 | `delete` | `xx` | Delete a task, without marking it complete                        | YES | Current task |
 | `defer` | `de` | Convert an active task into a plan for a specific later date       | YES | Current task |
-| `edit` | `ed` | Edit task                                                           | YES | Current task |
-| `manage` | `ma` | Pull up the active list of tasks (today or earlier) in an editor  | -   | All active tasks |
 | `complete` | `co` | Complete the current task (or designated tasks) and do the followon action | YES | Current task |
 | `activate` | `ac` | Make a plan or plans active, include a 'today' option           | YES - plans | - |
 | `start`    | `st` | Starts work on a particular project (see below)                 | -   | - |
+| `manage` | `ma` | Pull up the active tasks for the current project in an editor     | -   | All active tasks |
 | `projects` | `pr` | List all the active projects, with the number of tags for each  | -   | - |
+| `edit` | `ed` | Edit task                                                           | YES | Current task |
 
 ### Tags and the `start` command
 
