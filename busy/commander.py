@@ -2,9 +2,11 @@ from argparse import ArgumentParser
 from tempfile import TemporaryDirectory
 import sys
 from tempfile import TemporaryFile
+from pathlib import Path
 
 from .root import Root
 from . import PYTHON_VERSION
+from . import editor
 
 class Commander:
 
@@ -216,11 +218,11 @@ class ManageCommand(Command):
     command = 'manage'
 
     def execute(self, parsed):
-        tasks = [x[1] for x in self._system.todos.list()]
+        tasks = [str(x[1]) for x in self._system.todos.list()]
         with TemporaryFile() as tempfile:
-            Path(tempfile).write_text('\n'.join(tasks))
-            if busy.editor(tempfile)
-                tasks = Path(tempfile).read_text().split('\n')
+            Path(str(tempfile)).write_text('\n'.join(tasks))
+            if editor(tempfile):
+                tasks = Path(str(tempfile)).read_text().split('\n')
                 # TODO: Leave off here
 
 
