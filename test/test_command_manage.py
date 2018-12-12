@@ -12,12 +12,11 @@ from busy.system import System
 
 class TestCommandManage(TestCase):
 
-    @unittest.skip
     def test_manage_launches_editor(self):
         with TemporaryDirectory() as t:
             p = Path(t, 'todo.txt')
             p.write_text('a\n')
-            with mock.patch('busy.editor', lambda : 'b\n'):
+            with mock.patch('busy.editor', lambda x: 'b\n'):
                 c = Commander(root=t)
                 o = c.handle('manage')
                 f = p.read_text()
