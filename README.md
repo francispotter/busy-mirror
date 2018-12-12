@@ -31,9 +31,8 @@ Otherwise, the first positional argument is a command, which is one of the follo
 | `complete` | `co` | Complete the current task (or designated tasks) and do the followon action | YES | Current task |
 | `activate` | `ac` | Make a plan or plans active, include a 'today' option           | YES - plans | - |
 | `start`    | `st` | Starts work on a particular project (see below)                 | -   | - |
-| `manage` | `ma` | Pull up the active tasks for the current project in an editor     | -   | All active tasks |
+| `manage` | `ma` | Edit tasks in an editor                                           | YES | All active tasks |
 | `projects` | `pr` | List all the active projects, with the number of tags for each  | -   | - |
-| `edit` | `ed` | Edit task                                                           | YES | Current task |
 
 ### Tags and the `start` command
 
@@ -57,6 +56,11 @@ The `start` command is used to start work on a project. If an argument is passed
 - Calls `pop` on the project
 - Calls `list` on the project
 
+## Editing the tasks directly with the `manage` command
+
+The `manage` command launches the user's default text editor to directly edit tasks. Note that it only works with active tasks (not plans) and that once the tasks are edited they will be dropped to the bottom of the list.
+
+Busy uses the `sensible-editor` command to select a text editor, which works with default Ubuntu Linux installations and might or might not work with other operating systems.
 
 ## Designating tasks
 
