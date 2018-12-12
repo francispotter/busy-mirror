@@ -27,7 +27,9 @@ class Queue:
         return selector.indices(self._items)
 
     def _split(self, *criteria):
-        indices = self.select(*criteria)
+        return self._split_by_indices(*self.select(*criteria))
+
+    def _split_by_indices(self, *indices):
         inlist = [t for i,t in enumerate(self._items) if i in indices]
         outlist = [t for i,t in enumerate(self._items) if i not in indices]
         return (inlist, outlist)
@@ -44,6 +46,11 @@ class Queue:
 
     def delete(self, *criteria):
         killlist, keeplist = self._split(*criteria)
+        self._items = keeplist
+        return killlist
+
+    def delete_by_indices(self, *indices):
+        killlist, keeplist = self._split_by_indices(*indices)
         self._items = keeplist
         return killlist
 
