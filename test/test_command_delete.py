@@ -50,3 +50,13 @@ class TestCommandDelete(TestCase):
                 with mock.patch('sys.stdout', o):
                     c.handle('delete', '1')
                     self.assertEqual(o.getvalue(), 'a\nDelete? (Y/n) ')
+
+    def test_delete_defaults_to_first_task_only(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\nb\n')
+            c = Commander(root=t)
+            with mock.patch('sys.stdin', StringIO('Y')):
+                c.handle('delete')
+                o = p.read_text()
+                self.assertEqual(o, 'b\n')

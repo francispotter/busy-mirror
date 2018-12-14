@@ -20,9 +20,6 @@ class System:
     def drop(self, *criteria):
         self.todos.drop(*criteria)
 
-    def delete(self, *criteria):
-        self.todos.delete(*criteria)
-
     def defer(self, date, *criteria):
         indices = self.todos.select(*(criteria or [1]))
         plans = [self.todos.get(i+1).as_plan(date) for i in indices]

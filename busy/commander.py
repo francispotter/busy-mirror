@@ -125,7 +125,7 @@ class DeleteCommand(Command):
         parser.add_argument('--yes', action='store_true')
 
     def execute(self, parsed):
-        tasklist = self._system.todos.list(*parsed.criteria)
+        tasklist = self._system.todos.list(*parsed.criteria or [1])
         indices = [i[0]-1 for i in tasklist]
         if hasattr(parsed, 'yes') and parsed.yes:
             confirmed = True
