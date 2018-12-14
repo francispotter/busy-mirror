@@ -39,3 +39,14 @@ class TestCommandDelete(TestCase):
                 c.handle('delete','3-')
                 o = p.read_text()
                 self.assertEqual(o, 'a\nb\nc\nd')
+
+    def test_delete_outputs_before_confirmation(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\n')
+            c = Commander(root=t)
+            o = StringIO()
+            with mock.patch('sys.stdin', StringIO('Y')):
+                with mock.patch('sys.stdout', o):
+                    c.handle('delete', '1')
+                    self.assertEqual(o.getvalue(), 'a\nDelete? (Y/n) ')
