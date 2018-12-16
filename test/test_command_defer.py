@@ -56,3 +56,24 @@ class TestCommandDefer(TestCase):
                 self.assertEqual(o, 'a\nc\nd\n')
                 o2 = Path(t, 'plan.txt').read_text()
                 self.assertEqual(o2, '2019-02-16|b\n')
+
+    def test_defer_with_input(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\nb\n')
+            c = Commander(root=t)
+            with mock.patch('sys.stdin', StringIO('2019-08-24')):
+                c.handle('defer')
+                o = p.read_text()
+                self.assertEqual(o, 'b\n')
+                o2 = Path(t, 'plan.txt').read_text()
+                self.assertEqual(o2, '2019-08-24|a\n')
+
+    def test_defer_without_date_raises_error(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\nb\n')
+            c = Commander(root=t)
+            with mock.patch('sys.stdin', None):
+                with self.assertRaises(RuntimeError):
+                    c.handle('defer')

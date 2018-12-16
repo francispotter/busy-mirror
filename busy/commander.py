@@ -8,6 +8,7 @@ from .root import Root
 from . import PYTHON_VERSION
 import busy
 from .task import Task
+from .future import date_for
 
 class Commander:
 
@@ -165,9 +166,14 @@ class DeferCommand(Command):
         parser.add_argument('--to','--for',dest='time_info')
 
     def execute(self, parsed):
+        tasklist = self._system.todos.list(*parsed.criteria or [1])
+        indices = [i[0]-1 for i in tasklist]
         if hasattr(parsed, 'time_info') and parsed.time_info:
-            date = parsed.time_info
-        self._root.system.defer(date, *parsed.criteria)
+            time_info = parsed.time_info
+        else:
+            print('\n'.join([str(i[1]) for i in tasklist]))
+            time_info = input('Defer to: ')
+        self._root.system.defer(date_for(time_info), *parsed.criteria)
         self._root.save()
 
 Commander.register(DeferCommand)

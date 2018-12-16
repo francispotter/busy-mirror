@@ -3,7 +3,7 @@ from datetime import datetime as DateTime
 from datetime import timedelta as TimeDelta
 import re
 
-from .future import date_for
+from .future import absolute_date
 
 TODO_STATE = 't'
 PLAN_STATE = 'p'
@@ -25,9 +25,9 @@ class Task:
     def description(self):
         return self._description
 
-    def as_plan(self, time_info):
+    def as_plan(self, date):
         self._state = PLAN_STATE
-        self._plan_date = date_for(time_info)
+        self._plan_date = absolute_date(date)
         return self
 
     def as_todo(self):
