@@ -2,6 +2,12 @@
 
 A command-line task and plan management tool.
 
+To install:
+
+```
+pip3 install busy
+```
+
 ## Introduction
 
 Busy is a system for keeping track of tasks. Some of the guiding philosophies:
