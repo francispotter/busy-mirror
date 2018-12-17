@@ -8,7 +8,7 @@ with open(os.path.join(os.path.dirname(__file__),'version')) as versionfile:
 
 long_description = (Path(__file__).parent / 'README.md').read_text()
 
-setup(name='Busy',
+setup(name='busy',
     version=version,
     description='Command-line task and plan management tool',
     long_description=long_description,
