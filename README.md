@@ -18,7 +18,7 @@ The main command is `busy`.
 Otherwise, the first positional argument is a command, which is one of the following.
 
 | **Command** | **Description** |                                    **Designate tasks?** | **Default** |
-| ---         | ---  | -:- |
+| --- | ---  | --- | --- |
 | `get`       | Get the current task, no options                                  | -   | Current task       |
 | `list`      | List active tasks (or plans, with an option) in order, with sequence numbers | YES | All active tasks |
 | `add`       | Add a new active task                                                | -   | - |
@@ -122,8 +122,8 @@ cat list-of-tasks.txt | busy add --multiple
 
 Tiger requires a "root", which is the directory containing the two data files:
 
-`todo.txt` - active tasks
-`plan.txt` - future tasks, with dates
+- `todo.txt` - active tasks
+- `plan.txt` - future tasks, with dates
 
 Technically, they are pipe-delimited data files, though `todo.txt` only has one field.
 
