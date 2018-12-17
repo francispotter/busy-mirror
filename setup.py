@@ -1,7 +1,7 @@
-
 import os
 from setuptools import setup
 from setuptools import find_packages
+from pathlib import Path
 
 with open(os.path.join(os.path.dirname(__file__),'version')) as versionfile:
     version = versionfile.read().strip()
