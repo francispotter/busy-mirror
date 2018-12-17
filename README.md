@@ -2,13 +2,11 @@
 
 A command-line task and plan management tool.
 
-**Note: This is a work in progress and only partially complete**
-
 ## Introduction
 
 Busy is a system for keeping track of tasks. Some of the guiding philosophies:
 
-- There are "active" tasks, which is an ordered list of things to work on, and there are "plans", which are things that have been deferred to a specific future date
+- There are "active" tasks, which is an ordered list of things to work on (also called "todos"), and there are "plans", which are things that have been deferred to a specific future date
 - The "current" task is the top of the "active" task list, so it's the thing to do right now
 - Everything is based on a POSIX command line interface, making it easy to use from the terminal prompt on Linux and MacOS systems
 - Data is stored in easily edited files, so if the tool doesn't do something you want, you can just edit the files
@@ -19,20 +17,18 @@ The main command is `busy`.
 
 Otherwise, the first positional argument is a command, which is one of the following.
 
-| **Command** | **Shortened** |  **Description** |                                    **Designate tasks?** | **Default** |
-| --- | ---| --- | -:- |
-| `get`    | `ge` | Get the current task, no options                                  | -   | Current task       |
-| `list` | `li` | List active tasks (or plans, with an option) in order, with sequence numbers | YES | All active tasks |
-| `add` | `ad` | Add a new active task, with option to defer it                       | -   | - |
-| `drop` | `dr` | Drop a task to the bottom of the active order                       | YES | Current task |
-| `pop` | `po` | Pop a task or tasks to the top of the active order                   | YES | The last task on the active list |
-| `delete` | `xx` | Delete a task, without marking it complete                        | YES | Current task |
-| `defer` | `de` | Convert an active task into a plan for a specific later date       | YES | Current task |
-| `complete` | `co` | Complete the current task (or designated tasks) and do the followon action | YES | Current task |
-| `activate` | `ac` | Make a plan or plans active, include a 'today' option           | YES - plans | - |
-| `start`    | `st` | Starts work on a particular project (see below)                 | -   | - |
-| `manage` | `ma` | Edit tasks in an editor                                           | YES | All active tasks |
-| `projects` | `pr` | List all the active projects, with the number of tags for each  | -   | - |
+| **Command** | **Description** |                                    **Designate tasks?** | **Default** |
+| ---         | ---  | -:- |
+| `get`       | Get the current task, no options                                  | -   | Current task       |
+| `list`      | List active tasks (or plans, with an option) in order, with sequence numbers | YES | All active tasks |
+| `add`       | Add a new active task                                                | -   | - |
+| `drop`      | Drop a task to the bottom of the active order                       | YES | Current task |
+| `pop`       | Pop a task or tasks to the top of the active order                   | YES | The last task on the active list |
+| `delete`    | Delete a task                        | YES | Current task |
+| `defer`     | Convert an active task into a plan for a specific later date       | YES | Current task |
+| `activate`  | Make a plan or plans active, include a 'today' option           | YES - plans | - |
+| `start`     | Starts work on a particular project (see below)                 | -   | - |
+| `manage`    | Edit tasks in an editor                                           | YES | All active tasks |
 
 ### Tags and the `start` command
 
@@ -66,7 +62,7 @@ Busy uses the `sensible-editor` command to select a text editor, which works wit
 
 For some commands, it's possible to designate tasks to be acted upon. Designating tasks is always optional.
 
-Tasks are identified by number, which is the line number of that task within the list of tasks.
+Tasks are identified by number, which is the line number of that task within the list of tasks. It's easy to see the numbers of tasks using the `list` command. Note that the numbering starts with 1, and is not an ID -- the number of a task will change as the active task list is reordered. So always reference the most recent list.
 
 `busy list` lists all the tasks
 
@@ -92,16 +88,13 @@ Note the result is always in the order the tasks appear in the queue, regardless
 
 ## Command line options
 
-| **Option** | **Short** | **Description** |
-| --- | --- | ---|
-| `--help`     | `-h` | Describes usage of the command |
-| `--root`     | `-r` | Defines the root for only this command |
-| `--plan`     | `-p` | Include tasks that are scheduled for a future date (only for `list`) |
-| `--multiple` | `-m` | Handle more than one task (only for `add`) |
-| `--then`     | ??   | Do another command after completing the first command |
-| `--task`     | `-t` | Provide the task description (only for `add`) |
-| `--yes`      | `-y` | Don't require confirmation of deletions |
-| `--today`    | `-t` | Activate tasks for today or earlier (only for `activate`) |
+| **Option** | **Description** |
+| --- | ---|
+| `--root`  | Defines the root for only this command |
+| `--plan`  | Include tasks that are scheduled for a future date (only for `list`) |
+| `--task`  | Provide the task description (only for `add`) |
+| `--yes`   | Don't require confirmation of deletions |
+| `--today` | Activate tasks for today or earlier (only for `activate`) |
 
 ## Deferral
 
@@ -110,11 +103,6 @@ Deferral is about scheduling a task to reappear on the task list on a future dat
 - `1 day` or `1d` Tomorrow (the default) - can also write `tomorrow`
 - `2 days` or `2d` The day after tomorrow
 - `2018-10-28` A specific date in `YYYY-MM-DD` format
-- `10-28` A specific date in `MM-DD` format; assumes the next version of that date
-- `10/28` Alternative to the above
-- `tue` The next of this day of the week; could be long or short form, caps insensitive
-- `the 28th` Arbitrary day of the month; the word `the` is required but the letters after the number are arbitrary - just requires some letters
-- `4 fridays` Not the coming Friday, but the 4th friday after today
 
 Example:
 
@@ -122,57 +110,7 @@ Example:
 busy defer 4-6 --for 4 days
 ```
 
-## The `then` option
-
-The `--then` option is most useful with the `add` command. For example, the following command allows you to pop the new tasks to the top.
-
-`busy add --multiple --then pop`
-
-The `--then` option requires an argment, which must be one of:
-
-- pop
-- drop
-- defer
-- complete
-
-
-## Followons
-
-Followons are entered into the task with the `-->` indicator. They designate what to do when the task is completed.
-
-A followon is a derral that will be automatically applied after completion. This allows repetition of tasks on a schedule.
-
-Example:
-
-```
-Go to the store --> friday
-```
-
-
-
-## Adding tasks
-
-| **Where** | **One** | **Multiple** |
-| --- | --- | ---|
-| Bottom of current | `add` | `add --multiple` |
-| Top of current | `add --pop` | `add --multiple --pop` |
-| Deferred | `add --defer` | `add --multiple --defer` |
-
-Note that if you add multiple with pop, they stay in order.
-
-```
-busy add --multiple --pop
-Go to the store
-Go to the bank
-```
-
-Then:
-
-```
-busy list 1-2
-    1 Go to the store
-    2 Go to the bank
-```
+## Piping to the `add` command
 
 Task descriptions always come from stdin. To read from a file, try:
 
@@ -184,9 +122,8 @@ cat list-of-tasks.txt | busy add --multiple
 
 Tiger requires a "root", which is the directory containing the two data files:
 
-`todo.txt` - current tasks
+`todo.txt` - active tasks
 `plan.txt` - future tasks, with dates
-`done.txt` - log of completed tasks
 
 Technically, they are pipe-delimited data files, though `todo.txt` only has one field.
 
@@ -196,18 +133,7 @@ How to tell busy its root (in order)
 - The `BUSY_ROOT` environment variable
 - Otherwise, `~/.busy` which will be generated as needed
 
-
 The "root" setup allows you to have separate task queues for separate projects.
-
-## Notes
-
-- Need a way to add a task to another queue.
-
-## Architecture
-
-- Domain model (item/queue/etc)
-- Operations layer: pure python
-- Command layer: handles commands, options, and files - with output to text
 
 ## Development
 
@@ -230,11 +156,3 @@ Or to run test coverage:
 ```
 make cover
 ```
-
-## To Do
-
-- List the tasks to be deleted if asking for confirmation as input
-- Pull today's plans (in the right order)
-- `undo` command
-- Delete plans
-- Pull specific plans
