@@ -6,3 +6,6 @@ delete_me.*
 *,cover
 htmlcov/
 coverage.xml
+build/
+*.egg-info/
+dist/

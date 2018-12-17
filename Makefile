@@ -1,4 +1,4 @@
-.PHONY: test cover install
+.PHONY: test cover install dist
 
 test:
 	python3 -m unittest -v
@@ -6,7 +6,13 @@ test:
 cover:
 	python3 -m coverage run --source=busy --omit busy/__main__.py -m unittest -v
 	python3 -m coverage report -m
-	#rm **/*,cover
 
 install:
 	sudo pip3 install --upgrade .
+
+dist:
+	mkdir -p dist
+	rm -f dist/*
+	python3 setup.py sdist bdist_wheel
+	twine upload dist/*
+	sudo pip3 install busy
