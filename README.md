@@ -36,7 +36,7 @@ Otherwise, the first positional argument is a command, which is one of the follo
 | `start`     | Starts work on a particular project (see below)                 | -   | - |
 | `manage`    | Edit tasks in an editor                                           | YES | All active tasks |
 
-### Tags and the `start` command
+### Task tags
 
 Tasks can have tags, which are designated with space-separated hashtags in the task description, for example:
 
@@ -50,13 +50,7 @@ Tags can be used in task designation, for example:
 busy pop errands
 ```
 
-A task can have no tags, one tag, or more than one tag. If it has tags, the first tag is considered to be its "project" for the purposes of the `start` command.
-
-The `start` command is used to start work on a project. If an argument is passed to the command, that's the chosen project. Otherwise the chosen project is the project of the current task. The command basically combines steps:
-
-- Calls `activate --today` so the active task list is up-to-date
-- Calls `pop` on the project
-- Calls `list` on the project
+A task can have no tags, one tag, or more than one tag.
 
 ## Editing the tasks directly with the `manage` command
 
@@ -123,6 +117,16 @@ Task descriptions always come from stdin. To read from a file, try:
 ```
 cat list-of-tasks.txt | busy add --multiple
 ```
+
+## Projects and the `start` command
+
+If a task has tags, the first tag is considered to be its "project" for the purposes of the `start` command.
+
+The `start` command is used to start work on a project. If an argument is passed to the command, that's the chosen project. Otherwise the chosen project is the project of the current task. The command basically combines steps:
+
+- Calls `activate --today` so the active task list is up-to-date
+- Calls `manage` on the project, to edit the list of tasks for the project
+- Calls `pop` on the project, so its tasks are at the top of the list
 
 ## Data storage
 
