@@ -218,7 +218,6 @@ class StartCommand(Command):
         self._system.manage(project)
         result = queue.pop(project)
         self._root.save()
-        return self._list(queue, queue.list(project))
 
 
 Commander.register(StartCommand)

@@ -20,7 +20,6 @@ class TestCommandStart(TestCase):
             o = c.handle('start','g')
             f = p.read_text()
             self.assertEqual(f, 'b #g\nd #g\na\nc #k\n')
-            self.assertEqual(o, '     1  b #g\n     2  d #g')
 
     def test_start_fails_if_criteria(self):
         with TemporaryDirectory() as t:
@@ -49,7 +48,6 @@ class TestCommandStart(TestCase):
                 self.assertEqual(p.read_text(), '2019-03-25|y #g\n')
                 p2 = Path(t, 'todo.txt')
                 self.assertEqual(p2.read_text(), 'x #g\n')
-                self.assertEqual(o, '     1  x #g')
 
     def test_start_fails_gracefully_if_no_todos(self):
         with TemporaryDirectory() as t:
