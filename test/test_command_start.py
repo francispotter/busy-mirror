@@ -9,6 +9,7 @@ from busy.task import Task
 from busy.commander import Commander
 from busy.system import System
 
+@mock.patch('busy.editor', lambda x: x)
 class TestCommandStart(TestCase):
 
     def test_start_works_for_named_project(self):
@@ -21,7 +22,6 @@ class TestCommandStart(TestCase):
             self.assertEqual(f, 'b #g\nd #g\na\nc #k\n')
             self.assertEqual(o, '     1  b #g\n     2  d #g')
 
-
     def test_start_fails_if_criteria(self):
         with TemporaryDirectory() as t:
             p = Path(t, 'todo.txt')
@@ -29,7 +29,6 @@ class TestCommandStart(TestCase):
             c = Commander(root=t)
             with self.assertRaises(RuntimeError):
                 c.handle('start','g','4')
-
 
     def test_start_pops_tasks_for_current_project(self):
         with TemporaryDirectory() as t:
