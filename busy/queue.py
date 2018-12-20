@@ -57,6 +57,17 @@ class Queue:
     def list(self, *criteria):
         return [(i+1, self._items[i]) for i in self.select(*criteria)]
 
+    def replace(self, indices, newvalues):
+        while newvalues and indices:
+            self._items[indices.pop(0)] = newvalues.pop(0)
+        while indices:
+            del self._items[indices.pop()]
+        self._items.extend(newvalues)
+
+    @property
+    def strings(self):
+        return [str(i) for i in self._items]
+
 class TodoQueue(Queue):
     schema = ['description']
     listfmt = "{1.description}"

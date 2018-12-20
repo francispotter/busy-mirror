@@ -33,3 +33,13 @@ class TestCommandManage(TestCase):
                 c = Commander(root=t)
                 o = c.handle('manage')
                 m.assert_called_with('a\n')
+
+    def test_leave_tasks_in_place(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\nb\n')
+            with mock.patch('busy.editor', lambda x: 'a\n'):
+                c = Commander(root=t)
+                o = c.handle('manage', '1')
+                f = p.read_text()
+                self.assertEqual(f, 'a\nb\n')
