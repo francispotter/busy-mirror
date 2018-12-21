@@ -54,9 +54,11 @@ A task can have no tags, one tag, or more than one tag.
 
 ## Editing the tasks directly with the `manage` command
 
-The `manage` command launches the user's default text editor to directly edit tasks. Note that it only works with active tasks (not plans) and that once the tasks are edited they will be dropped to the bottom of the list.
+The `manage` command launches the user's default text editor to directly edit tasks. Note that it only works with active tasks (not plans).
 
 Busy uses the `sensible-editor` command to select a text editor, which works with default Ubuntu Linux installations and might or might not work with other operating systems.
+
+The `manage` command does its best to replace the edited tasks in place in the list order. So if you `manage` the current project (in which all the tasks are at the top), then the edited tasks will still appear at the top. Even if you add tasks, they will be inserted after the last task in the managed set, not at the end of the list. But all the tasks brought up in the editor will be managed. So if you remove a task in the editor, it will be deleted and the others will be moved up to take its place.
 
 ## Designating tasks
 
