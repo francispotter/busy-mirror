@@ -102,3 +102,10 @@ class TestSystem(TestCase):
         self.assertEqual(str(s.todos.get(2)), 'd')
         self.assertEqual(str(s.todos.get(3)), 'b')
         self.assertEqual(str(s.todos.get(4)), 'c')
+
+    def test_activate(self):
+        s = System('a','b')
+        s.defer((2018,12,4),2)
+        s.activate(1)
+        t = s.todos.get()
+        self.assertEqual(str(t), 'b')
