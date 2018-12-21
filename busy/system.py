@@ -34,7 +34,7 @@ class System:
         else:
             indices = self.plans.select(*criteria)
         tasks = [self.plans.get(i+1).as_todo() for i in indices]
-        self.todos.add(*tasks)
+        self.todos.add(*tasks, index=0)
         self.plans.delete_by_indices(*indices)
 
     def manage(self, *criteria):

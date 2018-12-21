@@ -15,9 +15,26 @@ class Queue:
     def count(self):
         return len(self._items)
 
-    def add(self, *items):
-        for item in items:
-            self._items.append(Task.create(item))
+
+    # Add new tasks. Always makes them tasks. Also does inserts.
+
+    def add(self, *items, index=None):
+        newtasks = [Task.create(i) for i in items if i]
+        index = len(self._items) if index == None else index
+        self._items[index:index] = newtasks
+
+
+    # Replace existing tasks at the indices provided. Also inserts if the
+    # indices run out. Does not create tasks. Would be good to combine this
+    # with the add method.
+
+    def replace(self, indices, newvalues):
+        while newvalues and indices:
+            self._items[indices.pop(0)] = newvalues.pop(0)
+        while indices:
+            del self._items[indices.pop()]
+        self._items.extend(newvalues)
+
 
     def get(self, index=1):
         return self._items[index-1] if self._items else None
@@ -56,13 +73,6 @@ class Queue:
 
     def list(self, *criteria):
         return [(i+1, self._items[i]) for i in self.select(*criteria)]
-
-    def replace(self, indices, newvalues):
-        while newvalues and indices:
-            self._items[indices.pop(0)] = newvalues.pop(0)
-        while indices:
-            del self._items[indices.pop()]
-        self._items.extend(newvalues)
 
     @property
     def strings(self):
