@@ -6,7 +6,7 @@ from io import StringIO
 from datetime import date as Date
 import unittest
 
-from busy.item import Task
+from busy.todo import Task
 from busy.commander import Commander
 from busy.todo import System
 

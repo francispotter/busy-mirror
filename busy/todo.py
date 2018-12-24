@@ -1,8 +1,38 @@
 from .queue import Queue
-from .item import Task
+from .item import Item
 
 import busy.future
 import busy
+
+
+TODO_STATE = 't'
+PLAN_STATE = 'p'
+DONE_STATE = 'd'
+
+class Task(Item):
+
+    def __init__(self, description=None, plan_date=None):
+        super().__init__(description)
+        self._state = TODO_STATE
+        if plan_date: self.as_plan(plan_date)
+
+    def as_plan(self, date):
+        self._state = PLAN_STATE
+        self._plan_date = busy.future.absolute_date(date)
+        return self
+
+    def as_todo(self):
+        self._state = TODO_STATE
+        return self
+
+    @property
+    def plan_date(self):
+        return self._plan_date
+
+    @property
+    def project(self):
+        tags = self.tags
+        return tags[0] if tags else None
 
 
 class TodoQueue(Queue):

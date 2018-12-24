@@ -2,7 +2,6 @@
 # Method calls on queue use indices that start at 1
 
 from .selector import Selector
-from .item import Task
 from .item import Item
 
 

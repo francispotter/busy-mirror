@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 import os
 
 from .todo import System
-from .item import Task
+from .todo import Task
 from .file import TodoFile
 from .file import PlanFile
 

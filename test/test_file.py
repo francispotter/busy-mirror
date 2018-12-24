@@ -5,7 +5,7 @@ from tempfile import TemporaryDirectory
 from busy.file import TodoFile
 from busy.file import PlanFile
 from busy.queue import Queue
-from busy.item import Task
+from busy.todo import Task
 
 class TestFile(TestCase):
 
