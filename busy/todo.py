@@ -87,12 +87,7 @@ class System:
         self.plans.activate(*criteria, today=today)
 
     def manage(self, *criteria):
-        tasklist = self.todos.list(*criteria)
-        indices = [i[0]-1 for i in tasklist]
-        before = ''.join([str(i[1])+'\n' for i in tasklist])
-        after = busy.editor(before).split('\n')
-        new_tasks = [Task(i) for i in after if i]
-        self.todos.replace(indices, new_tasks)
+        self.todos.manage(*criteria)
 
 class TodoFile(File):
     queueclass = TodoQueue

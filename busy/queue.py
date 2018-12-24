@@ -3,7 +3,7 @@
 
 from .selector import Selector
 from .item import Item
-
+import busy
 
 class Queue:
 
@@ -83,3 +83,11 @@ class Queue:
     @property
     def strings(self):
         return [str(i) for i in self._items]
+
+    def manage(self, *criteria):
+        itemlist = self.list(*criteria)
+        indices = [i[0]-1 for i in itemlist]
+        before = ''.join([str(i[1])+'\n' for i in itemlist])
+        after = busy.editor(before).split('\n')
+        new_items = [self.itemclass(i) for i in after if i]
+        self.replace(indices, new_items)
