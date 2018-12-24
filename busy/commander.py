@@ -26,7 +26,9 @@ class Commander:
         if parsed.root: self.root = Root(parsed.root)
         if hasattr(parsed, 'command'):
             command = parsed.command(self.root)
-            return command.execute(parsed)
+            result = command.execute(parsed)
+            self.root.save()
+            return result
 
     @property
     def root(self):
@@ -66,7 +68,6 @@ class Command:
     def execute(self, parsed):
         method = getattr(self._system, self.command)
         result = method(*parsed.criteria)
-        self._root.save()
         return result
 
     def _list(self, queue, tasklist):

@@ -21,6 +21,5 @@ class DeleteCommand(Command):
             print("Deletion must be confirmed")
         else:
             self._system.todos.delete_by_indices(*indices)
-            self._root.save()
 
 Commander.register(DeleteCommand)

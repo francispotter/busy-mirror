@@ -21,7 +21,6 @@ class StartCommand(Command):
             raise RuntimeError('The `start` command required a project')
         self._system.manage(project)
         result = queue.pop(project)
-        self._root.save()
 
 
 Commander.register(StartCommand)

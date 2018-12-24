@@ -38,7 +38,7 @@ class TestCommandDelete(TestCase):
             with mock.patch('sys.stdin', StringIO('no')):
                 c.handle('delete','3-')
                 o = p.read_text()
-                self.assertEqual(o, 'a\nb\nc\nd')
+                self.assertEqual(o.strip(), 'a\nb\nc\nd')
 
     def test_delete_outputs_before_confirmation(self):
         with TemporaryDirectory() as t:

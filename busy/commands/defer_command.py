@@ -19,6 +19,5 @@ class DeferCommand(Command):
             print('\n'.join([str(i[1]) for i in tasklist]))
             time_info = input('Defer to [tomorrow]: ').strip() or 'tomorrow'
         self._root.system.defer(date_for(time_info), *parsed.criteria)
-        self._root.save()
 
 Commander.register(DeferCommand)

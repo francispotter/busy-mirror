@@ -14,6 +14,5 @@ class ActivateCommand(Command):
             self._system.activate(today=True)
         else:
             self._system.activate(*parsed.criteria)
-        self._root.save()
 
 Commander.register(ActivateCommand)

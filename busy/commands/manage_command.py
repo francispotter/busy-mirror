@@ -7,6 +7,5 @@ class ManageCommand(Command):
 
     def execute(self, parsed):
         self._system.manage(*parsed.criteria)
-        self._root.save()
 
 Commander.register(ManageCommand)
