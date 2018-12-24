@@ -2,9 +2,11 @@
 
 from .selector import Selector
 from .item import Task
+from .item import Item
 
 class Queue:
 
+    itemclass = Item
     schema = ['description']
     listfmt = "{1.description}"
 
@@ -22,7 +24,7 @@ class Queue:
     # Add new tasks. Always makes them tasks. Also does inserts.
 
     def add(self, *items, index=None):
-        newtasks = [Task.create(i) for i in items if i]
+        newtasks = [self.itemclass.create(i) for i in items if i]
         index = len(self._items) if index == None else index
         self._items[index:index] = newtasks
 
@@ -82,8 +84,8 @@ class Queue:
         return [str(i) for i in self._items]
 
 class TodoQueue(Queue):
-    pass
+    itemclass = Task
 
-class PlanQueue(Queue):
+class PlanQueue(TodoQueue):
     schema = ['plan_date', 'description']
     listfmt = "{1.plan_date:%Y-%m-%d}  {1.description}"
