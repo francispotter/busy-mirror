@@ -1,7 +1,4 @@
-from datetime import date as Date
-from datetime import datetime as DateTime
-from datetime import timedelta as TimeDelta
-import re
+# A generic item from a queue, with a description and possibly tags
 
 class Item:
 
