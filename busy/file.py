@@ -7,10 +7,10 @@ from .queue import Queue
 
 class File:
 
-    queueclss = Queue
+    queueclass = Queue
 
-    def __init__(self, dirpath):
-        self._path = dirpath / self.filename
+    def __init__(self, dirpath, slug=None):
+        self._path = dirpath / f'{slug or self.slug}.txt'
         if self._path.is_file():
             with open(self._path) as datafile:
                 reader = DictReader(datafile, self.schema, delimiter="|")
@@ -39,8 +39,8 @@ class File:
 
 class TodoFile(File):
     queueclass = TodoQueue
-    filename = 'todo.txt'
+    slug = 'todo'
 
 class PlanFile(File):
     queueclass = PlanQueue
-    filename = 'plan.txt'
+    slug = 'plan'
