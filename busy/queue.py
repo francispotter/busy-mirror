@@ -1,8 +1,10 @@
+# General-purpose queue of items
 # Method calls on queue use indices that start at 1
 
 from .selector import Selector
 from .item import Task
 from .item import Item
+
 
 class Queue:
 
@@ -21,16 +23,16 @@ class Queue:
         return len(self._items)
 
 
-    # Add new tasks. Always makes them tasks. Also does inserts.
+    # Add new items. Always makes them the right class. Also does inserts.
 
     def add(self, *items, index=None):
-        newtasks = [self.itemclass.create(i) for i in items if i]
+        newitems = [self.itemclass.create(i) for i in items if i]
         index = len(self._items) if index == None else index
-        self._items[index:index] = newtasks
+        self._items[index:index] = newitems
 
 
-    # Replace existing tasks at the indices provided. Also inserts if the
-    # indices run out. Does not create tasks. Would be good to combine this
+    # Replace existing items at the indices provided. Also inserts if the
+    # indices run out. Does not create items. Would be good to combine this
     # with the add method.
 
     def replace(self, indices, newvalues):
