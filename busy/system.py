@@ -1,6 +1,6 @@
 from .queue import TodoQueue
 from .queue import PlanQueue
-from .task import Task
+from .item import Task
 
 import busy.future
 import busy

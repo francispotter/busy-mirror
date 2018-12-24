@@ -7,7 +7,7 @@ from pathlib import Path
 from .root import Root
 from . import PYTHON_VERSION
 import busy
-from .task import Task
+from .item import Task
 from .future import date_for
 
 class Commander:
