@@ -2,8 +2,8 @@ from unittest import TestCase
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from busy.file import TodoFile
-from busy.file import PlanFile
+from busy.todo import TodoFile
+from busy.todo import PlanFile
 from busy.queue import Queue
 from busy.todo import Task
 

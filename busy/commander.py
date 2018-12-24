@@ -27,7 +27,7 @@ class Commander:
         if hasattr(parsed, 'command'):
             command = parsed.command(self.root)
             result = command.execute(parsed)
-            self.root.save()
+            command.save()
             return result
 
     @property
@@ -56,6 +56,7 @@ class Command:
 
     def __init__(self, root):
         self._root = root
+        self._open_files = set()
 
     @property
     def _system(self):
@@ -75,6 +76,8 @@ class Command:
         texts = [fmtstring.format(i, t) for i,t in tasklist]
         return '\n'.join(texts)
 
+    def save(self):
+        self._root.save()
 
 commands_dir = Path(__file__).parent / 'commands'
 for command_file in commands_dir.iterdir():

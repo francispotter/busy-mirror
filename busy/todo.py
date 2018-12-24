@@ -5,7 +5,7 @@ from .item import Item
 
 import busy.future
 import busy
-
+from .file import File
 
 TODO_STATE = 't'
 PLAN_STATE = 'p'
@@ -85,3 +85,11 @@ class System:
         after = busy.editor(before).split('\n')
         new_tasks = [Task(i) for i in after if i]
         self.todos.replace(indices, new_tasks)
+
+class TodoFile(File):
+    queueclass = TodoQueue
+    slug = 'todo'
+
+class PlanFile(File):
+    queueclass = PlanQueue
+    slug = 'plan'

@@ -1,8 +1,6 @@
 from csv import DictReader
 from csv import DictWriter
 
-from .todo import TodoQueue
-from .todo import PlanQueue
 from .queue import Queue
 
 class File:
@@ -36,11 +34,3 @@ class File:
             for item in self.queue.all():
                 values = dict([(f, getattr(item,f)) for f in self.schema])
                 writer.writerow(values)
-
-class TodoFile(File):
-    queueclass = TodoQueue
-    slug = 'todo'
-
-class PlanFile(File):
-    queueclass = PlanQueue
-    slug = 'plan'
