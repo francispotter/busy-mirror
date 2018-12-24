@@ -44,5 +44,3 @@ class System:
         after = busy.editor(before).split('\n')
         new_tasks = [Task(i) for i in after if i]
         self.todos.replace(indices, new_tasks)
-        # self.todos.delete_by_indices(*indices)
-        # self.add(*new_tasks)

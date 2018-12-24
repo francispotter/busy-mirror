@@ -3,12 +3,13 @@ from tempfile import TemporaryDirectory
 import sys
 from tempfile import TemporaryFile
 from pathlib import Path
+import importlib
+import re
 
 from .root import Root
 from . import PYTHON_VERSION
 import busy
 from .item import Task
-from .future import date_for
 
 class Commander:
 
@@ -74,167 +75,7 @@ class Command:
         return '\n'.join(texts)
 
 
-class ListCommand(Command):
-
-    command = 'list'
-
-    @classmethod
-    def register(self, parser):
-        parser.add_argument('--plans', action='store_true')
-
-    def execute(self, parsed):
-        queue = self._system.plans if parsed.plans else self._system.todos
-        tasklist = queue.list(*parsed.criteria)
-        return self._list(queue, tasklist)
-
-Commander.register(ListCommand)
-
-
-class AddCommand(Command):
-
-    command = 'add'
-
-    @classmethod
-    def register(self, parser):
-        parser.add_argument('--task')
-
-    def execute(self, parsed):
-        if hasattr(parsed, 'task') and parsed.task:
-            task = parsed.task
-        else:
-            task = input('Task: ')
-        self._root.system.add(task)
-        self._root.save()
-
-Commander.register(AddCommand)
-
-
-class DropCommand(Command): command = 'drop'
-Commander.register(DropCommand)
-
-
-class PopCommand(Command): command = 'pop'
-Commander.register(PopCommand)
-
-
-class DeleteCommand(Command):
-
-    command = 'delete'
-
-    @classmethod
-    def register(self, parser):
-        parser.add_argument('--yes', action='store_true')
-
-    def execute(self, parsed):
-        tasklist = self._system.todos.list(*parsed.criteria or [1])
-        indices = [i[0]-1 for i in tasklist]
-        if hasattr(parsed, 'yes') and parsed.yes:
-            confirmed = True
-        else:
-            print('\n'.join([str(i[1]) for i in tasklist]))
-            confirmed = input('Delete? (Y/n) ').startswith('Y')
-        if not confirmed:
-            print("Deletion must be confirmed")
-        else:
-            self._system.todos.delete_by_indices(*indices)
-            self._root.save()
-
-Commander.register(DeleteCommand)
-
-
-class GetCommand(Command):
-
-    command = 'get'
-
-    @classmethod
-    def register(self, parser):
-        parser.add_argument('--from', nargs=1, dest="list")
-
-    def execute(self, parsed):
-        if parsed.criteria:
-            message = ("The `get` command only returns the top item - "
-                "repeat without criteria")
-            raise RuntimeError(message)
-        else:
-            # if getattr(parsed, 'list'):
-            #     return "Hello world"
-            return str(self._system.todos.get() or '')
-
-Commander.register(GetCommand)
-
-
-class DeferCommand(Command):
-
-    command = 'defer'
-
-    @classmethod
-    def register(self, parser):
-        parser.add_argument('--to','--for',dest='time_info')
-
-    def execute(self, parsed):
-        tasklist = self._system.todos.list(*parsed.criteria or [1])
-        indices = [i[0]-1 for i in tasklist]
-        if hasattr(parsed, 'time_info') and parsed.time_info:
-            time_info = parsed.time_info
-        else:
-            print('\n'.join([str(i[1]) for i in tasklist]))
-            time_info = input('Defer to [tomorrow]: ').strip() or 'tomorrow'
-        self._root.system.defer(date_for(time_info), *parsed.criteria)
-        self._root.save()
-
-Commander.register(DeferCommand)
-
-
-class ActivateCommand(Command):
-
-    command = 'activate'
-
-    @classmethod
-    def register(self, parser):
-        parser.add_argument('--today','-t', action='store_true')
-
-    def execute(self, parsed):
-        if hasattr(parsed, 'today') and parsed.today:
-            self._system.activate(today=True)
-        else:
-            self._system.activate(*parsed.criteria)
-        self._root.save()
-
-Commander.register(ActivateCommand)
-
-
-class StartCommand(Command):
-
-    command = 'start'
-
-    @classmethod
-    def register(self, parser):
-        parser.add_argument('project', action='store', nargs='?')
-
-    def execute(self, parsed):
-        if parsed.criteria:
-            raise RuntimeError('Start takes only an optional project name')
-        self._system.activate(today=True)
-        queue = self._system.todos
-        if queue.count() < 1:
-            raise RuntimeError('There are no active tasks')
-        project = parsed.project or queue.get().project
-        if not project:
-            raise RuntimeError('The `start` command required a project')
-        self._system.manage(project)
-        result = queue.pop(project)
-        self._root.save()
-
-
-Commander.register(StartCommand)
-
-
-class ManageCommand(Command):
-
-    command = 'manage'
-
-    def execute(self, parsed):
-        self._system.manage(*parsed.criteria)
-        self._root.save()
-
-Commander.register(ManageCommand)
+commands_dir = Path(__file__).parent / 'commands'
+for command_file in commands_dir.iterdir():
+    if re.match(r'^[^_].*\_command\.py$', command_file.name):
+        importlib.import_module(f'busy.commands.{command_file.stem}')
