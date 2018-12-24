@@ -8,7 +8,7 @@ import unittest
 
 from busy.item import Task
 from busy.commander import Commander
-from busy.system import System
+from busy.todo import System
 
 class TestCommandActivate(TestCase):
 

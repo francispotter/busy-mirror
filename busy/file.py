@@ -1,8 +1,8 @@
 from csv import DictReader
 from csv import DictWriter
 
-from .queue import TodoQueue
-from .queue import PlanQueue
+from .todo import TodoQueue
+from .todo import PlanQueue
 from .queue import Queue
 
 class File:

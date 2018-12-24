@@ -2,7 +2,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import os
 
-from .system import System
+from .todo import System
 from .item import Task
 from .file import TodoFile
 from .file import PlanFile

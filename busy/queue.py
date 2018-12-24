@@ -82,10 +82,3 @@ class Queue:
     @property
     def strings(self):
         return [str(i) for i in self._items]
-
-class TodoQueue(Queue):
-    itemclass = Task
-
-class PlanQueue(TodoQueue):
-    schema = ['plan_date', 'description']
-    listfmt = "{1.plan_date:%Y-%m-%d}  {1.description}"

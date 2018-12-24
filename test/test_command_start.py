@@ -7,7 +7,7 @@ from datetime import date as Date
 
 from busy.item import Task
 from busy.commander import Commander
-from busy.system import System
+from busy.todo import System
 
 @mock.patch('busy.editor', lambda x: x)
 class TestCommandStart(TestCase):

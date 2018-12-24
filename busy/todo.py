@@ -1,9 +1,18 @@
-from .queue import TodoQueue
-from .queue import PlanQueue
+from .queue import Queue
 from .item import Task
 
 import busy.future
 import busy
+
+
+class TodoQueue(Queue):
+    itemclass = Task
+
+
+class PlanQueue(TodoQueue):
+    schema = ['plan_date', 'description']
+    listfmt = "{1.plan_date:%Y-%m-%d}  {1.description}"
+
 
 class System:
 
