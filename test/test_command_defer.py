@@ -69,11 +69,13 @@ class TestCommandDefer(TestCase):
                 o2 = Path(t, 'plan.txt').read_text()
                 self.assertEqual(o2, '2019-08-24|a\n')
 
-    def test_defer_without_date_raises_error(self):
+    def test_default_tomorrow(self):
         with TemporaryDirectory() as t:
             p = Path(t, 'todo.txt')
             p.write_text('a\nb\n')
             c = Commander(root=t)
-            with mock.patch('sys.stdin', None):
-                with self.assertRaises(RuntimeError):
+            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+                with mock.patch('sys.stdin', StringIO(' ')):
                     c.handle('defer')
+                    o2 = Path(t, 'plan.txt').read_text()
+                    self.assertEqual(o2, '2019-02-12|a\n')
