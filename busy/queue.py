@@ -5,6 +5,9 @@ from .task import Task
 
 class Queue:
 
+    schema = ['description']
+    listfmt = "{1.description}"
+
     def __init__(self, *items):
         self._items = []
         self.add(*items)
@@ -79,8 +82,7 @@ class Queue:
         return [str(i) for i in self._items]
 
 class TodoQueue(Queue):
-    schema = ['description']
-    listfmt = "{1.description}"
+    pass
 
 class PlanQueue(Queue):
     schema = ['plan_date', 'description']

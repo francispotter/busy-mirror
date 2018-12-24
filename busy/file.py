@@ -1,9 +1,13 @@
 from csv import DictReader
 from csv import DictWriter
 
-from .queue import TodoQueue, PlanQueue
+from .queue import TodoQueue
+from .queue import PlanQueue
+from .queue import Queue
 
 class File:
+
+    queueclss = Queue
 
     def __init__(self, dirpath):
         self._path = dirpath / self.filename

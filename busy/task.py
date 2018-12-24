@@ -5,18 +5,12 @@ import re
 
 from .future import absolute_date
 
-TODO_STATE = 't'
-PLAN_STATE = 'p'
-DONE_STATE = 'd'
+class Item:
 
-class Task:
-
-    def __init__(self, description=None, plan_date=None):
+    def __init__(self, description=None):
         assert isinstance(description, str)
         assert description
         self._description = description
-        self._state = TODO_STATE
-        if plan_date: self.as_plan(plan_date)
 
     def __str__(self):
         return self._description
@@ -24,19 +18,6 @@ class Task:
     @property
     def description(self):
         return self._description
-
-    def as_plan(self, date):
-        self._state = PLAN_STATE
-        self._plan_date = absolute_date(date)
-        return self
-
-    def as_todo(self):
-        self._state = TODO_STATE
-        return self
-
-    @property
-    def plan_date(self):
-        return self._plan_date
 
     @classmethod
     def create(self, value):
@@ -51,6 +32,31 @@ class Task:
     def tags(self):
         words = self.description.split()
         return [w[1:].lower() for w in words if w.startswith('#')]
+
+
+TODO_STATE = 't'
+PLAN_STATE = 'p'
+DONE_STATE = 'd'
+
+class Task(Item):
+
+    def __init__(self, description=None, plan_date=None):
+        super().__init__(description)
+        self._state = TODO_STATE
+        if plan_date: self.as_plan(plan_date)
+
+    def as_plan(self, date):
+        self._state = PLAN_STATE
+        self._plan_date = absolute_date(date)
+        return self
+
+    def as_todo(self):
+        self._state = TODO_STATE
+        return self
+
+    @property
+    def plan_date(self):
+        return self._plan_date
 
     @property
     def project(self):

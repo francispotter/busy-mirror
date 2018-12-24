@@ -147,6 +147,27 @@ How to tell busy its root (in order)
 
 The "root" setup allows you to have separate task queues for separate projects.
 
+## Alternate lists
+
+Some of the `busy` commands can be used on other lists. For example, you might have a shopping list called `shopping.txt` in the root directory. Just use the appropriate modifier for the following commands:
+
+| **Command** | **Modifier** |
+| --- | --- |
+| `add`       | `to`         |
+| `get`       | `from`       |
+| `delete`    | `from`       |
+| `list`      | `from`       |
+| `pop`       | `in`         |
+| `drop`      | `in`         |
+
+Some examples:
+
+```
+add to movies
+delete 3 from shopping
+drop in friends
+```
+
 ## Development
 
 Although it requires Python 3.6.5 or higher, Busy is designed to function with the Python standard library without any additional pip modules.
