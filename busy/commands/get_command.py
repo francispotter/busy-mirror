@@ -15,8 +15,7 @@ class GetCommand(Command):
                 "repeat without criteria")
             raise RuntimeError(message)
         else:
-            if getattr(parsed, 'list'):
-                return "Hello world"
-            return str(self._root.get_file('todo').queue.get() or '')
+            slug = parsed.list[0] if getattr(parsed, 'list') else 'todo'
+            return str(self._root.get_file(slug).queue.get() or '')
 
 Commander.register(GetCommand)

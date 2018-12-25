@@ -12,11 +12,10 @@ from busy.plugins.todo import System
 
 class TestAlternateList(TestCase):
 
-    @unittest.skip("Alternate list")
     def test_get_from(self):
         with TemporaryDirectory() as t:
             p = Path(t, 'a.txt')
             p.write_text('b\n')
             c = Commander(root=t)
-            o = c.handle('get','--from','movies')
+            o = c.handle('get','--from','a')
             self.assertEqual(o, 'b')
