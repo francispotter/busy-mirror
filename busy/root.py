@@ -30,6 +30,9 @@ class Root:
             self._open_files[slug] = File.open(self.path, slug)
         return self._open_files[slug]
 
+    def get_queue(self, slug):
+        return self.get_file(slug).queue
+
     @property
     def system(self):
         if not hasattr(self, '_system'):

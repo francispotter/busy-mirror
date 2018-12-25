@@ -16,6 +16,6 @@ class GetCommand(Command):
             raise RuntimeError(message)
         else:
             slug = parsed.list[0] if getattr(parsed, 'list') else 'todo'
-            return str(self._root.get_file(slug).queue.get() or '')
+            return str(self._root.get_queue(slug).get() or '')
 
 Commander.register(GetCommand)
