@@ -55,7 +55,6 @@ class Command:
 
     def __init__(self, root):
         self._root = root
-        self._open_files = set()
 
     @property
     def _system(self):
