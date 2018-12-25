@@ -11,9 +11,8 @@ class Queue:
     schema = ['description']
     listfmt = "{1.description}"
 
-    def __init__(self, *items):
+    def __init__(self):
         self._items = []
-        self.add(*items)
 
     def all(self):
         return self._items

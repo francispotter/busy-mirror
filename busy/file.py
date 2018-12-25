@@ -12,7 +12,8 @@ class File:
         if self._path.is_file():
             with open(self._path) as datafile:
                 reader = DictReader(datafile, self.schema, delimiter="|")
-                self.queue = self.queueclass(*reader)
+                self.queue = self.queueclass()
+                self.queue.add(*reader)
 
     @property
     def queue(self):
