@@ -17,6 +17,6 @@ class GetCommand(Command):
         else:
             if getattr(parsed, 'list'):
                 return "Hello world"
-            return str(self._system.todos.get() or '')
+            return str(self._root.get_file('todo').queue.get() or '')
 
 Commander.register(GetCommand)
