@@ -33,6 +33,10 @@ class Root:
     def get_queue(self, slug):
         return self.get_file(slug).queue
 
+    def save(self):
+        while self._open_files:
+            self._open_files.popitem()[1].save()
+
     @property
     def system(self):
         if not hasattr(self, '_system'):
@@ -45,7 +49,3 @@ class Root:
             plans = self._plan_file.queue
             self._system = System(todos=todos, plans=plans)
         return self._system
-
-    def save(self):
-        while self._open_files:
-            self._open_files.popitem()[1].save()
