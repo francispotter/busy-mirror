@@ -79,7 +79,7 @@ class Command:
     def save(self):
         self._root.save()
 
-commands_dir = Path(__file__).parent / 'commands'
-for command_file in commands_dir.iterdir():
-    if re.match(r'^[^_].*\_command\.py$', command_file.name):
-        importlib.import_module(f'busy.commands.{command_file.stem}')
+plugins_dir = Path(__file__).parent / 'plugins'
+for plugin_file in plugins_dir.iterdir():
+    if re.match(r'^[^_].*\.py$', plugin_file.name):
+        importlib.import_module(f'busy.plugins.{plugin_file.stem}')
