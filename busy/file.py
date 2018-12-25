@@ -5,18 +5,20 @@ from .queue import Queue
 
 class File:
 
-    def __init__(self, path, queueclass=Queue):
+    def __init__(self, path, queueclass=Queue, root=None):
         self.queueclass = queueclass
+        self._root = root
         self._path = path
         if self._path.is_file():
             with open(self._path) as datafile:
                 reader = DictReader(datafile, self.schema, delimiter="|")
-                self.queue = self.queueclass()
+                self.queue = self.queueclass(root)
                 self.queue.add(*reader)
 
     @property
     def queue(self):
-        if not hasattr(self, '_queue'): self._queue = self.queueclass()
+        if not hasattr(self, '_queue'):
+            self._queue = self.queueclass(self._root)
         return self._queue
 
     @queue.setter

@@ -7,7 +7,6 @@ import busy.future
 import busy
 from ..future import date_for
 
-
 TODO_STATE = 't'
 PLAN_STATE = 'p'
 DONE_STATE = 'd'
@@ -42,6 +41,10 @@ class TodoQueue(Queue):
     itemclass = Task
     key = 'todo'
 
+    def __init__(self, manager=None):
+        super().__init__(manager)
+        self.plans = manager.get_queue('plan') if manager else PlanQueue()
+
     def defer(self, date, *criteria):
         indices = self.select(*(criteria or [1]))
         plans = [self.get(i+1).as_plan(date) for i in indices]
@@ -58,8 +61,8 @@ class TodoQueue(Queue):
         self.add(*tasks, index=0)
         self.plans.delete_by_indices(*indices)
 
-
 Queue.register(TodoQueue)
+
 
 class PlanQueue(Queue):
     itemclass = Task
@@ -72,11 +75,15 @@ Queue.register(PlanQueue)
 class System:
 
     def __init__(self, *items, todos=None, plans=None):
-        self.plans = plans if plans else PlanQueue()
+        # self.plans = plans if plans else PlanQueue()
         self.todos = todos if todos else TodoQueue()
-        self.todos.plans = self.plans
-        self.plans.todos = self.todos
+        # self.todos.plans = self.plans
+        # self.plans.todos = self.todos
         self.add(*items)
+
+    @property
+    def plans(self):
+        return self.todos.plans
 
     def add(self, *items):
         self.todos.add(*items)

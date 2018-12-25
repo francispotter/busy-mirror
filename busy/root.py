@@ -32,7 +32,7 @@ class Root:
         if slug not in self._open_files:
             queueclass = Queue.subclass(slug)
             filepath = self.path / f'{slug}.txt'
-            queuefile = File(filepath, queueclass=queueclass)
+            queuefile = File(filepath, queueclass=queueclass, root=self)
             self._open_files[slug] = queuefile
         return self._open_files[slug].queue
 
