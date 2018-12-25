@@ -18,3 +18,11 @@ class TestAlternateList(TestCase):
             c = Commander(root=t)
             o = c.handle('get','--from','a')
             self.assertEqual(o, 'b')
+
+    def test_default_queue(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('b\n')
+            c = Commander(root=t)
+            o = c.handle('get')
+            self.assertEqual(o, 'b')

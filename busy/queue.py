@@ -10,6 +10,7 @@ class Queue:
     itemclass = Item
     schema = ['description']
     listfmt = "{1.description}"
+    default_key = 'default'
 
     def __init__(self, manager=None):
         self._items = []
@@ -93,9 +94,10 @@ class Queue:
         self.replace(indices, new_items)
 
     @classmethod
-    def register(self, queueclass):
+    def register(self, queueclass, default=False):
         if not hasattr(self, '_classes'): self._classes = {}
         self._classes[queueclass.key] = queueclass
+        if default: self.default_key = queueclass.key
 
     @classmethod
     def subclass(self, key):

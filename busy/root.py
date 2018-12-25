@@ -28,7 +28,8 @@ class Root:
         assert isinstance(path, Path) and path.is_dir()
         self._path = path
 
-    def get_queue(self, key):
+    def get_queue(self, key=None):
+        key = key or Queue.default_key
         if key not in self._open_files:
             queueclass = Queue.subclass(key)
             filepath = self.path / f'{key}.txt'

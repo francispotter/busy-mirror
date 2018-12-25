@@ -61,7 +61,7 @@ class TodoQueue(Queue):
         self.add(*tasks, index=0)
         self.plans.delete_by_indices(*indices)
 
-Queue.register(TodoQueue)
+Queue.register(TodoQueue, default=True)
 
 
 class PlanQueue(Queue):
@@ -73,7 +73,13 @@ class PlanQueue(Queue):
 Queue.register(PlanQueue)
 
 
-class DeferCommand(Command):
+class TodoCommand(Command):
+
+    def execute(self, parsed):
+        return self.execute_todo(parsed, self._root.get_queue(TodoQueue.key))
+
+
+class DeferCommand(TodoCommand):
 
     command = 'defer'
 
@@ -81,8 +87,7 @@ class DeferCommand(Command):
     def register(self, parser):
         parser.add_argument('--to','--for',dest='time_info')
 
-    def execute(self, parsed):
-        queue = self._root.get_queue('todo')
+    def execute_todo(self, parsed, queue):
         tasklist = queue.list(*parsed.criteria or [1])
         indices = [i[0]-1 for i in tasklist]
         if hasattr(parsed, 'time_info') and parsed.time_info:
@@ -95,7 +100,7 @@ class DeferCommand(Command):
 Commander.register(DeferCommand)
 
 
-class ActivateCommand(Command):
+class ActivateCommand(TodoCommand):
 
     command = 'activate'
 
@@ -103,8 +108,7 @@ class ActivateCommand(Command):
     def register(self, parser):
         parser.add_argument('--today','-t', action='store_true')
 
-    def execute(self, parsed):
-        queue = self._root.get_queue('todo')
+    def execute_todo(self, parsed, queue):
         if hasattr(parsed, 'today') and parsed.today:
             queue.activate(today=True)
         else:
@@ -113,7 +117,7 @@ class ActivateCommand(Command):
 Commander.register(ActivateCommand)
 
 
-class StartCommand(Command):
+class StartCommand(TodoCommand):
 
     command = 'start'
 
@@ -121,8 +125,7 @@ class StartCommand(Command):
     def register(self, parser):
         parser.add_argument('project', action='store', nargs='?')
 
-    def execute(self, parsed):
-        queue = self._root.get_queue('todo')
+    def execute_todo(self, parsed, queue):
         if parsed.criteria:
             raise RuntimeError('Start takes only an optional project name')
         queue.activate(today=True)
