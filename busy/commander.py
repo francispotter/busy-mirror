@@ -61,8 +61,8 @@ class Command:
         pass
 
     def execute(self, parsed):
-        slug = 'todo'
-        queue = self._root.get_queue(slug)
+        key = 'todo'
+        queue = self._root.get_queue(key)
         method = getattr(queue, self.command)
         result = method(*parsed.criteria)
         return result

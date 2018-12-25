@@ -10,8 +10,8 @@ class DeleteCommand(Command):
         parser.add_argument('--yes', action='store_true')
 
     def execute(self, parsed):
-        slug = 'todo'
-        tasklist = self._root.get_queue(slug).list(*parsed.criteria or [1])
+        key = 'todo'
+        tasklist = self._root.get_queue(key).list(*parsed.criteria or [1])
         indices = [i[0]-1 for i in tasklist]
         if hasattr(parsed, 'yes') and parsed.yes:
             confirmed = True
@@ -21,6 +21,6 @@ class DeleteCommand(Command):
         if not confirmed:
             print("Deletion must be confirmed")
         else:
-            self._root.get_queue(slug).delete_by_indices(*indices)
+            self._root.get_queue(key).delete_by_indices(*indices)
 
 Commander.register(DeleteCommand)

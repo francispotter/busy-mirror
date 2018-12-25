@@ -14,7 +14,7 @@ class AddCommand(Command):
             task = parsed.task
         else:
             task = input('Task: ')
-        slug = 'todo'
-        self._root.get_queue(slug).add(task)
+        key = 'todo'
+        self._root.get_queue(key).add(task)
 
 Commander.register(AddCommand)

@@ -28,13 +28,13 @@ class Root:
         assert isinstance(path, Path) and path.is_dir()
         self._path = path
 
-    def get_queue(self, slug):
-        if slug not in self._open_files:
-            queueclass = Queue.subclass(slug)
-            filepath = self.path / f'{slug}.txt'
+    def get_queue(self, key):
+        if key not in self._open_files:
+            queueclass = Queue.subclass(key)
+            filepath = self.path / f'{key}.txt'
             queuefile = File(filepath, queueclass=queueclass, root=self)
-            self._open_files[slug] = queuefile
-        return self._open_files[slug].queue
+            self._open_files[key] = queuefile
+        return self._open_files[key].queue
 
     def save(self):
         while self._open_files:
