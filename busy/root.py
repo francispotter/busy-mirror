@@ -44,5 +44,5 @@ class Root:
         return self._system
 
     def save(self):
-        self._todo_file.save()
-        self._plan_file.save()
+        while self._open_files:
+            self._open_files.popitem()[1].save()
