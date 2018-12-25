@@ -46,6 +46,17 @@ class TodoQueue(Queue):
         self.plans.add(*plans)
         self.delete_by_indices(*indices)
 
+    def activate(self, *criteria, today=False):
+        if today:
+            func = lambda t: t.plan_date <= busy.future.today()
+            indices = self.plans.select(func)
+        else:
+            indices = self.plans.select(*criteria)
+        tasks = [self.plans.get(i+1).as_todo() for i in indices]
+        self.add(*tasks, index=0)
+        self.plans.delete_by_indices(*indices)
+
+
 Queue.register(TodoQueue)
 
 class PlanQueue(Queue):
@@ -53,16 +64,6 @@ class PlanQueue(Queue):
     key = 'plan'
     schema = ['plan_date', 'description']
     listfmt = "{1.plan_date:%Y-%m-%d}  {1.description}"
-
-    def activate(self, *criteria, today=False):
-        if today:
-            func = lambda t: t.plan_date <= busy.future.today()
-            indices = self.select(func)
-        else:
-            indices = self.select(*criteria)
-        tasks = [self.get(i+1).as_todo() for i in indices]
-        self.todos.add(*tasks, index=0)
-        self.delete_by_indices(*indices)
 
 Queue.register(PlanQueue)
 
@@ -88,7 +89,7 @@ class System:
         self.todos.defer(date, *criteria)
 
     def activate(self, *criteria, today=False):
-        self.plans.activate(*criteria, today=today)
+        self.todos.activate(*criteria, today=today)
 
     def manage(self, *criteria):
         self.todos.manage(*criteria)
