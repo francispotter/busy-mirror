@@ -94,12 +94,6 @@ class System:
     def manage(self, *criteria):
         self.todos.manage(*criteria)
 
-class PlanFile(File):
-    slug = 'plan'
-
-    def __init__(self, dirpath, slug=None):
-        super().__init__(dirpath, slug='plan', queueclass=PlanQueue)
-
 
 class StartCommand(Command):
 
