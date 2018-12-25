@@ -25,27 +25,29 @@ class Root:
         assert isinstance(path, Path) and path.is_dir()
         self._path = path
 
-    def get_file(self, slug):
+    def get_queue(self, slug):
         if slug not in self._open_files:
             self._open_files[slug] = File.open(self.path, slug)
-        return self._open_files[slug]
-
-    def get_queue(self, slug):
-        return self.get_file(slug).queue
+        return self._open_files[slug].queue
 
     def save(self):
         while self._open_files:
             self._open_files.popitem()[1].save()
 
+
+    # DEPRECATED
+
     @property
     def system(self):
         if not hasattr(self, '_system'):
             from .plugins.todo import System
-            self._todo_file = self.get_file('todo')
-            self._plan_file = self.get_file('plan')
+            # self._todo_file = self.get_file('todo')
+            # self._plan_file = self.get_file('plan')
             # self._todo_file = TodoFile(self.path)
             # self._plan_file = PlanFile(self.path)
-            todos = self._todo_file.queue
-            plans = self._plan_file.queue
+            # todos = self._todo_file.queue
+            # plans = self._plan_file.queue
+            todos = self.get_queue('todo')
+            plans = self.get_queue('plan')
             self._system = System(todos=todos, plans=plans)
         return self._system
