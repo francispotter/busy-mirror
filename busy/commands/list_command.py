@@ -10,8 +10,9 @@ class ListCommand(Command):
         parser.add_argument('--plans', action='store_true')
 
     def execute(self, parsed):
-        queue = self._system.plans if parsed.plans else self._system.todos
-        tasklist = queue.list(*parsed.criteria)
-        return self._list(queue, tasklist)
+        slug = 'plan' if parsed.plans else 'todo'
+        queue = self._root.get_queue(slug)
+        itemlist = queue.list(*parsed.criteria)
+        return self._list(queue, itemlist)
 
 Commander.register(ListCommand)
