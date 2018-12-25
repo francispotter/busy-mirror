@@ -38,6 +38,7 @@ class Task(Item):
 
 class TodoQueue(Queue):
     itemclass = Task
+    key = 'todo'
 
     def defer(self, date, *criteria):
         indices = self.select(*(criteria or [1]))
@@ -45,14 +46,19 @@ class TodoQueue(Queue):
         self.plans.add(*plans)
         self.delete_by_indices(*indices)
 
+Queue.register(TodoQueue)
 
 class TodoFile(File):
-    queueclass = TodoQueue
     slug = 'todo'
+
+    def __init__(self, dirpath, slug=None):
+        super().__init__(dirpath, slug='todo', queueclass=TodoQueue)
 
 File.register(TodoFile)
 
-class PlanQueue(TodoQueue):
+class PlanQueue(Queue):
+    itemclass = Task
+    key = 'plan'
     schema = ['plan_date', 'description']
     listfmt = "{1.plan_date:%Y-%m-%d}  {1.description}"
 
@@ -66,6 +72,7 @@ class PlanQueue(TodoQueue):
         self.todos.add(*tasks, index=0)
         self.delete_by_indices(*indices)
 
+Queue.register(PlanQueue)
 
 class System:
 
@@ -95,8 +102,11 @@ class System:
         self.todos.manage(*criteria)
 
 class PlanFile(File):
-    queueclass = PlanQueue
     slug = 'plan'
+
+    def __init__(self, dirpath, slug=None):
+        super().__init__(dirpath, slug='plan', queueclass=PlanQueue)
+
 
 File.register(PlanFile)
 

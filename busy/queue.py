@@ -91,3 +91,13 @@ class Queue:
         after = busy.editor(before).split('\n')
         new_items = [self.itemclass(i) for i in after if i]
         self.replace(indices, new_items)
+
+    @classmethod
+    def register(self, queueclass):
+        if not hasattr(self, '_classes'): self._classes = {}
+        self._classes[queueclass.key] = queueclass
+
+    @classmethod
+    def subclass(self, key):
+        if not hasattr(self, '_classes'): self._classes = {}
+        return self._classes.get(key) or self

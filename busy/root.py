@@ -1,3 +1,5 @@
+# A queue manager, which happens to use the file system
+
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import os
@@ -41,12 +43,6 @@ class Root:
     def system(self):
         if not hasattr(self, '_system'):
             from .plugins.todo import System
-            # self._todo_file = self.get_file('todo')
-            # self._plan_file = self.get_file('plan')
-            # self._todo_file = TodoFile(self.path)
-            # self._plan_file = PlanFile(self.path)
-            # todos = self._todo_file.queue
-            # plans = self._plan_file.queue
             todos = self.get_queue('todo')
             plans = self.get_queue('plan')
             self._system = System(todos=todos, plans=plans)

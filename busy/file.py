@@ -5,9 +5,8 @@ from .queue import Queue
 
 class File:
 
-    queueclass = Queue
-
-    def __init__(self, dirpath, slug=None):
+    def __init__(self, dirpath, slug=None, queueclass=Queue):
+        self.queueclass = queueclass
         self._path = dirpath / f'{slug or self.slug}.txt'
         if self._path.is_file():
             with open(self._path) as datafile:
