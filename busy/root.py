@@ -31,7 +31,8 @@ class Root:
     def get_queue(self, slug):
         if slug not in self._open_files:
             queueclass = Queue.subclass(slug)
-            queuefile = File(self.path, slug=slug, queueclass=queueclass)
+            filepath = self.path / f'{slug}.txt'
+            queuefile = File(filepath, queueclass=queueclass)
             self._open_files[slug] = queuefile
         return self._open_files[slug].queue
 

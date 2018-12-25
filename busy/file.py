@@ -5,10 +5,9 @@ from .queue import Queue
 
 class File:
 
-    def __init__(self, dirpath, slug=None, queueclass=Queue):
-        assert slug
+    def __init__(self, path, queueclass=Queue):
         self.queueclass = queueclass
-        self._path = dirpath / f'{slug}.txt'
+        self._path = path
         if self._path.is_file():
             with open(self._path) as datafile:
                 reader = DictReader(datafile, self.schema, delimiter="|")

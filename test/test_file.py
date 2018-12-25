@@ -15,7 +15,7 @@ class TestFile(TestCase):
         with TemporaryDirectory() as d:
             p = Path(d) / 'x.txt'
             p.write_text('a\nb\n')
-            f = File(Path(d), 'x')
+            f = File(p)
             q = f.queue
             self.assertIsInstance(q, Queue)
             self.assertEqual(str(q.get()), 'a')
@@ -23,7 +23,7 @@ class TestFile(TestCase):
 
     def test_load_if_not_there(self):
         with TemporaryDirectory() as d:
-            f = File(Path(d), 'y')
+            f = File(Path(d) / 'y.txt')
             q = f.queue
             self.assertIsInstance(q, Queue)
             self.assertEqual(q.count(), 0)
@@ -31,11 +31,11 @@ class TestFile(TestCase):
     def test_save_items(self):
         with TemporaryDirectory() as d:
             p = Path(d) / 'z.txt'
-            f1 = File(Path(d), 'z')
+            f1 = File(p)
             q1 = f1.queue
             q1.add(Item('a'))
             f1.save()
-            f2 = File(Path(d), 'z')
+            f2 = File(p)
             q2 = f2.queue
             self.assertEqual(str(q2.get()), 'a')
 
@@ -43,5 +43,5 @@ class TestFile(TestCase):
         with TemporaryDirectory() as d:
             p = Path(d) / 'plan.txt'
             p.write_text('2018-12-01|a\n2018-12-09|b')
-            q = File(Path(d), 'plan', PlanQueue).queue
+            q = File(p, PlanQueue).queue
             self.assertEqual(q.get().plan_date.month, 12)
