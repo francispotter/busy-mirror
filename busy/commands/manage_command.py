@@ -6,6 +6,7 @@ class ManageCommand(Command):
     command = 'manage'
 
     def execute(self, parsed):
-        self._system.manage(*parsed.criteria)
+        slug = 'todo'
+        self._root.get_queue(slug).manage(*parsed.criteria)
 
 Commander.register(ManageCommand)
