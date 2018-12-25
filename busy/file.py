@@ -6,8 +6,9 @@ from .queue import Queue
 class File:
 
     def __init__(self, dirpath, slug=None, queueclass=Queue):
+        assert slug
         self.queueclass = queueclass
-        self._path = dirpath / f'{slug or self.slug}.txt'
+        self._path = dirpath / f'{slug}.txt'
         if self._path.is_file():
             with open(self._path) as datafile:
                 reader = DictReader(datafile, self.schema, delimiter="|")
@@ -33,14 +34,3 @@ class File:
             for item in self.queue.all():
                 values = dict([(f, getattr(item,f)) for f in self.schema])
                 writer.writerow(values)
-
-    @classmethod
-    def register(self, fileclass):
-        if not hasattr(self, '_classes'): self._classes = {}
-        self._classes[fileclass.slug] = fileclass
-
-    @classmethod
-    def open(self, dirpath, slug):
-        if not hasattr(self, '_classes'): self._classes = {}
-        fileclass = self._classes.get(slug) or self
-        return fileclass(dirpath, slug)

@@ -5,6 +5,7 @@ from tempfile import TemporaryDirectory
 import os
 
 from .file import File
+from .queue import Queue
 
 class Root:
 
@@ -29,7 +30,9 @@ class Root:
 
     def get_queue(self, slug):
         if slug not in self._open_files:
-            self._open_files[slug] = File.open(self.path, slug)
+            queueclass = Queue.subclass(slug)
+            queuefile = File(self.path, slug=slug, queueclass=queueclass)
+            self._open_files[slug] = queuefile
         return self._open_files[slug].queue
 
     def save(self):

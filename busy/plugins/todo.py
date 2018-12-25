@@ -48,14 +48,6 @@ class TodoQueue(Queue):
 
 Queue.register(TodoQueue)
 
-class TodoFile(File):
-    slug = 'todo'
-
-    def __init__(self, dirpath, slug=None):
-        super().__init__(dirpath, slug='todo', queueclass=TodoQueue)
-
-File.register(TodoFile)
-
 class PlanQueue(Queue):
     itemclass = Task
     key = 'plan'
@@ -107,8 +99,6 @@ class PlanFile(File):
     def __init__(self, dirpath, slug=None):
         super().__init__(dirpath, slug='plan', queueclass=PlanQueue)
 
-
-File.register(PlanFile)
 
 class StartCommand(Command):
 

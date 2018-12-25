@@ -2,54 +2,46 @@ from unittest import TestCase
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from busy.plugins.todo import TodoFile
-from busy.plugins.todo import PlanFile
+from busy.plugins.todo import TodoQueue
+from busy.plugins.todo import PlanQueue
 from busy.queue import Queue
 from busy.plugins.todo import Task
+from busy.file import File
+from busy.item import Item
 
 class TestFile(TestCase):
 
-    def test_load_tasks(self):
+    def test_load_items(self):
         with TemporaryDirectory() as d:
-            p = Path(d) / 'todo.txt'
+            p = Path(d) / 'x.txt'
             p.write_text('a\nb\n')
-            f = TodoFile(Path(d))
+            f = File(Path(d), 'x')
             q = f.queue
             self.assertIsInstance(q, Queue)
             self.assertEqual(str(q.get()), 'a')
-            self.assertIsInstance(q.get(), Task)
+            self.assertIsInstance(q.get(), Item)
 
     def test_load_if_not_there(self):
         with TemporaryDirectory() as d:
-            f = TodoFile(Path(d))
+            f = File(Path(d), 'y')
             q = f.queue
             self.assertIsInstance(q, Queue)
             self.assertEqual(q.count(), 0)
 
-    def test_save_tasks(self):
+    def test_save_items(self):
         with TemporaryDirectory() as d:
-            p = Path(d) / 'todo.txt'
-            f1 = TodoFile(Path(d))
+            p = Path(d) / 'z.txt'
+            f1 = File(Path(d), 'z')
             q1 = f1.queue
-            q1.add(Task('a'))
+            q1.add(Item('a'))
             f1.save()
-            f2 = TodoFile(Path(d))
+            f2 = File(Path(d), 'z')
             q2 = f2.queue
             self.assertEqual(str(q2.get()), 'a')
-
-    def test_plan_file(self):
-        with TemporaryDirectory() as d:
-            p = Path(d)
-            f = PlanFile(p)
-            t = Task('a').as_plan((2019,2,3))
-            f.queue.add(t)
-            f.save()
-            q2 = PlanFile(p).queue
-            self.assertEqual(q2.get().plan_date.day, 3)
 
     def test_plan_file_format(self):
         with TemporaryDirectory() as d:
             p = Path(d) / 'plan.txt'
             p.write_text('2018-12-01|a\n2018-12-09|b')
-            q = PlanFile(Path(d)).queue
+            q = File(Path(d), 'plan', PlanQueue).queue
             self.assertEqual(q.get().plan_date.month, 12)
