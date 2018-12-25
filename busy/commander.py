@@ -9,7 +9,6 @@ import re
 from .root import Root
 from . import PYTHON_VERSION
 import busy
-from .todo import Task
 
 class Commander:
 

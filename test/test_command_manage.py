@@ -7,9 +7,9 @@ from datetime import date as Date
 import unittest
 from unittest.mock import Mock
 
-from busy.todo import Task
+from busy.plugins.todo import Task
 from busy.commander import Commander
-from busy.todo import System
+from busy.plugins.todo import System
 
 class TestCommandManage(TestCase):
 

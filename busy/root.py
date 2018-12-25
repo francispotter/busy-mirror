@@ -2,10 +2,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import os
 
-from .todo import System
-from .todo import Task
-from .todo import TodoFile
-from .todo import PlanFile
+from .file import File
 
 class Root:
 
@@ -30,8 +27,11 @@ class Root:
     @property
     def system(self):
         if not hasattr(self, '_system'):
-            self._todo_file = TodoFile(self.path)
-            self._plan_file = PlanFile(self.path)
+            from .plugins.todo import System
+            self._todo_file = File.open(self.path, 'todo')
+            self._plan_file = File.open(self.path, 'plan')
+            # self._todo_file = TodoFile(self.path)
+            # self._plan_file = PlanFile(self.path)
             todos = self._todo_file.queue
             plans = self._plan_file.queue
             self._system = System(todos=todos, plans=plans)

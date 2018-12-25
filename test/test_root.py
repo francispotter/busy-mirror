@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 from pathlib import Path
 from unittest import mock
 
-from busy.todo import System
+from busy.plugins.todo import System
 from busy.root import Root
 from busy.file import File
 
