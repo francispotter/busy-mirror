@@ -39,15 +39,3 @@ class Root:
     def save(self):
         while self._open_files:
             self._open_files.popitem()[1].save()
-
-
-    # DEPRECATED
-
-    @property
-    def system(self):
-        if not hasattr(self, '_system'):
-            from .plugins.todo import System
-            todos = self.get_queue('todo')
-            plans = self.get_queue('plan')
-            self._system = System(todos=todos, plans=plans)
-        return self._system

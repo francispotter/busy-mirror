@@ -56,10 +56,6 @@ class Command:
     def __init__(self, root):
         self._root = root
 
-    @property
-    def _system(self):
-        return self._root.system
-
     @classmethod
     def register(self, parser):
         pass

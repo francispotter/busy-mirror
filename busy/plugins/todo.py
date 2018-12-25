@@ -72,36 +72,6 @@ class PlanQueue(Queue):
 
 Queue.register(PlanQueue)
 
-class System:
-
-    def __init__(self, *items, todos=None, plans=None):
-        # self.plans = plans if plans else PlanQueue()
-        self.todos = todos if todos else TodoQueue()
-        # self.todos.plans = self.plans
-        # self.plans.todos = self.todos
-        self.add(*items)
-
-    @property
-    def plans(self):
-        return self.todos.plans
-
-    def add(self, *items):
-        self.todos.add(*items)
-
-    def pop(self, *criteria):
-        self.todos.pop(*criteria)
-
-    def drop(self, *criteria):
-        self.todos.drop(*criteria)
-
-    def defer(self, date, *criteria):
-        self.todos.defer(date, *criteria)
-
-    def activate(self, *criteria, today=False):
-        self.todos.activate(*criteria, today=today)
-
-    def manage(self, *criteria):
-        self.todos.manage(*criteria)
 
 class DeferCommand(Command):
 
@@ -112,14 +82,15 @@ class DeferCommand(Command):
         parser.add_argument('--to','--for',dest='time_info')
 
     def execute(self, parsed):
-        tasklist = self._system.todos.list(*parsed.criteria or [1])
+        queue = self._root.get_queue('todo')
+        tasklist = queue.list(*parsed.criteria or [1])
         indices = [i[0]-1 for i in tasklist]
         if hasattr(parsed, 'time_info') and parsed.time_info:
             time_info = parsed.time_info
         else:
             print('\n'.join([str(i[1]) for i in tasklist]))
             time_info = input('Defer to [tomorrow]: ').strip() or 'tomorrow'
-        self._root.system.defer(date_for(time_info), *parsed.criteria)
+        queue.defer(date_for(time_info), *parsed.criteria)
 
 Commander.register(DeferCommand)
 
@@ -133,10 +104,11 @@ class ActivateCommand(Command):
         parser.add_argument('--today','-t', action='store_true')
 
     def execute(self, parsed):
+        queue = self._root.get_queue('todo')
         if hasattr(parsed, 'today') and parsed.today:
-            self._system.activate(today=True)
+            queue.activate(today=True)
         else:
-            self._system.activate(*parsed.criteria)
+            queue.activate(*parsed.criteria)
 
 Commander.register(ActivateCommand)
 
@@ -150,16 +122,16 @@ class StartCommand(Command):
         parser.add_argument('project', action='store', nargs='?')
 
     def execute(self, parsed):
+        queue = self._root.get_queue('todo')
         if parsed.criteria:
             raise RuntimeError('Start takes only an optional project name')
-        self._system.activate(today=True)
-        queue = self._system.todos
+        queue.activate(today=True)
         if queue.count() < 1:
             raise RuntimeError('There are no active tasks')
         project = parsed.project or queue.get().project
         if not project:
             raise RuntimeError('The `start` command required a project')
-        self._system.manage(project)
+        queue.manage(project)
         result = queue.pop(project)
 
 

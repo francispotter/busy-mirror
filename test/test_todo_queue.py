@@ -1,11 +1,10 @@
 from unittest import TestCase
 import datetime
 
-from busy.plugins.todo import System
 from busy.plugins.todo import Task
 from busy.plugins.todo import TodoQueue
 
-class TestSystem(TestCase):
+class TestTodoQueue(TestCase):
 
     def test_get(self):
         q = TodoQueue()

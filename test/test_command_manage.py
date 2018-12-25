@@ -9,7 +9,6 @@ from unittest.mock import Mock
 
 from busy.plugins.todo import Task
 from busy.commander import Commander
-from busy.plugins.todo import System
 
 class TestCommandManage(TestCase):
 
