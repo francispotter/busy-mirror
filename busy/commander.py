@@ -75,6 +75,17 @@ class Command:
     def save(self):
         self._root.save()
 
+class QueueCommand(Command):
+
+    @classmethod
+    def register(self, parser):
+        parser.add_argument('--queue', nargs=1, dest="queue")
+
+    def execute(self, parsed):
+        key = parsed.queue[0] if getattr(parsed, 'queue') else None
+        queue = self._root.get_queue(key)
+        return self.execute_on_queue(parsed, queue)
+
 for folder in ['commands', 'plugins']:
     plugins_dir = Path(__file__).parent / folder
     for plugin_file in plugins_dir.iterdir():

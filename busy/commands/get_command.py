@@ -1,21 +1,16 @@
-from ..commander import Command
+from ..commander import QueueCommand
 from ..commander import Commander
 
-class GetCommand(Command):
+class GetCommand(QueueCommand):
 
     command = 'get'
 
-    @classmethod
-    def register(self, parser):
-        parser.add_argument('--from', nargs=1, dest="list")
-
-    def execute(self, parsed):
+    def execute_on_queue(self, parsed, queue):
         if parsed.criteria:
             message = ("The `get` command only returns the top item - "
                 "repeat without criteria")
             raise RuntimeError(message)
         else:
-            key = parsed.list[0] if getattr(parsed, 'list') else None
-            return str(self._root.get_queue(key).get() or '')
+            return str(queue.get() or '')
 
 Commander.register(GetCommand)
