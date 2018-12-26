@@ -22,7 +22,7 @@ class TestCommandList(TestCase):
             p = Path(t, 'plan.txt')
             p.write_text('2019-01-04|g\n2019-02-05|p')
             c = Commander(root=t)
-            o = c.handle('list','--plan')
+            o = c.handle('list','--queue','plan')
             self.assertEqual(o, '     1  2019-01-04  g\n     2  2019-02-05  p')
 
     def test_list_with_criteria(self):
