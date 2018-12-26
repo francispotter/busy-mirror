@@ -1,17 +1,11 @@
-from ..commander import Command
+from ..commander import QueueCommand
 from ..commander import Commander
 
-class ListCommand(Command):
+class ListCommand(QueueCommand):
 
     command = 'list'
 
-    @classmethod
-    def register(self, parser):
-        parser.add_argument('--plans', action='store_true')
-
-    def execute(self, parsed):
-        key = 'plan' if parsed.plans else 'todo'
-        queue = self._root.get_queue(key)
+    def execute_on_queue(self, parsed, queue):
         itemlist = queue.list(*parsed.criteria)
         return self._list(queue, itemlist)
 
