@@ -1,6 +1,6 @@
 # Busy
 
-A command-line task and plan management tool, for use from the terminal prompt on Linux and MacOS systems.
+A task and plan management tool, for use from the terminal prompt on Linux and MacOS systems.
 
 ## Installation
 
@@ -8,68 +8,82 @@ A command-line task and plan management tool, for use from the terminal prompt o
 pip3 install busy
 ```
 
-## Generic queue management
+## Getting started
 
-The most general use of Busy is to track items in queues. The default queue is the `todo` queue. There are some basic commands that operate on all queues:
-
-### The `add` command
-
-Adds a new item to the bottom of the queue.
+Add some tasks to your queue.
 
 ```
-busy add "Donate to the busy project"
+busy add "Take a shower"
+busy add "Do the laundry"
+busy add "Phone mom"
+busy add "Donate to the Busy project"
 ```
 
-```
-busy add "Office Space" --queue movies
-```
-
-If no item description is provided with the command, it will be read from stdin.
-
-```
-echo "Buy a tree" | busy add --queue christmas
-```
-
-The `add` command also takes an optional `--multiple` option which reads until EOF (_future feature_).
-
-```
-cat list-of-tasks.txt | busy add --multiple
-```
-
-### The `get` command
-
-Get the top item in the queue, referred to as the "current" item. There are no options.
-
-To get the top item in `todo`:
+Find out what to do next:
 
 ```
 busy get
 ```
 
-To get the top item in `movies`:
-
 ```
-busy get --queue movies
+Take a shower
 ```
 
-### The `list` command
-
-Lists the items in the queue in order with their sequence numbers.
+When you're done, mark it off to find the next task.
 
 ```
-busy add "Run"
-busy add "Jump"
-busy add "Sing"
+busy delete; busy get
+```
+
+```
+Do the laundry
+```
+
+See the whole queue, with sequence numbers.
+
+```
 busy list
 ```
 
-Produces this output:
+```
+1  Do the laundry
+2  Phone mom
+3  Donate to the Busy project
+```
+
+Decide to do that one later.
 
 ```
-1  Run
-2  Jump
-3  Sing
+busy drop; busy list
 ```
+
+```
+1  Phone mom
+2  Donate to the Busy project
+3  Do the laundry
+```
+
+Decide to do a specific task now.
+
+```
+busy pop 2; busy get
+```
+
+```
+Donate to the Busy project
+```
+
+## Documentation
+
+The default behavior of Busy is to manage tasks on a "todo" queue.
+
+Basic commands:
+
+- `add` adds a new item to the bottom of the queue. The item description may be included after the command or written to stdin.
+- `get` gets the top item in the queue, referred to as the "current" item. There are no options.
+- `list` lists the items in the queue in order with their sequence numbers.
+
+### Sequence numbers
 
 The sequence numbers may be used in the `list`, `pop`, `drop`, `delete` and `manage` commands to designate specific tasks to be handled by those commands.
 
