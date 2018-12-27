@@ -1,12 +1,154 @@
 # Busy
 
-A command-line task and plan management tool.
+A command-line task and plan management tool, for use from the terminal prompt on Linux and MacOS systems.
 
-To install:
+## Installation
 
 ```
 pip3 install busy
 ```
+
+## Generic queue management
+
+The most general use of Busy is to track items in queues. The default queue is the `todo` queue. There are some basic commands that operate on all queues:
+
+### The `add` command
+
+Adds a new item to the bottom of the queue.
+
+```
+busy add "Donate to the busy project"
+```
+
+```
+busy add "Office Space" --queue movies
+```
+
+If no item description is provided with the command, it will be read from stdin.
+
+```
+echo "Buy a tree" | busy add --queue christmas
+```
+
+The `add` command also takes an optional `--multiple` option which reads until EOF (_future feature_).
+
+```
+cat list-of-tasks.txt | busy add --multiple
+```
+
+### The `get` command
+
+Get the top item in the queue, referred to as the "current" item. There are no options.
+
+To get the top item in `todo`:
+
+```
+busy get
+```
+
+To get the top item in `movies`:
+
+```
+busy get --queue movies
+```
+
+### The `list` command
+
+Lists the items in the queue in order with their sequence numbers.
+
+```
+busy add "Run"
+busy add "Jump"
+busy add "Sing"
+busy list
+```
+
+Produces this output:
+
+```
+1  Run
+2  Jump
+3  Sing
+```
+
+The sequence numbers may be used in the `list`, `pop`, `drop`, `delete` and `manage` commands to designate specific tasks to be handled by those commands.
+
+Note that the numbering starts with 1, and is not an ID -- the number of a item will change when the queue is modified. So always reference the most recent output from the `list` command.
+
+Below are some examples of task designation using the `list` command, although the same syntax works with all the commands that handle designated tasks.
+
+`busy list` lists all the tasks
+
+`busy list 5` shows only task number 5
+
+`busy list 3-7` shows tasks 3-7
+
+`busy list 3-` show tasks 3 through the end
+
+`busy list 3 5 7 9` shows the tasks designated
+
+`busy list -` shows the last task
+
+`busy list -4` is an error! Use `busy list 1-4` instead.
+
+Note the result is always in the order the tasks appear in the queue, regardless of the order the criteria are provided.
+
+
+### The `pop` command
+
+Moves an item or a set of items to the top of the queue. The default is to move the bottom item to the top.
+
+```
+busy pop
+busy list
+```
+
+Produces this output:
+
+```
+1  Sing
+2  Run
+3  Jump
+```
+
+Tasks may be designated for the `pop` command, in which case the designated tasks are moved to the top in the order they appear.
+
+```
+busy pop 2
+busy list
+```
+
+```
+1 Run
+2 Sing
+3 Jump
+```
+
+### The `drop` command
+
+The opposite of `pop`. Move an item or a set of items to the bottom of the queue. The default is the top item.
+
+### The `delete` command
+
+Permanently deletes an item from the queue. The default is the top item.
+
+| `manage`    | Edit tasks in an editor                                           | YES | All active tasks |
+
+## The `manage` command
+
+The `manage` command launches the user's default text editor to directly edit a queue or part of a queue.
+
+Busy uses the `sensible-editor` command to select a text editor, which works with default Ubuntu Linux installations and might or might not work with other operating systems.
+
+The default use of `manage` will edit the entire queue.
+
+```
+busy manage --queue movies
+```
+
+But it's also possible to designate tasks to be managed. The `manage` command does its best to replace the edited items in place in the list order. So if you `manage` the current project (in which all the tasks are at the top), then the edited tasks will still appear at the top. Even if you add tasks, they will be inserted after the last task in the managed set, not at the end of the list. But all the tasks brought up in the editor will be managed. So if you remove a task in the editor, it will be deleted and the others will be moved up to take its place.
+
+
 
 ## Introduction
 
@@ -14,7 +156,7 @@ Busy is a system for keeping track of tasks. Some of the guiding philosophies:
 
 - There are "active" tasks, which is an ordered list of things to work on (also called "todos"), and there are "plans", which are things that have been deferred to a specific future date
 - The "current" task is the top of the "active" task list, so it's the thing to do right now
-- Everything is based on a POSIX command line interface, making it easy to use from the terminal prompt on Linux and MacOS systems
+- Everything is based on a POSIX command line interface, making it easy to
 - Data is stored in easily edited files, so if the tool doesn't do something you want, you can just edit the files
 
 ## Commands
@@ -52,41 +194,12 @@ busy pop errands
 
 A task can have no tags, one tag, or more than one tag.
 
-## Editing the tasks directly with the `manage` command
-
-The `manage` command launches the user's default text editor to directly edit tasks. Note that it only works with active tasks (not plans).
-
-Busy uses the `sensible-editor` command to select a text editor, which works with default Ubuntu Linux installations and might or might not work with other operating systems.
-
-The `manage` command does its best to replace the edited tasks in place in the list order. So if you `manage` the current project (in which all the tasks are at the top), then the edited tasks will still appear at the top. Even if you add tasks, they will be inserted after the last task in the managed set, not at the end of the list. But all the tasks brought up in the editor will be managed. So if you remove a task in the editor, it will be deleted and the others will be moved up to take its place.
-
-## Designating tasks
-
-For some commands, it's possible to designate tasks to be acted upon. Designating tasks is always optional.
-
-Tasks are identified by number, which is the line number of that task within the list of tasks. It's easy to see the numbers of tasks using the `list` command. Note that the numbering starts with 1, and is not an ID -- the number of a task will change as the active task list is reordered. So always reference the most recent list.
-
-`busy list` lists all the tasks
-
-`busy list 5` shows only task number 5
-
-`busy list 3-7` shows tasks 3-7
-
-`busy list 3-` show tasks 3 through the end
-
-`busy list 3 5 7 9` shows the tasks designated
-
-`busy list -` shows the last task
-
-`busy list -4` is an error! Use `busy list 1-4` instead.
-
 `busy list admin` list all the tasks with the `#admin` hashtag somewhere in their description.
 
 Task designation criteria are additive -- that is, a logical OR. So:
 
 `busy list admin sales 3 4` will list all the admin tasks, sales tasks, and tasks 3 and 4.
 
-Note the result is always in the order the tasks appear in the queue, regardless of the order the criteria are provided.
 
 ## Command line options
 
@@ -109,26 +222,6 @@ Example:
 
 ```
 busy defer 4-6 --for 4 days
-```
-
-## The `add` command
-
-To add a task:
-
-```
-busy add "Donate to the busy project"
-```
-
-To add to a different queue:
-
-```
-busy add "Office Space" --queue movies
-```
-
-If no item description is provided with the command, it will be read from stdin.
-
-```
-cat list-of-tasks.txt | busy add --multiple
 ```
 
 ## Projects and the `start` command
