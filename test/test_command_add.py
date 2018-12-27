@@ -10,6 +10,13 @@ from busy.commander import Commander
 
 class TestCommandAdd(TestCase):
 
+    def test_by_parameter(self):
+        with TemporaryDirectory() as t:
+            c = Commander(root=t)
+            c.handle('add','u p')
+            x = Path(t, 'todo.txt').read_text()
+            self.assertEqual(x, 'u p\n')
+
     def test_add_by_input(self):
         with TemporaryDirectory() as t:
             c = Commander(root=t)

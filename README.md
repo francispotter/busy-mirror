@@ -93,8 +93,7 @@ Note the result is always in the order the tasks appear in the queue, regardless
 | **Option** | **Description** |
 | --- | ---|
 | `--root`  | Defines the root for only this command |
-| `--plan`  | Include tasks that are scheduled for a future date (only for `list`) |
-| `--task`  | Provide the task description (only for `add`) |
+| `--queue` | Designate which queue to use; default is `todo` |
 | `--yes`   | Don't require confirmation of deletions |
 | `--today` | Activate tasks for today or earlier (only for `activate`) |
 
@@ -112,9 +111,21 @@ Example:
 busy defer 4-6 --for 4 days
 ```
 
-## Piping to the `add` command
+## The `add` command
 
-Task descriptions always come from stdin. To read from a file, try:
+To add a task:
+
+```
+busy add "Donate to the busy project"
+```
+
+To add to a different queue:
+
+```
+busy add "Office Space" --queue movies
+```
+
+If no item description is provided with the command, it will be read from stdin.
 
 ```
 cat list-of-tasks.txt | busy add --multiple

@@ -8,13 +8,13 @@ class AddCommand(QueueCommand):
     @classmethod
     def register(self, parser):
         super().register(parser)
-        parser.add_argument('--task')
+        parser.add_argument('item', nargs='?')
 
     def execute_on_queue(self, parsed, queue):
-        if hasattr(parsed, 'task') and parsed.task:
-            task = parsed.task
+        if hasattr(parsed, 'item') and parsed.item:
+            item = parsed.item
         else:
-            task = input('Task: ')
-        queue.add(task)
+            item = input('Item: ')
+        queue.add(item)
 
 Commander.register(AddCommand)
