@@ -43,3 +43,12 @@ class TestAlternateList(TestCase):
             c.handle('drop','2','4','--queue','u')
             o = p.read_text()
             self.assertEqual(o, 'a\nc\nb\nd\n')
+
+    def test_delete(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'w.txt')
+            p.write_text('a\nb\nc\nd')
+            c = Commander(root=t)
+            c.handle('delete','--yes','3-', '--queue', 'w')
+            o = p.read_text()
+            self.assertEqual(o, 'a\nb\n')
