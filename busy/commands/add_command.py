@@ -1,20 +1,20 @@
-from ..commander import Command
+from ..commander import QueueCommand
 from ..commander import Commander
 
-class AddCommand(Command):
+class AddCommand(QueueCommand):
 
     command = 'add'
 
     @classmethod
     def register(self, parser):
+        super().register(parser)
         parser.add_argument('--task')
 
-    def execute(self, parsed):
+    def execute_on_queue(self, parsed, queue):
         if hasattr(parsed, 'task') and parsed.task:
             task = parsed.task
         else:
             task = input('Task: ')
-        key = 'todo'
-        self._root.get_queue(key).add(task)
+        queue.add(task)
 
 Commander.register(AddCommand)

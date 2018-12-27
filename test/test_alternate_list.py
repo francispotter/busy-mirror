@@ -26,3 +26,11 @@ class TestAlternateList(TestCase):
             c = Commander(root=t)
             o = c.handle('get')
             self.assertEqual(o, 'b')
+
+    def test_add(self):
+        with TemporaryDirectory() as t:
+            c = Commander(root=t)
+            with mock.patch('sys.stdin', StringIO('g')):
+                c.handle('add','--queue','j')
+                x = Path(t, 'j.txt').read_text()
+                self.assertEqual(x, 'g\n')
