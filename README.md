@@ -132,8 +132,6 @@ The opposite of `pop`. Move an item or a set of items to the bottom of the queue
 
 Permanently deletes an item from the queue. The default is the top item.
 
-| `manage`    | Edit tasks in an editor                                           | YES | All active tasks |
-
 ## The `manage` command
 
 The `manage` command launches the user's default text editor to directly edit a queue or part of a queue.

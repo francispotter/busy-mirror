@@ -9,7 +9,7 @@ import unittest
 from busy.plugins.todo import Task
 from busy.commander import Commander
 
-class TestAlternateList(TestCase):
+class TestAlternateQueue(TestCase):
 
     def test_get_from(self):
         with TemporaryDirectory() as t:
@@ -52,3 +52,13 @@ class TestAlternateList(TestCase):
             c.handle('delete','--yes','3-', '--queue', 'w')
             o = p.read_text()
             self.assertEqual(o, 'a\nb\n')
+
+    def test_manage(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'y.txt')
+            p.write_text('a\n')
+            with mock.patch('busy.editor', lambda x: 'b\n'):
+                c = Commander(root=t)
+                o = c.handle('manage', '--queue', 'y')
+                f = p.read_text()
+                self.assertEqual(f, 'b\n')
