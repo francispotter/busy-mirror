@@ -1,8 +1,16 @@
-from ..commander import Command
+from ..commander import QueueCommand
 from ..commander import Commander
 
-class DropCommand(Command): command = 'drop'
+
+class DropCommand(QueueCommand):
+
+    command = 'drop'
+
 Commander.register(DropCommand)
 
-class PopCommand(Command): command = 'pop'
+
+class PopCommand(QueueCommand):
+
+    command = 'pop'
+
 Commander.register(PopCommand)

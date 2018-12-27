@@ -34,3 +34,12 @@ class TestAlternateList(TestCase):
                 c.handle('add','--queue','j')
                 x = Path(t, 'j.txt').read_text()
                 self.assertEqual(x, 'g\n')
+
+    def test_drop(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'u.txt')
+            p.write_text('a\nb\nc\nd')
+            c = Commander(root=t)
+            c.handle('drop','2','4','--queue','u')
+            o = p.read_text()
+            self.assertEqual(o, 'a\nc\nb\nd\n')

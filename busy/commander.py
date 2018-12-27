@@ -60,13 +60,6 @@ class Command:
     def register(self, parser):
         pass
 
-    def execute(self, parsed):
-        key = 'todo'
-        queue = self._root.get_queue(key)
-        method = getattr(queue, self.command)
-        result = method(*parsed.criteria)
-        return result
-
     def _list(self, queue, tasklist):
         fmtstring = "{0:>6}  " + queue.listfmt
         texts = [fmtstring.format(i, t) for i,t in tasklist]
@@ -85,6 +78,12 @@ class QueueCommand(Command):
         key = parsed.queue[0] if getattr(parsed, 'queue') else None
         queue = self._root.get_queue(key)
         return self.execute_on_queue(parsed, queue)
+
+    def execute_on_queue(self, parsed, queue):
+        method = getattr(queue, self.command)
+        result = method(*parsed.criteria)
+        return result
+
 
 for folder in ['commands', 'plugins']:
     plugins_dir = Path(__file__).parent / folder
