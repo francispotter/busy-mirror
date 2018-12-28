@@ -1,4 +1,4 @@
 test:
   image: python
-  script:
-  - make test
+  script: "make cover"
+  coverage: '/TOTAL +\d+ +\d+ +(\d+)\%\s*$/'
