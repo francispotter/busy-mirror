@@ -95,7 +95,7 @@ Get all the tasks scheduled for today.
 busy activate --today
 ```
 
-### Commands
+### Core Commands
 
 - `add` adds a new item to the bottom of the queue. The item description may be included after the command or written to stdin.
 - `get` gets the top item in the queue, referred to as the "current" item. There are no options.
@@ -115,7 +115,7 @@ Sequence numbers appear in the output from the `list` command. Note that the num
 
 When used to designate items, a range of sequence numbers is separated by a hyphen, with no whitespace, and is inclusive. For example, `4-6` designates items 4, 5, and 6. A hyphen without a number after it includes all the items from that item to the end of the queue. A hyphen on its own indicates the last item in the queue.
 
-### Item Tags
+### Tags
 
 Items can have tags, which are space-separated hashtags in the item description. A task can have no tags, one tag, or more than one tag. For example the following item description has the tag "errands":
 
@@ -124,6 +124,8 @@ go to the supermarket #errands
 ```
 
 The hash itself ("#") is omitted from the command line when designating items by tag.
+
+### Item Designations
 
 Item designations appear after the command. For example, the following command will move all the items with the `#errands` hash to the top of the queue.
 
@@ -169,7 +171,7 @@ Commands that accept item designations support logical defaults, which are:
 
 ### Alternate Queues
 
-Busy will manage any number of queues. The default queue is called `todo`. `busy` commands can be used on other lists. For example, you might have a `shopping` queue for items to buy at the store, and a `movies` queue for films you'd like to watch.
+Busy will manage any number of queues. For example, you might have a `shopping` queue for items to buy at the store, and a `movies` queue for films you'd like to watch. The default queue is called `todo` and has special properties related to planning.
 
 To designate an alternate queue, use the `--queue` option on the command.
 
