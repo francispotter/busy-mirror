@@ -4,5 +4,6 @@ test:
 coverage:
   image: python
   script: "make cover"
-  before_script: "pip3 install coverage"
+  before_script:
+    - "pip3 install coverage"
   coverage: '/TOTAL +\d+ +\d+ +(\d+)\%\s*$/'
