@@ -1,8 +1,5 @@
 test:
   image: python
-  script: "make test"
-coverage:
-  image: python
   script: "make cover"
   before_script:
     - "pip3 install coverage"
