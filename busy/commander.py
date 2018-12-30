@@ -57,7 +57,7 @@ class Command:
         self._root = root
 
     def _list(self, queue, tasklist):
-        fmtstring = "{0:>6}  " + queue.listfmt
+        fmtstring = "{0:>6}  " + queue.itemclass.listfmt
         texts = [fmtstring.format(i, t) for i,t in tasklist]
         return '\n'.join(texts)
 

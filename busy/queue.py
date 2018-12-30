@@ -8,8 +8,6 @@ import busy
 class Queue:
 
     itemclass = Item
-    schema = ['description']
-    listfmt = "{1.description}"
     default_key = 'default'
 
     def __init__(self, manager=None):

@@ -3,6 +3,7 @@
 class Item:
 
     schema = ['description']
+    listfmt = "{1.description}"
 
     def __init__(self, description=None):
         assert isinstance(description, str)

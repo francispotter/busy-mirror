@@ -23,6 +23,7 @@ class Task(Item):
 class Plan(Item):
 
     schema = ['date', 'description']
+    listfmt = "{1.date:%Y-%m-%d}  {1.description}"
 
     def __init__(self, description=None, date=None):
         super().__init__(description)
@@ -69,7 +70,6 @@ Queue.register(TodoQueue, default=True)
 class PlanQueue(Queue):
     itemclass = Plan
     key = 'tasks.plan'
-    listfmt = "{1.date:%Y-%m-%d}  {1.description}"
 
 Queue.register(PlanQueue)
 
