@@ -1,5 +1,6 @@
 # A generic item from a queue, with a description and possibly tags
 
+
 class Item:
 
     schema = ['description']

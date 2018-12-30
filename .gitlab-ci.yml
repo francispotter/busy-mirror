@@ -4,3 +4,8 @@ test:
   before_script:
     - "pip3 install coverage"
   coverage: '/TOTAL +\d+ +\d+ +(\d+)\%\s*$/'
+style:
+  image: python
+  before_script:
+    - "pip3 install pycodestyle"
+  script: "pycodestyle busy/*.py"
