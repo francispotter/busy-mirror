@@ -27,3 +27,11 @@ class TestCommandDrop(TestCase):
             c.handle('pop','2','4')
             o = p.read_text()
             self.assertEqual(o, 'b\nd\na\nc\n')
+
+    def test_no_output(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'todo.txt')
+            p.write_text('a\nb\n')
+            c = Commander(root=t)
+            o = c.handle('drop','1')
+            self.assertEqual(o, None)
