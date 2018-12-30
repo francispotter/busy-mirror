@@ -56,10 +56,6 @@ class Command:
     def __init__(self, root):
         self._root = root
 
-    @classmethod
-    def register(self, parser):
-        pass
-
     def _list(self, queue, tasklist):
         fmtstring = "{0:>6}  " + queue.listfmt
         texts = [fmtstring.format(i, t) for i,t in tasklist]
