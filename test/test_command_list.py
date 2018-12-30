@@ -19,10 +19,10 @@ class TestCommandList(TestCase):
 
     def test_list_plans(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'tasks.plan.txt')
+            p = Path(t, 'plans.txt')
             p.write_text('2019-01-04|g\n2019-02-05|p')
             c = Commander(root=t)
-            o = c.handle('list','--queue','tasks.plan')
+            o = c.handle('list','--queue','plans')
             self.assertEqual(o, '     1  2019-01-04  g\n     2  2019-02-05  p')
 
     def test_list_with_criteria(self):

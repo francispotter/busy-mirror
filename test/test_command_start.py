@@ -39,7 +39,7 @@ class TestCommandStart(TestCase):
 
     def test_start_activates_today(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'tasks.plan.txt')
+            p = Path(t, 'plans.txt')
             p.write_text('2018-09-04|x #g\n2019-03-25|y #g\n')
             c = Commander(root=t)
             with mock.patch('busy.future.today', lambda : Date(2019,2,11)):

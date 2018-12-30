@@ -69,7 +69,7 @@ Queue.register(TodoQueue, default=True)
 
 class PlanQueue(Queue):
     itemclass = Plan
-    key = 'tasks.plan'
+    key = 'plans'
 
 Queue.register(PlanQueue)
 
