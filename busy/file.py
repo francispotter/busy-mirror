@@ -28,7 +28,7 @@ class File:
 
     @property
     def schema(self):
-        return self.queueclass.schema
+        return self.queueclass.itemclass.schema
 
     def save(self):
         with open(self._path, 'w') as datafile:

@@ -22,6 +22,8 @@ class Task(Item):
 
 class Plan(Item):
 
+    schema = ['date', 'description']
+
     def __init__(self, description=None, date=None):
         super().__init__(description)
         self._date = busy.future.absolute_date(date)
@@ -67,7 +69,6 @@ Queue.register(TodoQueue, default=True)
 class PlanQueue(Queue):
     itemclass = Plan
     key = 'tasks.plan'
-    schema = ['date', 'description']
     listfmt = "{1.date:%Y-%m-%d}  {1.description}"
 
 Queue.register(PlanQueue)

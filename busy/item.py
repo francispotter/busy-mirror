@@ -2,6 +2,8 @@
 
 class Item:
 
+    schema = ['description']
+
     def __init__(self, description=None):
         assert isinstance(description, str)
         assert description
