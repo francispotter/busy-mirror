@@ -64,6 +64,17 @@ class Command:
     def save(self):
         self._root.save()
 
+    def is_confirmed(self, parsed, itemlist, verb, noun):
+        if hasattr(parsed, 'yes') and parsed.yes:
+            confirmed = True
+        else:
+            print('\n'.join([str(i[1]) for i in itemlist]))
+            confirmed = input(f'{verb}? (Y/n) ').startswith('Y')
+        if not confirmed:
+            print(f"{noun} must be confirmed")
+        return confirmed
+
+
 class QueueCommand(Command):
 
     @classmethod

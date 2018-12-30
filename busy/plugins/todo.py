@@ -37,6 +37,20 @@ class Plan(Item):
         return Task(self.description)
 
 
+class DoneTask(Item):
+
+    schema = ['date', 'description']
+    listfmt = "{1.date:%Y-%m-%d}  {1.description}"
+
+    def __init__(self, description=None, date=None):
+        super().__init__(description)
+        self._date = busy.future.absolute_date(date)
+
+    @property
+    def date(self):
+        return self._date
+
+
 class TodoQueue(Queue):
     itemclass = Task
     key = 'tasks'
@@ -45,8 +59,10 @@ class TodoQueue(Queue):
         super().__init__(manager)
         if manager:
             self.plans = manager.get_queue(PlanQueue.key)
+            self.done = manager.get_queue('done')
         else:
             self.plans = PlanQueue()
+            self.done = DoneQueue()
 
     def defer(self, date, *criteria):
         indices = self.select(*(criteria or [1]))
@@ -64,6 +80,12 @@ class TodoQueue(Queue):
         self.add(*tasks, index=0)
         self.plans.delete_by_indices(*indices)
 
+    def finish(self, *indices, date=None):
+        if not date: date = busy.future.today()
+        donelist, keeplist = self._split_by_indices(*indices)
+        self.done.add(*[DoneTask(str(t), date) for t in donelist])
+        self._items = keeplist
+
 Queue.register(TodoQueue, default=True)
 
 
@@ -72,6 +94,13 @@ class PlanQueue(Queue):
     key = 'plans'
 
 Queue.register(PlanQueue)
+
+
+class DoneQueue(Queue):
+    itemclass = DoneTask
+    key = 'done'
+
+Queue.register(DoneQueue)
 
 
 class TodoCommand(Command):
@@ -138,5 +167,21 @@ class StartCommand(TodoCommand):
         queue.manage(project)
         result = queue.pop(project)
 
-
 Commander.register(StartCommand)
+
+
+class FinishCommand(TodoCommand):
+
+    command = 'finish'
+
+    @classmethod
+    def register(self, parser):
+        parser.add_argument('--yes', action='store_true')
+
+    def execute_todo(self, parsed, queue):
+        tasklist = queue.list(*parsed.criteria or [1])
+        indices = [i[0]-1 for i in tasklist]
+        if self.is_confirmed(parsed, tasklist, 'Finish', 'Finishing'):
+            queue.finish(*indices)
+
+Commander.register(FinishCommand)

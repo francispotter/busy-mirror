@@ -1,3 +1,6 @@
+# Various utilities related to date handling
+# TODO: Change the file name to 'date'
+
 from datetime import date as Date
 from datetime import datetime as DateTime
 from datetime import timedelta as TimeDelta

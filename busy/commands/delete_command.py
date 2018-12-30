@@ -13,14 +13,7 @@ class DeleteCommand(QueueCommand):
     def execute_on_queue(self, parsed, queue):
         itemlist = queue.list(*parsed.criteria or [1])
         indices = [i[0]-1 for i in itemlist]
-        if hasattr(parsed, 'yes') and parsed.yes:
-            confirmed = True
-        else:
-            print('\n'.join([str(i[1]) for i in itemlist]))
-            confirmed = input('Delete? (Y/n) ').startswith('Y')
-        if not confirmed:
-            print("Deletion must be confirmed")
-        else:
+        if self.is_confirmed(parsed, itemlist, 'Delete', 'Deletion'):
             queue.delete_by_indices(*indices)
 
 Commander.register(DeleteCommand)
