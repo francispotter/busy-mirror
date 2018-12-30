@@ -8,7 +8,7 @@ cover:
 	python3 -m coverage report -m
 
 install:
-	sudo pip3 install --upgrade .
+	sudo pip3 install .
 
 dist:
 	mkdir -p dist
