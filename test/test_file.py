@@ -44,4 +44,4 @@ class TestFile(TestCase):
             p = Path(d) / 'tasks.plan.txt'
             p.write_text('2018-12-01|a\n2018-12-09|b')
             q = File(p, PlanQueue).queue
-            self.assertEqual(q.get().plan_date.month, 12)
+            self.assertEqual(q.get().date.month, 12)

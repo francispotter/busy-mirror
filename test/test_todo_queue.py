@@ -28,7 +28,7 @@ class TestTodoQueue(TestCase):
         d = datetime.date(2018,12,25)
         s.defer(d)
         self.assertEqual(s.plans.count(), 1)
-        self.assertEqual(s.plans.get(1).plan_date.year, 2018)
+        self.assertEqual(s.plans.get(1).date.year, 2018)
 
     def test_pop(self):
         s = TodoQueue()

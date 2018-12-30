@@ -2,7 +2,7 @@ from unittest import TestCase
 import datetime
 
 from busy.plugins.todo import Task
-
+from busy.plugins.todo import Plan
 
 class TestTask(TestCase):
 
@@ -25,8 +25,8 @@ class TestTask(TestCase):
 
     def test_plan_as_tuple(self):
         t = Task('b')
-        t.as_plan((2018,12,1))
-        self.assertEqual(t.plan_date.month, 12)
+        p = t.as_plan((2018,12,1))
+        self.assertEqual(p.date.month, 12)
 
     def test_plan_requires_date(self):
         t = Task('c')
@@ -35,12 +35,12 @@ class TestTask(TestCase):
 
     def test_plan_with_date_as_string(self):
         t = Task ('d')
-        t.as_plan('2019-04-05')
-        self.assertEqual(t.plan_date.day, 5)
+        p = t.as_plan('2019-04-05')
+        self.assertEqual(p.date.day, 5)
 
-    def test_create_task_with_dict(self):
-        t = Task(plan_date=(2019,4,15), description='a')
-        self.assertEqual(t.plan_date.month, 4)
+    def test_create_plan_with_dict(self):
+        t = Plan(date=(2019,4,15), description='a')
+        self.assertEqual(t.date.month, 4)
 
     def test_tags(self):
         t = Task('f #a')

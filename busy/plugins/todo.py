@@ -7,34 +7,31 @@ import busy.future
 import busy
 from ..future import date_for
 
-TODO_STATE = 't'
-PLAN_STATE = 'p'
-DONE_STATE = 'd'
-
 class Task(Item):
 
-    def __init__(self, description=None, plan_date=None):
+    def __init__(self, description=None):
         super().__init__(description)
-        self._state = TODO_STATE
-        if plan_date: self.as_plan(plan_date)
 
     def as_plan(self, date):
-        self._state = PLAN_STATE
-        self._plan_date = busy.future.absolute_date(date)
-        return self
-
-    def as_todo(self):
-        self._state = TODO_STATE
-        return self
-
-    @property
-    def plan_date(self):
-        return self._plan_date
+        return Plan(self.description, date)
 
     @property
     def project(self):
         tags = self.tags
         return tags[0] if tags else None
+
+class Plan(Item):
+
+    def __init__(self, description=None, date=None):
+        super().__init__(description)
+        self._date = busy.future.absolute_date(date)
+
+    @property
+    def date(self):
+        return self._date
+
+    def as_todo(self):
+        return Task(self.description)
 
 
 class TodoQueue(Queue):
@@ -56,7 +53,7 @@ class TodoQueue(Queue):
 
     def activate(self, *criteria, today=False):
         if today:
-            func = lambda t: t.plan_date <= busy.future.today()
+            func = lambda p: p.date <= busy.future.today()
             indices = self.plans.select(func)
         else:
             indices = self.plans.select(*criteria)
@@ -68,10 +65,10 @@ Queue.register(TodoQueue, default=True)
 
 
 class PlanQueue(Queue):
-    itemclass = Task
+    itemclass = Plan
     key = 'tasks.plan'
-    schema = ['plan_date', 'description']
-    listfmt = "{1.plan_date:%Y-%m-%d}  {1.description}"
+    schema = ['date', 'description']
+    listfmt = "{1.date:%Y-%m-%d}  {1.description}"
 
 Queue.register(PlanQueue)
 
