@@ -39,7 +39,7 @@ class Task(Item):
 
 class TodoQueue(Queue):
     itemclass = Task
-    key = 'todo'
+    key = 'tasks'
 
     def __init__(self, manager=None):
         super().__init__(manager)

@@ -27,7 +27,7 @@ class TestCommandList(TestCase):
 
     def test_list_with_criteria(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             o = c.handle('list','2','4')

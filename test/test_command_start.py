@@ -13,7 +13,7 @@ class TestCommandStart(TestCase):
 
     def test_start_works_for_named_project(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb #g\nc #k\nd #g')
             c = Commander(root=t)
             o = c.handle('start','g')
@@ -22,7 +22,7 @@ class TestCommandStart(TestCase):
 
     def test_start_fails_if_criteria(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb #g\nc #k\nd #g')
             c = Commander(root=t)
             with self.assertRaises(RuntimeError):
@@ -30,7 +30,7 @@ class TestCommandStart(TestCase):
 
     def test_start_pops_tasks_for_current_project(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a #k\nb #g\nc #k\nd #g')
             c = Commander(root=t)
             c.handle('start')
@@ -45,7 +45,7 @@ class TestCommandStart(TestCase):
             with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
                 o = c.handle('start','g')
                 self.assertEqual(p.read_text(), '2019-03-25|y #g\n')
-                p2 = Path(t, 'todo.txt')
+                p2 = Path(t, 'tasks.txt')
                 self.assertEqual(p2.read_text(), 'x #g\n')
 
     def test_start_fails_gracefully_if_no_todos(self):
@@ -56,7 +56,7 @@ class TestCommandStart(TestCase):
 
     def test_start_fails_gracefully_if_no_project_at_top(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb #g')
             c = Commander(root=t)
             with self.assertRaises(RuntimeError):

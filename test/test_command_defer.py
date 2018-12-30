@@ -12,7 +12,7 @@ class TestCommandDefer(TestCase):
 
     def test_defer(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             c.handle('defer','2','--to','2019-09-06')
@@ -23,7 +23,7 @@ class TestCommandDefer(TestCase):
 
     def test_defer_for(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             c.handle('defer','2','--for','2019-09-06')
@@ -34,7 +34,7 @@ class TestCommandDefer(TestCase):
 
     def test_defer_days(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
                 c = Commander(root=t)
@@ -46,7 +46,7 @@ class TestCommandDefer(TestCase):
 
     def test_defer_d(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
                 c = Commander(root=t)
@@ -58,7 +58,7 @@ class TestCommandDefer(TestCase):
 
     def test_defer_with_input(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\n')
             c = Commander(root=t)
             with mock.patch('sys.stdin', StringIO('2019-08-24')):
@@ -70,7 +70,7 @@ class TestCommandDefer(TestCase):
 
     def test_default_tomorrow(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\n')
             c = Commander(root=t)
             with mock.patch('busy.future.today', lambda : Date(2019,2,11)):

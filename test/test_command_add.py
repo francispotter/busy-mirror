@@ -14,7 +14,7 @@ class TestCommandAdd(TestCase):
         with TemporaryDirectory() as t:
             c = Commander(root=t)
             c.handle('add','u p')
-            x = Path(t, 'todo.txt').read_text()
+            x = Path(t, 'tasks.txt').read_text()
             self.assertEqual(x, 'u p\n')
 
     def test_add_by_input(self):
@@ -22,5 +22,5 @@ class TestCommandAdd(TestCase):
             c = Commander(root=t)
             with mock.patch('sys.stdin', StringIO('g')):
                 c.handle('add')
-                x = Path(t, 'todo.txt').read_text()
+                x = Path(t, 'tasks.txt').read_text()
                 self.assertEqual(x, 'g\n')

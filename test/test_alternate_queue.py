@@ -21,7 +21,7 @@ class TestAlternateQueue(TestCase):
 
     def test_default_queue(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('b\n')
             c = Commander(root=t)
             o = c.handle('get')

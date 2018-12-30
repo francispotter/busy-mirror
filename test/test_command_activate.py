@@ -18,7 +18,7 @@ class TestCommandActivate(TestCase):
             c = Commander(root=t)
             c.handle('activate','1')
             self.assertEqual(p.read_text(), '')
-            p2 = Path(t, 'todo.txt')
+            p2 = Path(t, 'tasks.txt')
             self.assertEqual(p2.read_text(), 'a\n')
 
     def test_activate_with_today_option(self):
@@ -29,12 +29,12 @@ class TestCommandActivate(TestCase):
             with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
                 c.handle('activate','--today')
                 self.assertEqual(p.read_text(), '2019-03-25|b\n')
-                p2 = Path(t, 'todo.txt')
+                p2 = Path(t, 'tasks.txt')
                 self.assertEqual(p2.read_text(), 'a\n')
 
     def test_pop(self):
         with TemporaryDirectory() as t:
-            p1 = Path(t, 'todo.txt')
+            p1 = Path(t, 'tasks.txt')
             p1.write_text('x\n')
             p2 = Path(t, 'plan.txt')
             p2.write_text('2018-09-04|a\n')

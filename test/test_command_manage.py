@@ -14,7 +14,7 @@ class TestCommandManage(TestCase):
 
     def test_manage_launches_editor(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\n')
             with mock.patch('busy.editor', lambda x: 'b\n'):
                 c = Commander(root=t)
@@ -24,7 +24,7 @@ class TestCommandManage(TestCase):
 
     def test_manage_includes_newline_at_end(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\n')
             m = Mock()
             m.return_value = 'b\n'
@@ -35,7 +35,7 @@ class TestCommandManage(TestCase):
 
     def test_leave_tasks_in_place(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\n')
             with mock.patch('busy.editor', lambda x: 'a\n'):
                 c = Commander(root=t)

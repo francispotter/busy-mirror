@@ -12,7 +12,7 @@ class TestCommandDrop(TestCase):
 
     def test_drop(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             c.handle('drop','2','4')
@@ -21,7 +21,7 @@ class TestCommandDrop(TestCase):
 
     def test_pop(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             c.handle('pop','2','4')
@@ -30,7 +30,7 @@ class TestCommandDrop(TestCase):
 
     def test_no_output(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\n')
             c = Commander(root=t)
             o = c.handle('drop','1')

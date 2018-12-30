@@ -12,7 +12,7 @@ class TestCommandGet(TestCase):
 
     def test_get(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             o = c.handle('get')
@@ -26,7 +26,7 @@ class TestCommandGet(TestCase):
 
     def test_get_with_criteria(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             with self.assertRaises(RuntimeError):

@@ -14,7 +14,7 @@ class TestCommander(TestCase):
         with TemporaryDirectory() as t:
             c = Commander(root=t)
             o = c.handle('add','--task','a')
-            x = Path(t, 'todo.txt').read_text()
+            x = Path(t, 'tasks.txt').read_text()
             self.assertEqual(x, 'a\n')
 
     def test_with_root_option(self):
@@ -22,7 +22,7 @@ class TestCommander(TestCase):
             c = Commander()
             c.handle('--root', t)
             c.handle('add','--task','a')
-            x = Path(t, 'todo.txt').read_text()
+            x = Path(t, 'tasks.txt').read_text()
             self.assertEqual(x, 'a\n')
 
     def test_version_info(self):

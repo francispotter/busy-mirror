@@ -12,7 +12,7 @@ class TestCommandDelete(TestCase):
 
     def test_delete(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             c.handle('delete','--yes','3-')
@@ -21,7 +21,7 @@ class TestCommandDelete(TestCase):
 
     def test_delete_with_input_confirmation_yes(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             with mock.patch('sys.stdin', StringIO('Y')):
@@ -31,7 +31,7 @@ class TestCommandDelete(TestCase):
 
     def test_delete_with_input_confirmation_no(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
             with mock.patch('sys.stdin', StringIO('no')):
@@ -41,7 +41,7 @@ class TestCommandDelete(TestCase):
 
     def test_delete_outputs_before_confirmation(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\n')
             c = Commander(root=t)
             o = StringIO()
@@ -52,7 +52,7 @@ class TestCommandDelete(TestCase):
 
     def test_delete_defaults_to_first_task_only(self):
         with TemporaryDirectory() as t:
-            p = Path(t, 'todo.txt')
+            p = Path(t, 'tasks.txt')
             p.write_text('a\nb\n')
             c = Commander(root=t)
             with mock.patch('sys.stdin', StringIO('Y')):

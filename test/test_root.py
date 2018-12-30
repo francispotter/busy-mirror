@@ -12,7 +12,7 @@ class TestRoot(TestCase):
     def test_root(self):
         with TemporaryDirectory() as d:
             sd = Root(Path(d))
-            s = sd.get_queue('todo')
+            s = sd.get_queue('tasks')
             self.assertIsInstance(s, TodoQueue)
 
     def test_add_todo(self):
