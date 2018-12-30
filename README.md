@@ -171,7 +171,7 @@ Commands that accept item designations support logical defaults, which are:
 
 ### Alternate Queues
 
-Busy will manage any number of queues. For example, you might have a `shopping` queue for items to buy at the store, and a `movies` queue for films you'd like to watch. The default queue is called `todo` and has special properties related to planning.
+Busy will manage any number of queues. For example, you might have a `shopping` queue for items to buy at the store, and a `movies` queue for films you'd like to watch. The default queue is called `tasks` and has special properties related to planning.
 
 To designate an alternate queue, use the `--queue` option on the command.
 
@@ -182,14 +182,14 @@ busy get --queue movies
 
 ### Managing Plans with the `defer` and `activate` commands
 
-The default `todo` queue supports several specific commands related to planning -- that is, scheduling tasks for the future. Planned tasks are kept in another special queue called `plan`.
+The default `tasks` queue supports several specific commands related to planning -- that is, scheduling tasks for the future. Planned tasks are kept in another special queue called `plans`.
 
 There are two commands related to plan management.
 
-- `defer` removes a task or set of tasks from the `todo` queue and schedules it or them to reappear at a future date in the `plan` queue.
-- `activate`removes a task or set of tasks from the `plan` queue and replaces it or them into the `todo` queue.
+- `defer` removes a task or set of tasks from the `tasks` queue and schedules it or them to reappear at a future date in the `plans` queue.
+- `activate`removes a task or set of tasks from the `plans` queue and replaces it or them into the `tasks` queue.
 
-The `defer` and `activate` commands accept item designations. The `defer` command deals with the `todo` queue; its default is the top item in the `todo` queue. The `activate` command deals with the `plan` queue; its default is all the items scheduled for the current date or earlier.
+The `defer` and `activate` commands accept item designations. The `defer` command deals with the `tasks` queue; its default is the top item in the `tasks` queue. The `activate` command deals with the `plans` queue; its default is all the items scheduled for the current date or earlier.
 
 Planning is by date, not time, and is relative to the current date according to the system clock.
 
@@ -202,29 +202,29 @@ The date may take any of the following forms:
 - An integer without a space and the letter `d`, such as `4d`, which is a short form of `4 days`
 - The word `tomorrow`, which is also the default if no date is provided
 
-As an example, the following command will defer tasks 4, 5, and 6 from the `todo` queue to the date 4 days from today, keeping them in the `plan` queue until that date.
+As an example, the following command will defer tasks 4, 5, and 6 from the `tasks` queue to the date 4 days from today, keeping them in the `plans` queue until that date.
 
 ```
 busy defer 4-6 --for 4 days
 ```
 
-Note that the `plan` queue is keeping the task information (verbatim from the `todo` queue) along with the date information (as an absolute date).
+Note that the `plans` queue is keeping the task information (verbatim from the `tasks` queue) along with the date information (as an absolute date).
 
-To pull tasks off the `plan` queue and put them back on the `todo` queue, use the `activate` command. There are two ways to use the `activate` command:
+To pull tasks off the `plans` queue and put them back on the `tasks` queue, use the `activate` command. There are two ways to use the `activate` command:
 
-- With the `--today` option, which is the normal way, and activates all the tasks scheduled for today or earlier, bringing the `todo` list up to date
-- With designated items from the `plan` queue
+- With the `--today` option, which is the normal way, and activates all the tasks scheduled for today or earlier, bringing the `tasks` list up to date
+- With designated items from the `plans` queue
 
 If no items are designated, and there is no `--today` option, no tasks will be activated.
 
 
 ### Projects and the `start` command
 
-Another special feature of the `todo` and `plan` queues is the `start` command, which deals with projects.
+Another special feature of the `tasks` and `plans` queues is the `start` command, which deals with projects.
 
 If a task has tags, the first tag is considered to be its "project" for the purposes of the `start` command.
 
-The `start` command is used to start work on a project. If an argument is passed to the command, that's the chosen project. Otherwise the chosen project is the project of the current task (the top item in the `todo` queue). The command basically combines steps:
+The `start` command is used to start work on a project. If an argument is passed to the command, that's the chosen project. Otherwise the chosen project is the project of the current task (the top item in the `tasks` queue). The command basically combines steps:
 
 - Calls `activate --today` so the active task list is up-to-date
 - Calls `manage` on the project, to edit the list of tasks for the project
@@ -243,8 +243,6 @@ busy manage --queue movies
 ```
 
 But it's also possible to designate tasks to be managed. The `manage` command does its best to replace the edited items in place in the list order. So if you `manage` the current project (in which all the tasks are at the top), then the edited tasks will still appear at the top. Even if you add tasks, they will be inserted after the last task in the managed set, not at the end of the list. But all the tasks brought up in the editor will be managed. So if you remove a task in the editor, it will be deleted and the others will be moved up to take its place.
-
-
 
 ### Data storage
 
