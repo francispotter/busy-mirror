@@ -248,9 +248,9 @@ But it's also possible to designate tasks to be managed. The `manage` command do
 
 ### Data storage
 
-Busy keeps the queues in plain text files, so if the tool doesn't do something you want, you can just edit the files. The files are in a directory together, referred to as the "root". Each file is the name of the queue with a `.txt` extension. If a required file is missing, it will be created automatically. So typically, the root includes `tasks.txt`, `plan.txt`, and any number of custom queue files.
+Busy keeps the queues in plain text files, so if the tool doesn't do something you want, you can just edit the files. The files are in a directory together, referred to as the "root". Each file is the name of the queue with a `.txt` extension. If a required file is missing, it will be created automatically. So typically, the root includes `tasks.txt`, `tasks.plan.txt`, and any number of custom queue files.
 
-Technically, they are pipe-delimited data files, though `tasks.txt` only has one field (description); `plan.txt` has only two fields (date and description), and there is no support for managing separate fields in the Busy tool itself.
+Technically, they are pipe-delimited data files, though `tasks.txt` only has one field (description); `tasks.plan.txt` has only two fields (date and description), and there is no support for managing separate fields in the Busy tool itself.
 
 The root is designated in one of the following ways, which are tried in order.
 

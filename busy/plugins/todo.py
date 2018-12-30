@@ -43,7 +43,10 @@ class TodoQueue(Queue):
 
     def __init__(self, manager=None):
         super().__init__(manager)
-        self.plans = manager.get_queue('plan') if manager else PlanQueue()
+        if manager:
+            self.plans = manager.get_queue(PlanQueue.key)
+        else:
+            self.plans = PlanQueue()
 
     def defer(self, date, *criteria):
         indices = self.select(*(criteria or [1]))
@@ -66,7 +69,7 @@ Queue.register(TodoQueue, default=True)
 
 class PlanQueue(Queue):
     itemclass = Task
-    key = 'plan'
+    key = 'tasks.plan'
     schema = ['plan_date', 'description']
     listfmt = "{1.plan_date:%Y-%m-%d}  {1.description}"
 

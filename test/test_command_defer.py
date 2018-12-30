@@ -18,7 +18,7 @@ class TestCommandDefer(TestCase):
             c.handle('defer','2','--to','2019-09-06')
             o = p.read_text()
             self.assertEqual(o, 'a\nc\nd\n')
-            o2 = Path(t, 'plan.txt').read_text()
+            o2 = Path(t, 'tasks.plan.txt').read_text()
             self.assertEqual(o2, '2019-09-06|b\n')
 
     def test_defer_for(self):
@@ -29,7 +29,7 @@ class TestCommandDefer(TestCase):
             c.handle('defer','2','--for','2019-09-06')
             o = p.read_text()
             self.assertEqual(o, 'a\nc\nd\n')
-            o2 = Path(t, 'plan.txt').read_text()
+            o2 = Path(t, 'tasks.plan.txt').read_text()
             self.assertEqual(o2, '2019-09-06|b\n')
 
     def test_defer_days(self):
@@ -41,7 +41,7 @@ class TestCommandDefer(TestCase):
                 c.handle('defer','2','--for','1 day')
                 o = p.read_text()
                 self.assertEqual(o, 'a\nc\nd\n')
-                o2 = Path(t, 'plan.txt').read_text()
+                o2 = Path(t, 'tasks.plan.txt').read_text()
                 self.assertEqual(o2, '2019-02-12|b\n')
 
     def test_defer_d(self):
@@ -53,7 +53,7 @@ class TestCommandDefer(TestCase):
                 c.handle('defer','2','--for','5d')
                 o = p.read_text()
                 self.assertEqual(o, 'a\nc\nd\n')
-                o2 = Path(t, 'plan.txt').read_text()
+                o2 = Path(t, 'tasks.plan.txt').read_text()
                 self.assertEqual(o2, '2019-02-16|b\n')
 
     def test_defer_with_input(self):
@@ -65,7 +65,7 @@ class TestCommandDefer(TestCase):
                 c.handle('defer')
                 o = p.read_text()
                 self.assertEqual(o, 'b\n')
-                o2 = Path(t, 'plan.txt').read_text()
+                o2 = Path(t, 'tasks.plan.txt').read_text()
                 self.assertEqual(o2, '2019-08-24|a\n')
 
     def test_default_tomorrow(self):
@@ -76,5 +76,5 @@ class TestCommandDefer(TestCase):
             with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
                 with mock.patch('sys.stdin', StringIO(' ')):
                     c.handle('defer')
-                    o2 = Path(t, 'plan.txt').read_text()
+                    o2 = Path(t, 'tasks.plan.txt').read_text()
                     self.assertEqual(o2, '2019-02-12|a\n')
