@@ -10,19 +10,23 @@ from .root import Root
 from . import PYTHON_VERSION
 import busy
 
+
+MESSAGE = "Busy requires Python version %i.%i.%i or higher"
+
+
 class Commander:
 
     def __init__(self, *args, root=None):
         if sys.version_info < PYTHON_VERSION:
-            message = ("Busy requires Python version %i.%i.%i or higher" %
-                PYTHON_VERSION)
-            raise RuntimeError(message)
-        if root: self.root = Root(root)
+            raise RuntimeError(MESSAGE % PYTHON_VERSION)
+        if root:
+            self.root = Root(root)
 
     def handle(self, *args):
         parsed, remaining = self._parser.parse_known_args(args)
         parsed.criteria = remaining
-        if parsed.root: self.root = Root(parsed.root)
+        if parsed.root:
+            self.root = Root(parsed.root)
         if hasattr(parsed, 'command'):
             command = parsed.command(self.root)
             result = command.execute(parsed)
@@ -31,7 +35,8 @@ class Commander:
 
     @property
     def root(self):
-        if not hasattr(self, '_root'): self._root = Root()
+        if not hasattr(self, '_root'):
+            self._root = Root()
         return self._root
 
     @root.setter
@@ -58,7 +63,7 @@ class Command:
 
     def _list(self, queue, tasklist):
         fmtstring = "{0:>6}  " + queue.itemclass.listfmt
-        texts = [fmtstring.format(i, t) for i,t in tasklist]
+        texts = [fmtstring.format(i, t) for i, t in tasklist]
         return '\n'.join(texts)
 
     def save(self):

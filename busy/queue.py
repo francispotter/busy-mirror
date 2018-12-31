@@ -5,6 +5,7 @@ from .selector import Selector
 from .item import Item
 import busy
 
+
 class Queue:
 
     itemclass = Item
@@ -20,14 +21,12 @@ class Queue:
     def count(self):
         return len(self._items)
 
-
     # Add new items. Always makes them the right class. Also does inserts.
 
     def add(self, *items, index=None):
         newitems = [self.itemclass.create(i) for i in items if i]
-        index = len(self._items) if index == None else index
+        index = len(self._items) if index is None else index
         self._items[index:index] = newitems
-
 
     # Replace existing items at the indices provided. Also inserts if the
     # indices run out. Does not create items. Would be good to combine this
@@ -40,7 +39,6 @@ class Queue:
             del self._items[indices.pop()]
         self._items.extend(newvalues)
 
-
     def get(self, index=1):
         return self._items[index-1] if self._items else None
 
@@ -52,8 +50,8 @@ class Queue:
         return self._split_by_indices(*self.select(*criteria))
 
     def _split_by_indices(self, *indices):
-        inlist = [t for i,t in enumerate(self._items) if i in indices]
-        outlist = [t for i,t in enumerate(self._items) if i not in indices]
+        inlist = [t for i, t in enumerate(self._items) if i in indices]
+        outlist = [t for i, t in enumerate(self._items) if i not in indices]
         return (inlist, outlist)
 
     def pop(self, *criteria):
@@ -89,11 +87,14 @@ class Queue:
 
     @classmethod
     def register(self, queueclass, default=False):
-        if not hasattr(self, '_classes'): self._classes = {}
+        if not hasattr(self, '_classes'):
+            self._classes = {}
         self._classes[queueclass.key] = queueclass
-        if default: self.default_key = queueclass.key
+        if default:
+            self.default_key = queueclass.key
 
     @classmethod
     def subclass(self, key):
-        if not hasattr(self, '_classes'): self._classes = {}
+        if not hasattr(self, '_classes'):
+            self._classes = {}
         return self._classes.get(key) or self

@@ -3,6 +3,7 @@ from csv import DictWriter
 
 from .queue import Queue
 
+
 class File:
 
     def __init__(self, path, queueclass=Queue, root=None):
@@ -34,5 +35,5 @@ class File:
         with open(self._path, 'w') as datafile:
             writer = DictWriter(datafile, self.schema, delimiter="|")
             for item in self.queue.all():
-                values = dict([(f, getattr(item,f)) for f in self.schema])
+                values = dict([(f, getattr(item, f)) for f in self.schema])
                 writer.writerow(values)

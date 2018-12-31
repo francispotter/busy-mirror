@@ -2,7 +2,9 @@ import subprocess
 from tempfile import NamedTemporaryFile
 from pathlib import Path
 
-PYTHON_VERSION = (3,6,5)
+
+PYTHON_VERSION = (3, 6, 5)
+
 
 def editor(arg):
     with NamedTemporaryFile() as tempfile:

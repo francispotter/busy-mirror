@@ -30,15 +30,24 @@ class Selector:
 
 
 class NumberCriterium:
-    def match(word):  return str(word).isdigit()
-    def __init__(self, word):  self.index = int(word) - 1
-    def hit(self, index, value, count):  return index == self.index
+
+    def match(word):
+        return str(word).isdigit()
+
+    def __init__(self, word):
+        self.index = int(word) - 1
+
+    def hit(self, index, value, count):
+        return index == self.index
+
 
 Selector.add_criterium_type(NumberCriterium)
 
 
 class RangeCriterium:
-    def match(word):  return '-' in str(word)
+
+    def match(word):
+        return '-' in str(word)
 
     def __init__(self, word):
         split = word.split('-')
@@ -46,27 +55,42 @@ class RangeCriterium:
         self.end = int(split[1]) - 1 if split[1] else None
 
     def hit(self, index, value, count):
-        if self.start == None and self.end == None:
+        if self.start is None and self.end is None:
             return index == count - 1
-        elif self.end == None:
+        elif self.end is None:
             return index >= self.start
         else:
             return index >= self.start and index <= self.end
+
 
 Selector.add_criterium_type(RangeCriterium)
 
 
 class TagCriterium:
-    def match(word):  return str(word).isidentifier()
-    def __init__(self, word):  self.tag = str(word).lower()
-    def hit(self, index, value, count):  return self.tag in value.tags
+
+    def match(word):
+        return str(word).isidentifier()
+
+    def __init__(self, word):
+        self.tag = str(word).lower()
+
+    def hit(self, index, value, count):
+        return self.tag in value.tags
+
 
 Selector.add_criterium_type(TagCriterium)
 
 
 class FunctionCriterium:
-    def match(arg):  return type(arg) == type(lambda : None)
-    def __init__(self, arg):  self.func = arg
-    def hit(self, index, value, count): return self.func(value)
+
+    def match(arg):
+        return callable(arg)
+
+    def __init__(self, arg):
+        self.func = arg
+
+    def hit(self, index, value, count):
+        return self.func(value)
+
 
 Selector.add_criterium_type(FunctionCriterium)
