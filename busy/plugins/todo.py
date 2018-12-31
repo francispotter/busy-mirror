@@ -7,6 +7,7 @@ import busy.future
 import busy
 from ..future import date_for
 
+
 class Task(Item):
 
     def __init__(self, description=None):
@@ -19,6 +20,7 @@ class Task(Item):
     def project(self):
         tags = self.tags
         return tags[0] if tags else None
+
 
 class Plan(Item):
 
@@ -51,6 +53,10 @@ class DoneTask(Item):
         return self._date
 
 
+def date_check(self, plan):
+    return plan.date <= busy.future.today()
+
+
 class TodoQueue(Queue):
     itemclass = Task
     key = 'tasks'
@@ -72,8 +78,7 @@ class TodoQueue(Queue):
 
     def activate(self, *criteria, today=False):
         if today:
-            func = lambda p: p.date <= busy.future.today()
-            indices = self.plans.select(func)
+            indices = self.plans.select(date_check)
         else:
             indices = self.plans.select(*criteria)
         tasks = [self.plans.get(i+1).as_todo() for i in indices]
@@ -81,10 +86,12 @@ class TodoQueue(Queue):
         self.plans.delete_by_indices(*indices)
 
     def finish(self, *indices, date=None):
-        if not date: date = busy.future.today()
+        if not date:
+            date = busy.future.today()
         donelist, keeplist = self._split_by_indices(*indices)
         self.done.add(*[DoneTask(str(t), date) for t in donelist])
         self._items = keeplist
+
 
 Queue.register(TodoQueue, default=True)
 
@@ -93,12 +100,14 @@ class PlanQueue(Queue):
     itemclass = Plan
     key = 'plans'
 
+
 Queue.register(PlanQueue)
 
 
 class DoneQueue(Queue):
     itemclass = DoneTask
     key = 'done'
+
 
 Queue.register(DoneQueue)
 
@@ -115,7 +124,7 @@ class DeferCommand(TodoCommand):
 
     @classmethod
     def register(self, parser):
-        parser.add_argument('--to','--for',dest='time_info')
+        parser.add_argument('--to', '--for', dest='time_info')
 
     def execute_todo(self, parsed, queue):
         tasklist = queue.list(*parsed.criteria or [1])
@@ -127,6 +136,7 @@ class DeferCommand(TodoCommand):
             time_info = input('Defer to [tomorrow]: ').strip() or 'tomorrow'
         queue.defer(date_for(time_info), *parsed.criteria)
 
+
 Commander.register(DeferCommand)
 
 
@@ -136,13 +146,14 @@ class ActivateCommand(TodoCommand):
 
     @classmethod
     def register(self, parser):
-        parser.add_argument('--today','-t', action='store_true')
+        parser.add_argument('--today', '-t', action='store_true')
 
     def execute_todo(self, parsed, queue):
         if hasattr(parsed, 'today') and parsed.today:
             queue.activate(today=True)
         else:
             queue.activate(*parsed.criteria)
+
 
 Commander.register(ActivateCommand)
 
@@ -167,6 +178,7 @@ class StartCommand(TodoCommand):
         queue.manage(project)
         result = queue.pop(project)
 
+
 Commander.register(StartCommand)
 
 
@@ -183,5 +195,6 @@ class FinishCommand(TodoCommand):
         indices = [i[0]-1 for i in tasklist]
         if self.is_confirmed(parsed, tasklist, 'Finish', 'Finishing'):
             queue.finish(*indices)
+
 
 Commander.register(FinishCommand)

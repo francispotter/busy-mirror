@@ -1,6 +1,7 @@
 from ..commander import QueueCommand
 from ..commander import Commander
 
+
 class AddCommand(QueueCommand):
 
     command = 'add'
@@ -16,5 +17,6 @@ class AddCommand(QueueCommand):
         else:
             item = input('Item: ')
         queue.add(item)
+
 
 Commander.register(AddCommand)

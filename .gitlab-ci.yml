@@ -8,4 +8,4 @@ style:
   image: python
   before_script:
     - "pip3 install pycodestyle"
-  script: "pycodestyle busy/*.py"
+  script: "pycodestyle busy/**/*.py"

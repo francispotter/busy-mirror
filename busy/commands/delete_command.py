@@ -1,6 +1,7 @@
 from ..commander import QueueCommand
 from ..commander import Commander
 
+
 class DeleteCommand(QueueCommand):
 
     command = 'delete'
@@ -15,5 +16,6 @@ class DeleteCommand(QueueCommand):
         indices = [i[0]-1 for i in itemlist]
         if self.is_confirmed(parsed, itemlist, 'Delete', 'Deletion'):
             queue.delete_by_indices(*indices)
+
 
 Commander.register(DeleteCommand)
