@@ -34,7 +34,7 @@ Take a shower
 When you're done, mark it off to find the next task.
 
 ```
-busy delete; busy get
+busy finish; busy get
 ```
 
 Returns:
@@ -216,6 +216,11 @@ To pull tasks off the `plans` queue and put them back on the `tasks` queue, use 
 - With designated items from the `plans` queue
 
 If no items are designated, and there is no `--today` option, no tasks will be activated.
+
+
+## The `finish` command
+
+Like `defer`, the `finish` command only works on the `tasks` queue. It removes the designated Task (or the top task if none is designated) from the queue and adds it to the `done` queue, with today's date to indicate when it was completed.
 
 
 ### Projects and the `start` command
