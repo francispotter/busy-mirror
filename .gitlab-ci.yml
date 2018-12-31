@@ -1,13 +1,13 @@
-integration:
+test:
   image: python
   script: "make test"
-cover:
+test coverage:
   image: python
   script: "make cover"
   before_script:
     - "pip3 install coverage"
   coverage: '/TOTAL +\d+ +\d+ +(\d+)\%\s*$/'
-style:
+style check:
   image: python
   before_script:
     - "pip3 install pycodestyle"
