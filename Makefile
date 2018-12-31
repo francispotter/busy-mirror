@@ -5,7 +5,7 @@ test:
 
 cover:
 	python3 -m coverage run --source=busy --omit busy/__main__.py -m unittest -v > /dev/null 2>&1
-	python3 -m coverage report -m
+	python3 -m coverage report -m --fail-under 100
 
 install:
 	sudo pip3 install .
