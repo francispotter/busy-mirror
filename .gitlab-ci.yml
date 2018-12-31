@@ -1,4 +1,4 @@
-test:
+integration:
   image: python
   script: "make test"
 cover:
