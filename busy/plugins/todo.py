@@ -53,7 +53,7 @@ class DoneTask(Item):
         return self._date
 
 
-def date_check(self, plan):
+def is_today_or_earlier(plan):
     return plan.date <= busy.future.today()
 
 
@@ -78,7 +78,7 @@ class TodoQueue(Queue):
 
     def activate(self, *criteria, today=False):
         if today:
-            indices = self.plans.select(date_check)
+            indices = self.plans.select(is_today_or_earlier)
         else:
             indices = self.plans.select(*criteria)
         tasks = [self.plans.get(i+1).as_todo() for i in indices]
