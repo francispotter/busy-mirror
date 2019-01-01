@@ -32,3 +32,13 @@ class TestCommandFinish(TestCase):
                         c.handle('finish')
                         o = Path(t, 'done.txt').read_text()
                         self.assertEqual(o, '2019-02-11|a\n')
+
+    def test_followon(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a-->b\n')
+            c = Commander(root=t)
+            c.handle('finish','--yes')
+            o = p.read_text()
+            self.assertEqual(o, 'b\n')
+

@@ -21,6 +21,10 @@ class Task(Item):
         tags = self.tags
         return tags[0] if tags else None
 
+    @property
+    def followon(self):
+        return (self.description.split('>', maxsplit=1) + [""])[1]
+
 
 class Plan(Item):
 
@@ -91,6 +95,7 @@ class TodoQueue(Queue):
         donelist, keeplist = self._split_by_indices(*indices)
         self.done.add(*[DoneTask(str(t), date) for t in donelist])
         self._items = keeplist
+        self.add(*[Task.create(t.followon) for t in donelist if t.followon])
 
 
 Queue.register(TodoQueue, default=True)
