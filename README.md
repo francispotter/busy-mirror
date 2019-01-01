@@ -218,10 +218,25 @@ To pull tasks off the `plans` queue and put them back on the `tasks` queue, use 
 If no items are designated, and there is no `--today` option, no tasks will be activated.
 
 
-## The `finish` command
+## Followons and the `finish` command
 
 Like `defer`, the `finish` command only works on the `tasks` queue. It removes the designated Task (or the top task if none is designated) from the queue and adds it to the `done` queue, with today's date to indicate when it was completed.
 
+Optionally, a Task can have a Followon, which is another task to be added to the queue after the first task is finished. Followons are describe in a Task using an arrow notation. In the following example, the Task "eat" has a followon task "drink".
+
+```
+eat --> drink
+```
+
+Note that the hyphens and whitespace are optional; really the marker that matters for delimiting a followon is the right angle bracket (">"). Also note that right angle bracket is not a valid character in a task description.
+
+When the `finish` command is executed on the task above, the "eat" task will be recorded as "done" and the "drink" task will be added to the bottom of the `tasks` queue.
+
+Note that followons can be chained. For example, when the `finish` command is run on the task illustrated below, a new task "drink > be merry" will be added to the queue. Only when that Task is finished will the "be merry" task itself appear on the queue.
+
+```
+eat > drink > be merry
+```
 
 ### Projects and the `start` command
 
