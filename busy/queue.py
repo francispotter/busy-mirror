@@ -95,6 +95,6 @@ class Queue:
 
     @classmethod
     def subclass(self, key):
-        if not hasattr(self, '_classes'):
-            self._classes = {}
+        # if not hasattr(self, '_classes'):
+        #     self._classes = {}
         return self._classes.get(key) or self

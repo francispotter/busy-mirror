@@ -35,8 +35,8 @@ class Commander:
 
     @property
     def root(self):
-        if not hasattr(self, '_root'):
-            self._root = Root()
+        # if not hasattr(self, '_root'):
+        #     self._root = Root()
         return self._root
 
     @root.setter
