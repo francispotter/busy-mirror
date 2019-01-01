@@ -11,6 +11,7 @@ from ..future import date_for
 
 MARKER = re.compile(r'\s*\-*\>\s*')
 
+
 class Task(Item):
 
     def __init__(self, description=None):
@@ -35,7 +36,6 @@ class Task(Item):
     @property
     def base(self):
         return self._marker_split[0]
-
 
 
 class Plan(Item):
