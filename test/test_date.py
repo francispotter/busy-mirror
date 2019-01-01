@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-import sys; sys.path[0] = ''
 
 from unittest import TestCase
 from tempfile import TemporaryDirectory
@@ -18,4 +16,3 @@ class TestDate(TestCase):
         t = busy.future.date_for('today')
         self.assertEqual(t, Date(2019, 2, 11))
 
-if __name__ == '__main__': unittest.main()
