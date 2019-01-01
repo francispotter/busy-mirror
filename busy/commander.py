@@ -19,8 +19,8 @@ class Commander:
     def __init__(self, *args, root=None):
         if sys.version_info < PYTHON_VERSION:
             raise RuntimeError(MESSAGE % PYTHON_VERSION)
-        if root:
-            self.root = Root(root)
+        # if root:
+        self.root = Root(root)
 
     def handle(self, *args):
         parsed, remaining = self._parser.parse_known_args(args)

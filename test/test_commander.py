@@ -29,3 +29,5 @@ class TestCommander(TestCase):
         with mock.patch('sys.version_info', (1,2,3)):
             with self.assertRaises(RuntimeError):
                 Commander()
+
+        
