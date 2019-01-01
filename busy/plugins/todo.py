@@ -1,3 +1,5 @@
+import re
+
 from ..queue import Queue
 from ..item import Item
 from ..file import File
@@ -7,6 +9,7 @@ import busy.future
 import busy
 from ..future import date_for
 
+MARKER = re.compile(r'\s*\-*\>\s*')
 
 class Task(Item):
 
@@ -22,8 +25,17 @@ class Task(Item):
         return tags[0] if tags else None
 
     @property
+    def _marker_split(self):
+        return MARKER.split(self.description, maxsplit=1)
+
+    @property
     def followon(self):
-        return (self.description.split('>', maxsplit=1) + [""])[1]
+        return (self._marker_split + [""])[1]
+
+    @property
+    def base(self):
+        return self._marker_split[0]
+
 
 
 class Plan(Item):
@@ -93,8 +105,8 @@ class TodoQueue(Queue):
         if not date:
             date = busy.future.today()
         donelist, keeplist = self._split_by_indices(*indices)
-        self.done.add(*[DoneTask(str(t), date) for t in donelist])
         self._items = keeplist
+        self.done.add(*[DoneTask(str(t.base), date) for t in donelist])
         self.add(*[Task.create(t.followon) for t in donelist if t.followon])
 
 
