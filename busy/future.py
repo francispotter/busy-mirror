@@ -10,6 +10,7 @@ today = Date.today
 
 FORMAT = re.compile(r'^\d{4}\-\d{1,2}\-\d{1,2}$')
 
+
 def absolute_date(info):
     if isinstance(info, Date):
         return info

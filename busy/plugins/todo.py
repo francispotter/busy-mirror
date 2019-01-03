@@ -10,6 +10,7 @@ from busy import future
 MARKER = re.compile(r'\s*\-*\>\s*')
 REPEAT = re.compile(r'^\s*repeat(?:\s+in)\s+(.+)\s*$')
 
+
 class Task(Item):
 
     def __init__(self, description=None):
