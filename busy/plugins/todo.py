@@ -5,9 +5,7 @@ from ..item import Item
 from ..file import File
 from ..commander import Command
 from ..commander import Commander
-import busy.future
-import busy
-from ..future import date_for
+from busy import future
 
 MARKER = re.compile(r'\s*\-*\>\s*')
 REPEAT = re.compile(r'^\s*repeat(?:\s+in)\s+(.+)\s*$')
@@ -33,7 +31,7 @@ class Task(Item):
         if len(self._marker_split) > 1:
             match = REPEAT.match(self._marker_split[1])
             if match:
-                return Plan(self.description, busy.future.date_for(match.group(1)))
+                return Plan(self.description, future.date_for(match.group(1)))
 
     @property
     def project(self):
@@ -52,7 +50,7 @@ class Plan(Item):
 
     def __init__(self, description=None, date=None):
         super().__init__(description)
-        self._date = busy.future.absolute_date(date)
+        self._date = future.absolute_date(date)
 
     @property
     def date(self):
@@ -69,7 +67,7 @@ class DoneTask(Item):
 
     def __init__(self, description=None, date=None):
         super().__init__(description)
-        self._date = busy.future.absolute_date(date)
+        self._date = future.absolute_date(date)
 
     @property
     def date(self):
@@ -77,7 +75,7 @@ class DoneTask(Item):
 
 
 def is_today_or_earlier(plan):
-    return plan.date <= busy.future.today()
+    return plan.date <= future.today()
 
 
 class TodoQueue(Queue):
@@ -110,7 +108,7 @@ class TodoQueue(Queue):
 
     def finish(self, *indices, date=None):
         if not date:
-            date = busy.future.today()
+            date = future.today()
         donelist, keeplist = self._split_by_indices(*indices)
         self._items = keeplist
         self.done.add(*[t.as_done(date) for t in donelist])
@@ -159,7 +157,7 @@ class DeferCommand(TodoCommand):
         else:
             print('\n'.join([str(i[1]) for i in tasklist]))
             time_info = input('Defer to [tomorrow]: ').strip() or 'tomorrow'
-        queue.defer(date_for(time_info), *parsed.criteria)
+        queue.defer(future.date_for(time_info), *parsed.criteria)
 
 
 Commander.register(DeferCommand)

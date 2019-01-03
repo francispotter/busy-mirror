@@ -75,3 +75,5 @@ class TestCommandFinish(TestCase):
                 self.assertEqual(o, '')
                 o2 = Path(t, 'plans.txt').read_text()
                 self.assertEqual(o2, '2019-02-13|a>repeat in 2 days\n')
+                o3 = Path(t, 'done.txt').read_text()
+                self.assertEqual(o3, '2019-02-11|a\n')
