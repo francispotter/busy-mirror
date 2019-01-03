@@ -8,13 +8,14 @@ import re
 
 today = Date.today
 
+FORMAT = re.compile(r'^\d{4}\-\d{1,2}\-\d{1,2}$')
 
 def absolute_date(info):
     if isinstance(info, Date):
         return info
     elif isinstance(info, tuple):
         return Date(*info)
-    elif isinstance(info, str):
+    elif isinstance(info, str) and FORMAT.match(info):
         return DateTime.strptime(info, '%Y-%m-%d').date()
     else:
         raise RuntimeError("Invalid date %s" % info)
