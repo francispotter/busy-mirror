@@ -86,3 +86,17 @@ class TestCommandFinish(TestCase):
             with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
                 with self.assertRaises(RuntimeError):
                     c.handle('finish','--yes')
+
+    def test_repeat_tomorrow(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a>repeat tomorrow\n')
+            c = Commander(root=t)
+            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+                c.handle('finish','--yes')
+                o = p.read_text()
+                self.assertEqual(o, '')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2019-02-12|a>repeat tomorrow\n')
+                o3 = Path(t, 'done.txt').read_text()
+                self.assertEqual(o3, '2019-02-11|a\n')
