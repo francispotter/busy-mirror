@@ -10,7 +10,7 @@ import busy
 from ..future import date_for
 
 MARKER = re.compile(r'\s*\-*\>\s*')
-
+REPEAT = re.compile(r'^\s*repeat(?:\s+in)\s+(.+)\s*$')
 
 class Task(Item):
 
@@ -20,6 +20,21 @@ class Task(Item):
     def as_plan(self, date):
         return Plan(self.description, date)
 
+    def as_done(self, date):
+        return DoneTask(self._marker_split[0], date)
+
+    def as_followon(self):
+        if len(self._marker_split) > 1:
+            description = self._marker_split[1]
+            if not REPEAT.match(description):
+                return Task(description)
+
+    def as_repeat(self):
+        if len(self._marker_split) > 1:
+            match = REPEAT.match(self._marker_split[1])
+            if match:
+                return Plan(self.description, busy.future.date_for(match.group(1)))
+
     @property
     def project(self):
         tags = self.tags
@@ -28,14 +43,6 @@ class Task(Item):
     @property
     def _marker_split(self):
         return MARKER.split(self.description, maxsplit=1)
-
-    @property
-    def followon(self):
-        return (self._marker_split + [""])[1]
-
-    @property
-    def base(self):
-        return self._marker_split[0]
 
 
 class Plan(Item):
@@ -106,8 +113,9 @@ class TodoQueue(Queue):
             date = busy.future.today()
         donelist, keeplist = self._split_by_indices(*indices)
         self._items = keeplist
-        self.done.add(*[DoneTask(str(t.base), date) for t in donelist])
-        self.add(*[Task.create(t.followon) for t in donelist if t.followon])
+        self.done.add(*[t.as_done(date) for t in donelist])
+        self.add(*filter(None, [t.as_followon() for t in donelist]))
+        self.plans.add(*filter(None, [t.as_repeat() for t in donelist]))
 
 
 Queue.register(TodoQueue, default=True)

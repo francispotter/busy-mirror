@@ -63,3 +63,15 @@ class TestCommandFinish(TestCase):
                 self.assertEqual(o, 'b\n')
                 o2 = Path(t, 'done.txt').read_text()
                 self.assertEqual(o2, '2019-02-11|a\n')
+
+    def test_repeat(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a>repeat in 2 days\n')
+            c = Commander(root=t)
+            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+                c.handle('finish','--yes')
+                o = p.read_text()
+                self.assertEqual(o, '')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2019-02-13|a>repeat in 2 days\n')
