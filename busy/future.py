@@ -9,6 +9,7 @@ import re
 today = Date.today
 
 FORMAT = re.compile(r'^\d{4}\-\d{1,2}\-\d{1,2}$')
+JUST_DAY = re.compile(r'^(\d{1,2})$')
 
 
 def absolute_date(info):
@@ -24,16 +25,24 @@ def absolute_date(info):
 
 def date_for(time_info):
     if isinstance(time_info, str):
+        t = today()
         if time_info == 'tomorrow':
-            return today() + TimeDelta(1)
+            return t + TimeDelta(1)
         elif time_info == 'today':
-            return today()
+            return t
         days_match = re.match(r'^(\d+)\s+days?$', time_info)
         if days_match:
             days = int(days_match.group(1))
-            return today() + TimeDelta(days)
+            return t + TimeDelta(days)
         d_match = re.match(r'^(\d+)d$', time_info)
         if d_match:
             days = int(d_match.group(1))
-            return today() + TimeDelta(days)
+            return t + TimeDelta(days)
+        just_day_match = JUST_DAY.match(time_info)
+        if just_day_match:
+            day = int(just_day_match.group(1))
+            if t.day < day:
+                return Date(t.year, t.month, day)
+            else:
+                return Date(t.year + (t.month // 12), (t.month % 12) + 1, day)
     return absolute_date(time_info)

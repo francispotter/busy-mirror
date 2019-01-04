@@ -100,3 +100,39 @@ class TestCommandFinish(TestCase):
                 self.assertEqual(o2, '2019-02-12|a>repeat tomorrow\n')
                 o3 = Path(t, 'done.txt').read_text()
                 self.assertEqual(o3, '2019-02-11|a\n')
+
+    def test_repeat_day_template(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a>repeat on 16\n')
+            c = Commander(root=t)
+            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+                c.handle('finish','--yes')
+                o = p.read_text()
+                self.assertEqual(o, '')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2019-02-16|a>repeat on 16\n')
+
+    def test_repeat_day_template_next_month(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a>repeat on 4\n')
+            c = Commander(root=t)
+            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+                c.handle('finish','--yes')
+                o = p.read_text()
+                self.assertEqual(o, '')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2019-03-04|a>repeat on 4\n')
+
+    def test_repeat_day_template_next_year(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a>repeat on 4\n')
+            c = Commander(root=t)
+            with mock.patch('busy.future.today', lambda : Date(2019,12,11)):
+                c.handle('finish','--yes')
+                o = p.read_text()
+                self.assertEqual(o, '')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2020-01-04|a>repeat on 4\n')

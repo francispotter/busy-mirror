@@ -8,7 +8,7 @@ from ..commander import Commander
 from busy import future
 
 MARKER = re.compile(r'\s*\-*\>\s*')
-REPEAT = re.compile(r'^\s*repeat(?:\s+in)?\s+(.+)\s*$')
+REPEAT = re.compile(r'^\s*repeat(?:\s+[io]n)?\s+(.+)\s*$')
 
 
 class Task(Item):
