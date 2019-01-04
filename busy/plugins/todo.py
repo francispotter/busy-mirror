@@ -32,7 +32,8 @@ class Task(Item):
         if len(self._marker_split) > 1:
             match = REPEAT.match(self._marker_split[1])
             if match:
-                return Plan(self.description, dateparser.date_for(match.group(1)))
+                date = dateparser.relative_date(match.group(1))
+                return Plan(self.description, date)
 
     @property
     def project(self):
@@ -158,7 +159,7 @@ class DeferCommand(TodoCommand):
         else:
             print('\n'.join([str(i[1]) for i in tasklist]))
             time_info = input('Defer to [tomorrow]: ').strip() or 'tomorrow'
-        queue.defer(dateparser.date_for(time_info), *parsed.criteria)
+        queue.defer(dateparser.relative_date(time_info), *parsed.criteria)
 
 
 Commander.register(DeferCommand)

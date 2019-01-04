@@ -24,7 +24,7 @@ def absolute_date(info):
         raise RuntimeError("Invalid date %s" % info)
 
 
-def date_for(time_info):
+def relative_date(time_info):
     if isinstance(time_info, str):
         t = today()
         if time_info == 'tomorrow':
