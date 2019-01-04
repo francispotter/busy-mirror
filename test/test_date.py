@@ -7,12 +7,12 @@ from io import StringIO
 from datetime import date as Date
 import unittest
 
-import busy.future
+import busy.dateparser
 
 class TestDate(TestCase):
 
-    @mock.patch('busy.future.today', lambda : Date(2019,2,11))
+    @mock.patch('busy.dateparser.today', lambda : Date(2019,2,11))
     def test_today(self):
-        t = busy.future.date_for('today')
+        t = busy.dateparser.date_for('today')
         self.assertEqual(t, Date(2019, 2, 11))
 

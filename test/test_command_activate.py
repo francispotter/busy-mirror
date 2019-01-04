@@ -26,7 +26,7 @@ class TestCommandActivate(TestCase):
             p = Path(t, 'plans.txt')
             p.write_text('2018-09-04|a\n2019-03-25|b\n')
             c = Commander(root=t)
-            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+            with mock.patch('busy.dateparser.today', lambda : Date(2019,2,11)):
                 c.handle('activate','--today')
                 self.assertEqual(p.read_text(), '2019-03-25|b\n')
                 p2 = Path(t, 'tasks.txt')

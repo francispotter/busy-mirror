@@ -36,7 +36,7 @@ class TestCommandDefer(TestCase):
         with TemporaryDirectory() as t:
             p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
-            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+            with mock.patch('busy.dateparser.today', lambda : Date(2019,2,11)):
                 c = Commander(root=t)
                 c.handle('defer','2','--for','1 day')
                 o = p.read_text()
@@ -48,7 +48,7 @@ class TestCommandDefer(TestCase):
         with TemporaryDirectory() as t:
             p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
-            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+            with mock.patch('busy.dateparser.today', lambda : Date(2019,2,11)):
                 c = Commander(root=t)
                 c.handle('defer','2','--for','5d')
                 o = p.read_text()
@@ -73,7 +73,7 @@ class TestCommandDefer(TestCase):
             p = Path(t, 'tasks.txt')
             p.write_text('a\nb\n')
             c = Commander(root=t)
-            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+            with mock.patch('busy.dateparser.today', lambda : Date(2019,2,11)):
                 with mock.patch('sys.stdin', StringIO(' ')):
                     c.handle('defer')
                     o2 = Path(t, 'plans.txt').read_text()
