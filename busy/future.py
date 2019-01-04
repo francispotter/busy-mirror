@@ -10,6 +10,7 @@ today = Date.today
 
 FORMAT = re.compile(r'^\d{4}\-\d{1,2}\-\d{1,2}$')
 JUST_DAY = re.compile(r'^(\d{1,2})$')
+DAY_MONTH = re.compile(r'(\d{1,2})\-(\d{1,2})$')
 
 
 def absolute_date(info):
@@ -45,4 +46,13 @@ def date_for(time_info):
                 return Date(t.year, t.month, day)
             else:
                 return Date(t.year + (t.month // 12), (t.month % 12) + 1, day)
+        month_day_match = DAY_MONTH.match(time_info)
+        if month_day_match:
+            month = int(month_day_match.group(1))
+            day = int(month_day_match.group(2))
+            if t < Date(t.year, month, day):
+                return Date(t.year, month, day)
+            else:
+                return Date(t.year + 1, month, day)
+
     return absolute_date(time_info)

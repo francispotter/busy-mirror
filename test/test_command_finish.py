@@ -136,3 +136,27 @@ class TestCommandFinish(TestCase):
                 self.assertEqual(o, '')
                 o2 = Path(t, 'plans.txt').read_text()
                 self.assertEqual(o2, '2020-01-04|a>repeat on 4\n')
+
+    def test_repeat_month_day_template(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a>repeat on 7-16\n')
+            c = Commander(root=t)
+            with mock.patch('busy.future.today', lambda : Date(2019,2,11)):
+                c.handle('finish','--yes')
+                o = p.read_text()
+                self.assertEqual(o, '')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2019-07-16|a>repeat on 7-16\n')
+
+    def test_repeat_month_day_next_year(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a>repeat on 7-16\n')
+            c = Commander(root=t)
+            with mock.patch('busy.future.today', lambda : Date(2019,9,11)):
+                c.handle('finish','--yes')
+                o = p.read_text()
+                self.assertEqual(o, '')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2020-07-16|a>repeat on 7-16\n')
