@@ -78,3 +78,23 @@ class TestCommandDefer(TestCase):
                     c.handle('defer')
                     o2 = Path(t, 'plans.txt').read_text()
                     self.assertEqual(o2, '2019-02-12|a\n')
+
+    def test_tuesday(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a\nb\n')
+            c = Commander(root=t)
+            with mock.patch('busy.dateparser.today', lambda : Date(2019,2,14)):
+                c.handle('defer','--to','tue')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2019-02-19|a\n')
+
+    def test_thursday(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a\nb\n')
+            c = Commander(root=t)
+            with mock.patch('busy.dateparser.today', lambda : Date(2019,2,14)):
+                c.handle('defer','--to','thursday')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2019-02-21|a\n')
