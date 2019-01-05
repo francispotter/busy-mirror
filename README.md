@@ -89,7 +89,7 @@ Push that task to tomorrow.
 busy defer --to tomorrow
 ```
 
-Get all the tasks scheduled for today.
+Add all the tasks scheduled for today to the list.
 
 ```
 busy activate --today
@@ -97,7 +97,7 @@ busy activate --today
 
 ### Core Commands
 
-- `add` adds a new item to the bottom of the queue. The item description may be included after the command or written to stdin.
+- `add` adds a new item to the bottom of the queue. The item description may be included after the command or written to stdin (i.e. typed on the next line).
 - `get` gets the top item in the queue, referred to as the "current" item. There are no options.
 - `list` lists the items in the queue in order with their sequence numbers.
 - `pop` moves a task or set of items to the top of a queue.
@@ -115,19 +115,34 @@ Sequence numbers appear in the output from the `list` command. Note that the num
 
 When used to designate items, a range of sequence numbers is separated by a hyphen, with no whitespace, and is inclusive. For example, `4-6` designates items 4, 5, and 6. A hyphen without a number after it includes all the items from that item to the end of the queue. A hyphen on its own indicates the last item in the queue.
 
+Below are some examples of task designations by sequence number.
+
+`busy pop 5` pops item number 5
+
+`busy drop 3-7` drops items 3 through 7 (4 items)
+
+`busy list 3-` lists all the items from number 3 through the end of the list
+
+`busy delete 3 5 7 9` deletes only the items designated
+
+`busy defer -` defers the last task
+
+`busy manage -4` is an error! Use `busy manage 1-4` instead.
+
+Items will always be handled in the order they appear in the queue, regardless of the order the criteria are provided. So for example, if a `pop` command designates some items, they will be moved to the top of the queue in the order, relative to each other, they currently appear in the queue.
+
+The sequence numbers in the `list` command output are from the queue itself. So the `list` command does not modify the sequence numbers, even when item designation is applied.
+
+
 ### Tags
 
-Items can have tags, which are space-separated hashtags in the item description. A task can have no tags, one tag, or more than one tag. For example the following item description has the tag "errands":
+Items can have tags, which are space-separated hashtags in the item description. An item can have no tags, one tag, or more than one tag. For example the following item description has the tag "errands":
 
 ```
 go to the supermarket #errands
 ```
 
-The hash itself ("#") is omitted from the command line when designating items by tag.
-
-### Item Designations
-
-Item designations appear after the command. For example, the following command will move all the items with the `#errands` hash to the top of the queue.
+Hash tags may be used for item designation, in which case the hash itself ("#") is omitted from the command line. For example, the following command will move all the items with the `#errands` hash to the top of the queue.
 
 ```
 busy pop errands
@@ -138,26 +153,6 @@ Whitespace-separated item designation criteria are additive -- that is, a logica
 ```
 busy delete admin sales 3 4
 ```
-
-Below are some further examples of task designations by sequence number.
-
-`busy list` lists all the tasks
-
-`busy list 5` shows only task number 5
-
-`busy list 3-7` shows tasks 3-7
-
-`busy list 3-` show tasks 3 through the end
-
-`busy list 3 5 7 9` shows the tasks designated
-
-`busy list -` shows the last task
-
-`busy list -4` is an error! Use `busy list 1-4` instead.
-
-Items will always be handled in the order they appear in the queue, regardless of the order the criteria are provided. So for example, if a `pop` command designates some items, they will be moved to the top of the queue in the order, relative to each other, they currently appear in the queue.
-
-The sequence numbers in the `list` command output are from the queue itself. So the `list` command does not modify the sequence numbers, even when item designation is applied.
 
 Commands that accept item designations support logical defaults, which are:
 
@@ -171,7 +166,7 @@ Commands that accept item designations support logical defaults, which are:
 
 ### Alternate Queues
 
-Busy will manage any number of queues. For example, you might have a `shopping` queue for items to buy at the store, and a `movies` queue for films you'd like to watch. The default queue is called `tasks` and has special properties related to planning.
+Busy will manage any number of queues, which are entirely separate ordered sets of items. For example, you might have a `shopping` queue for items to buy at the store, and a `movies` queue for films you'd like to watch. The default queue is called `tasks` and has special properties related to planning.
 
 To designate an alternate queue, use the `--queue` option on the command.
 
@@ -197,10 +192,13 @@ In the `defer` command, the date can be specified using the `--to` or `--for` op
 
 The date may take any of the following forms:
 
-- A specific date in `YYYY-MM-DD` format, such as `2018-10-28`
+- A specific date in `YYYY-MM-DD` format, such as `2018-10-28`. Slashes are also acceptable, but the order is always year, then month, then day
+- A specific date without the year in `MM-DD` format, such as `7-4`, which will defer the item to that date in the future (even if it's in the next year)
+- A specific day of the month as a simple integer, such as `12`, which will defer the item to that day of the month, in either the current month or the next month
 - An integer, a space, and the word `day` or `days`, such as `4 days`, which will defer the item to that number of days from today
 - An integer without a space and the letter `d`, such as `4d`, which is a short form of `4 days`
 - The word `tomorrow`, which is also the default if no date is provided
+- The word `today`, which is a little odd but obvious
 
 As an example, the following command will defer tasks 4, 5, and 6 from the `tasks` queue to the date 4 days from today, keeping them in the `plans` queue until that date.
 
@@ -213,7 +211,7 @@ Note that the `plans` queue is keeping the task information (verbatim from the `
 To pull tasks off the `plans` queue and put them back on the `tasks` queue, use the `activate` command. There are two ways to use the `activate` command:
 
 - With the `--today` option, which is the normal way, and activates all the tasks scheduled for today or earlier, bringing the `tasks` list up to date
-- With designated items from the `plans` queue
+- With designated items from the `plans` queue; note that the `activate` command accepts item designation from the `plans` queue itself
 
 If no items are designated, and there is no `--today` option, no tasks will be activated.
 
@@ -237,6 +235,20 @@ Note that followons can be chained. For example, when the `finish` command is ru
 ```
 eat > drink > be merry
 ```
+
+### Repeating tasks
+
+A special type of Followon is the Repeat. In this case, instead of adding the next task to the bottom of the queue, the entire current task -- including the Followon itself -- is entered into the `plans` queue at some point in the future. Repeats allow for easy management of repeating tasks. Some examples follow.
+
+`check email --> repeat in 1 day`
+
+`phone mom --> repeat on sunday`
+
+`balance the checkbook --> repeat on 6`
+
+The exact syntax for a Repeat is the word "repeat" followed by either "on" or "in" and a relative date phrase -- the same phrases that work with the `defer` command.
+
+Note that the repetition itself only happens on the `finish` command. The completed task (i.e. "check email") is entered in the `done` queue and then the entire task (with the Repeat) is scheduled in the `plans` queue for the appropriate time in the future.
 
 ### Projects and the `start` command
 
@@ -266,7 +278,7 @@ But it's also possible to designate tasks to be managed. The `manage` command do
 
 ### Data storage
 
-Busy keeps the queues in plain text files, so if the tool doesn't do something you want, you can just edit the files. The files are in a directory together, referred to as the "root". Each file is the name of the queue with a `.txt` extension. If a required file is missing, it will be created automatically. So typically, the root includes `tasks.txt`, `plans.txt`, and any number of custom queue files.
+Busy keeps the queues in plain text files, so if the tool doesn't do something you want, you may edit the files. The files are in a directory together, referred to as the "root". Each file is the name of the queue with a `.txt` extension. If a required file is missing, it will be created automatically. So typically, the root includes `tasks.txt`, `plans.txt`, and any number of custom queue files.
 
 Technically, they are pipe-delimited data files, though `tasks.txt` only has one field (description); `plans.txt` has only two fields (date and description), and there is no support for managing separate fields in the Busy tool itself.
 
@@ -286,14 +298,16 @@ busy --root ~/.config/busy activate --today
 
 Note that Busy does not support concurrency in any form. If two commands are executing at the same time, they may overwrite each other. Overwriting is especially risky with the `manage` command, which keeps the user's editor open until they close it.
 
+The format is designed to be simple (i.e. non-default queues are really just lists of items) but not idiot-proof. Experimentation might result in unintended consequences.
+
 ## Development
 
 Although it requires Python 3.6.5 or higher, Busy is designed to function with the Python standard library without any additional pip modules.
 
-However, we use coverage during unit testing, so:
+However, we use Pip packages in the devops pipeline, so:
 
 ```
-pip3 install coverage
+pip3 install coverage pycodestyle
 ```
 
 Then to run the test suite:
@@ -306,4 +320,10 @@ Or to run test coverage:
 
 ```
 make cover
+```
+
+And to check style:
+
+```
+make style
 ```
