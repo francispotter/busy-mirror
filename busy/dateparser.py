@@ -74,7 +74,7 @@ def match_month_day_num(today, month, day):
     else:
         return Date(today.year + 1, int(month), int(day))
 
-@register(r'^(mon?|tue?s?|wed?n?e?s?|thu?r?s?|fri?|sat?u?r?|su?n)(?:day)?$')
+@register(r'^(mon?|tue?s?|wed?n?e?s?|thu?r?s?|fri?|sat?u?r?|sun?)(?:day)?$')
 def match_weekday(today, weekday):
     index = ['mo','tu','we','th','fr','sa','su'].index(weekday[0:2])
     days = (6 - today.weekday() + index) % 7 + 1
