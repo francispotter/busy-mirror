@@ -160,3 +160,15 @@ class TestCommandFinish(TestCase):
                 self.assertEqual(o, '')
                 o2 = Path(t, 'plans.txt').read_text()
                 self.assertEqual(o2, '2020-07-16|a>repeat on 7-16\n')
+
+    def test_finish_caps(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a>Repeat ON 7-16\n')
+            c = Commander(root=t)
+            with mock.patch('busy.dateparser.today', lambda : Date(2019,9,11)):
+                c.handle('finish','--yes')
+                o = p.read_text()
+                self.assertEqual(o, '')
+                o2 = Path(t, 'plans.txt').read_text()
+                self.assertEqual(o2, '2020-07-16|a>Repeat ON 7-16\n')

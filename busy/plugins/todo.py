@@ -8,7 +8,7 @@ from ..commander import Commander
 from busy import dateparser
 
 MARKER = re.compile(r'\s*\-*\>\s*')
-REPEAT = re.compile(r'^\s*repeat(?:\s+[io]n)?\s+(.+)\s*$')
+REPEAT = re.compile(r'^\s*repeat(?:\s+[io]n)?\s+(.+)\s*$', re.I)
 
 
 class Task(Item):

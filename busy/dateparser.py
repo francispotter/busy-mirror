@@ -10,7 +10,6 @@ today = Date.today
 
 FORMAT = re.compile(r'^\d{4}\-\d{1,2}\-\d{1,2}$')
 
-
 def absolute_date(info):
     if isinstance(info, Date):
         return info
@@ -36,6 +35,7 @@ def register(expression=r'(.*)'):
     return chain
 
 def relative_date(value):
+    value = value.lower()
     if isinstance(value, str):
         result = next(filter(None, (h(value) for h in HANDLERS)), None)
         if result:
