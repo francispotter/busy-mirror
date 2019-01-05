@@ -8,7 +8,7 @@ import functools
 
 today = Date.today
 
-FORMAT = re.compile(r'^\d{4}\-\d{1,2}\-\d{1,2}$')
+FORMAT = re.compile(r'^(\d{4})(?:\-|\/)(\d{1,2})(?:\-|\/)(\d{1,2})$')
 
 def absolute_date(info):
     if isinstance(info, Date):
@@ -16,7 +16,7 @@ def absolute_date(info):
     elif isinstance(info, tuple):
         return Date(*info)
     elif isinstance(info, str) and FORMAT.match(info):
-        return DateTime.strptime(info, '%Y-%m-%d').date()
+        return Date(*(int(x) for x in FORMAT.match(info).groups()))
     raise RuntimeError("Invalid date %s" % info)
 
 
@@ -67,7 +67,7 @@ def match_day_num(today, day):
         month = (today.month % 12) + 1
         return Date(year, month, int(day))
 
-@register(r'(\d{1,2})\-(\d{1,2})$')
+@register(r'(\d{1,2})(?:\-|\/)(\d{1,2})$')
 def match_month_day_num(today, month, day):
     if today < Date(today.year, int(month), int(day)):
         return Date(today.year, int(month), int(day))

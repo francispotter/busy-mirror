@@ -108,3 +108,12 @@ class TestCommandDefer(TestCase):
                 c.handle('defer','--to','THURS')
                 o2 = Path(t, 'plans.txt').read_text()
                 self.assertEqual(o2, '2019-02-21|a\n')
+
+    def test_slashes(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a')
+            c = Commander(root=t)
+            c.handle('defer','--to','2019/09/06')
+            o2 = Path(t, 'plans.txt').read_text()
+            self.assertEqual(o2, '2019-09-06|a\n')
