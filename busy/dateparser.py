@@ -1,16 +1,14 @@
 # Various utilities related to date handling
-# TODO: Change the file name to 'date'
 
 from datetime import date as Date
 from datetime import datetime as DateTime
 from datetime import timedelta as TimeDelta
 import re
+import functools
 
 today = Date.today
 
 FORMAT = re.compile(r'^\d{4}\-\d{1,2}\-\d{1,2}$')
-JUST_DAY = re.compile(r'^(\d{1,2})$')
-DAY_MONTH = re.compile(r'(\d{1,2})\-(\d{1,2})$')
 
 
 def absolute_date(info):
@@ -20,39 +18,58 @@ def absolute_date(info):
         return Date(*info)
     elif isinstance(info, str) and FORMAT.match(info):
         return DateTime.strptime(info, '%Y-%m-%d').date()
+    raise RuntimeError("Invalid date %s" % info)
+
+
+HANDLERS = []
+
+def register(expression=r'(.*)'):
+    compiled = re.compile(expression)
+    def chain(func):
+        @functools.wraps(func)
+        def wrapper(string):
+            match = compiled.match(string)
+            if match:
+                return func(today(), *match.groups())
+        HANDLERS.append(wrapper)
+        return wrapper
+    return chain
+
+def relative_date(value):
+    if isinstance(value, str):
+        result = next(filter(None, (h(value) for h in HANDLERS)), None)
+        if result:
+            return result
+    return absolute_date(value)
+
+@register(r'today')
+def match_today(today):
+    return today
+
+@register(r'tomorrow')
+def match_tomorrow(today):
+    return today + TimeDelta(1)
+
+@register(r'^(\d+)\s+days?$')
+def match_days(today, days):
+    return today + TimeDelta(int(days))
+
+@register(r'^(\d+)d$')
+def match_d(today, days):
+    return today + TimeDelta(int(days))
+
+@register(r'^(\d{1,2})$')
+def match_day_num(today, day):
+    if today.day < int(day):
+        return Date(today.year, today.month, int(day))
     else:
-        raise RuntimeError("Invalid date %s" % info)
+        year = today.year + (today.month // 12)
+        month = (today.month % 12) + 1
+        return Date(year, month, int(day))
 
-
-def relative_date(time_info):
-    if isinstance(time_info, str):
-        t = today()
-        if time_info == 'tomorrow':
-            return t + TimeDelta(1)
-        elif time_info == 'today':
-            return t
-        days_match = re.match(r'^(\d+)\s+days?$', time_info)
-        if days_match:
-            days = int(days_match.group(1))
-            return t + TimeDelta(days)
-        d_match = re.match(r'^(\d+)d$', time_info)
-        if d_match:
-            days = int(d_match.group(1))
-            return t + TimeDelta(days)
-        just_day_match = JUST_DAY.match(time_info)
-        if just_day_match:
-            day = int(just_day_match.group(1))
-            if t.day < day:
-                return Date(t.year, t.month, day)
-            else:
-                return Date(t.year + (t.month // 12), (t.month % 12) + 1, day)
-        month_day_match = DAY_MONTH.match(time_info)
-        if month_day_match:
-            month = int(month_day_match.group(1))
-            day = int(month_day_match.group(2))
-            if t < Date(t.year, month, day):
-                return Date(t.year, month, day)
-            else:
-                return Date(t.year + 1, month, day)
-
-    return absolute_date(time_info)
+@register(r'(\d{1,2})\-(\d{1,2})$')
+def match_month_day_num(today, month, day):
+    if today < Date(today.year, int(month), int(day)):
+        return Date(today.year, int(month), int(day))
+    else:
+        return Date(today.year + 1, int(month), int(day))
