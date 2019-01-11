@@ -266,7 +266,11 @@ The `start` command is used to start work on a project. If an argument is passed
 
 The `manage` command launches the user's default text editor to directly edit a queue or part of a queue.
 
-Busy uses the `sensible-editor` command to select a text editor, which works with default Ubuntu Linux installations and might or might not work with other operating systems.
+The definition of the "default text editor" depends on the OS and configuration but here's the logic:
+
+1. Try the EDITOR environment variable
+1. If that doesn't exist, try the `sensible-editor` command (Ubuntu)
+1. If that doesn't exist, try the `open -W` command (OSX)
 
 The default use of `manage` will edit the entire queue.
 
