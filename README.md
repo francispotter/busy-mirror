@@ -311,7 +311,7 @@ Although it requires Python 3.6.5 or higher, Busy is designed to function with t
 However, we use Pip packages in the devops pipeline, so:
 
 ```
-pip3 install coverage pycodestyle
+sudo pip3 install coverage pycodestyle
 ```
 
 Then to run the test suite:
