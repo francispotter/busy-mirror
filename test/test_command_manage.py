@@ -42,3 +42,13 @@ class TestCommandManage(TestCase):
                 o = c.handle('manage', '1')
                 f = p.read_text()
                 self.assertEqual(f, 'a\nb\n')
+
+    def test_last_record(self):
+        with TemporaryDirectory() as t:
+            p = Path(t, 'tasks.txt')
+            p.write_text('a\nb\n')
+            with mock.patch('busy.editor', lambda x: 'c\n'):
+                c = Commander(root=t)
+                o = c.handle('manage', '-')
+                f = p.read_text()
+                self.assertEqual(f, 'a\nc\n')
