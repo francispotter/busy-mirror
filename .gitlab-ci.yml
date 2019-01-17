@@ -13,7 +13,8 @@ Style Check:
   before_script:
     - "pip3 install pycodestyle"
 Build:
-  stage: build
+  stage: deploy
+  image: python
   script: "make build"
   only: ['tags']
   artifacts:
