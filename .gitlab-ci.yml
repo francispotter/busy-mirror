@@ -1,6 +1,3 @@
-stages:
-  - Test
-  - Build
 Test:
   image: python
   script: "make test"
@@ -16,7 +13,7 @@ Style Check:
   before_script:
     - "pip3 install pycodestyle"
 Build:
-  stage: Build
+  stage: build
   script: "make build"
   only: ['tags']
   artifacts:
