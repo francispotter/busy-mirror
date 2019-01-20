@@ -27,7 +27,7 @@ Build Package:
 Publish Package:
   stage: publish
   image: python
-  script: "ls -al dist/"
+  script: "make publish"
   before_script:
     - "pip3 install twine"
   only: ['tags']
