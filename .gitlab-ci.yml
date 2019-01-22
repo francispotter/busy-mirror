@@ -1,3 +1,7 @@
+stages:
+  - test
+  - build
+  - publish
 Test:
   image: python
   script: "make test"
@@ -12,11 +16,25 @@ Style Check:
   script: "make style"
   before_script:
     - "pip3 install pycodestyle"
-Build:
-  stage: deploy
+Build Package:
+  stage: build
   image: python
   script: "make build"
-  only: ['tags']
+  only:
+    refs:
+      - /^v\d+\.\d+\.\d+$/
   artifacts:
     paths:
       - dist/
+Publish Package:
+  stage: publish
+  image: python
+  script: "make dist"
+  before_script:
+    - "pip3 install twine"
+  only:
+    refs:
+      - /^v\d+\.\d+\.\d+$/
+    variables:
+      - $TWINE_USERNAME
+      - $TWINE_PASSWORD
