@@ -20,7 +20,9 @@ Build Package:
   stage: build
   image: python
   script: "make build"
-  only: ['tags']
+  only:
+    refs:
+      - /^v\d+\.\d+\.\d+$/
   artifacts:
     paths:
       - dist/
