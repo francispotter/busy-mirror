@@ -27,7 +27,9 @@ Build Package:
 Publish Package:
   stage: publish
   image: python
-  script: "make publish"
+#  script: "twine upload dist/* -u $TWINE_USERNAME -p $TWINE_PASSWORD"
+  script:
+    - echo $TWINE_USERNAME
   before_script:
     - "pip3 install twine"
   only: ['tags']
