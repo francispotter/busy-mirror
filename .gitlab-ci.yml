@@ -29,7 +29,9 @@ Build Package:
 Publish Package:
   stage: publish
   image: python
-  script: "make dist"
+  script:
+    - echo "Attempting publishing to PyPI using $TWINE_USERNAME" 
+    - make dist
   before_script:
     - "pip3 install twine"
   only:
