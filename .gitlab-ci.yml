@@ -21,8 +21,8 @@ Build Package:
   image: python
   script: "make build"
   only:
-    refs:
-      - /^v\d+\.\d+\.\d+$/
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
   artifacts:
     paths:
       - dist/
@@ -33,8 +33,5 @@ Publish Package:
   before_script:
     - "pip3 install twine"
   only:
-    refs:
-      - /^v\d+\.\d+\.\d+$/
     variables:
-      - $TWINE_USERNAME
-      - $TWINE_PASSWORD
+      - $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
