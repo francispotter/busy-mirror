@@ -1,4 +1,4 @@
-.PHONY: test cover install dist style
+.PHONY: test cover install style build publish
 
 test:
 	python3 -m unittest -v
@@ -13,8 +13,10 @@ style:
 install:
 	sudo pip3 install .
 
-dist:
+build:
 	mkdir -p dist
 	rm -f dist/*
 	python3 setup.py sdist bdist_wheel
+
+publish:
 	twine upload dist/*

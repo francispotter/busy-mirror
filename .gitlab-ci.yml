@@ -1,14 +1,39 @@
-test:
+stages:
+  - test
+  - build
+  - publish
+Test:
   image: python
   script: "make test"
-test coverage:
+Test Coverage:
   image: python
   script: "make cover"
   before_script:
     - "pip3 install coverage"
   coverage: '/TOTAL +\d+ +\d+ +(\d+)\%\s*$/'
-style check:
+Style Check:
   image: python
+  script: "make style"
   before_script:
     - "pip3 install pycodestyle"
-  script: "pycodestyle busy/**/*.py"
+Build Package:
+  stage: build
+  image: python
+  script: "make build"
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+  artifacts:
+    paths:
+      - dist/
+Publish Package:
+  stage: publish
+  image: python
+  script:
+    - echo "Attempting publishing to PyPI using $TWINE_USERNAME"
+    - make publish
+  before_script:
+    - "pip3 install twine"
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
