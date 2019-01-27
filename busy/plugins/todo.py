@@ -2,7 +2,6 @@ import re
 
 from ..queue import Queue
 from ..item import Item
-from ..file import File
 from ..commander import Command
 from ..commander import Commander
 from busy import dateparser
