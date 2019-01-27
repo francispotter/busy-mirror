@@ -13,7 +13,8 @@ class Root:
     def __init__(self, path=None):
         if path:
             self.path = path
-        self._open_files = {}
+        self._files = {}
+        self._queues = {}
 
     @property
     def path(self):
@@ -33,13 +34,16 @@ class Root:
 
     def get_queue(self, key=None):
         key = key or Queue.default_key
-        if key not in self._open_files:
+        if key not in self._queues:
             queueclass = Queue.subclass(key)
-            filepath = self.path / f'{key}.txt'
-            queuefile = File(filepath, queueclass=queueclass, root=self)
-            self._open_files[key] = queuefile
-        return self._open_files[key].queue
+            queuefile = File(self.path / f'{key}.txt')
+            self._files[key] = queuefile
+            self._queues[key] = queueclass(self)
+            self._queues[key].add(*queuefile.read(queueclass.itemclass))
+        return self._queues[key]
 
     def save(self):
-        while self._open_files:
-            self._open_files.popitem()[1].save()
+        while self._queues:
+            key, queue = self._queues.popitem()
+            items = queue.all()
+            self._files[key].save(*items)

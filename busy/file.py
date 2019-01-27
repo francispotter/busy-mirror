@@ -1,39 +1,29 @@
 from csv import DictReader
 from csv import DictWriter
+from pathlib import Path
 
 from .queue import Queue
-
+from .item import Item
 
 class File:
 
-    def __init__(self, path, queueclass=Queue, root=None):
-        self.queueclass = queueclass
-        self._root = root
+    def __init__(self, path):
         self._path = path
+
+    def read(self, itemclass=Item):
         if self._path.is_file():
             with open(self._path) as datafile:
-                reader = DictReader(datafile, self.schema, delimiter="|")
-                self.queue = self.queueclass(root)
-                self.queue.add(*reader)
+                reader = DictReader(datafile, itemclass.schema, delimiter="|")
+                return [itemclass.create(i) for i in reader if i]
+        return []
 
-    @property
-    def queue(self):
-        if not hasattr(self, '_queue'):
-            self._queue = self.queueclass(self._root)
-        return self._queue
-
-    @queue.setter
-    def queue(self, value):
-        assert isinstance(value, self.queueclass)
-        self._queue = value
-
-    @property
-    def schema(self):
-        return self.queueclass.itemclass.schema
-
-    def save(self):
-        with open(self._path, 'w') as datafile:
-            writer = DictWriter(datafile, self.schema, delimiter="|")
-            for item in self.queue.all():
-                values = dict([(f, getattr(item, f)) for f in self.schema])
-                writer.writerow(values)
+    def save(self, *items):
+        if items:
+            schema = items[0].schema
+            with open(self._path, 'w') as datafile:
+                writer = DictWriter(datafile, schema, delimiter="|")
+                for item in items:
+                    values = dict([(f, getattr(item, f)) for f in schema])
+                    writer.writerow(values)
+        else:
+            Path(self._path).write_text('')
