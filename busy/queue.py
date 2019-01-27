@@ -1,8 +1,12 @@
 # General-purpose queue of items
 # Method calls on queue use indices that start at 1
 
+from io import StringIO
+
 from .selector import Selector
 from .item import Item
+from .file import write_items
+from .file import read_items
 import busy
 
 
@@ -80,9 +84,15 @@ class Queue:
     def manage(self, *criteria):
         itemlist = self.list(*criteria)
         indices = [i[0]-1 for i in itemlist]
-        before = ''.join([str(i[1])+'\n' for i in itemlist])
-        after = busy.editor(before).split('\n')
-        new_items = [self.itemclass(i) for i in after if i]
+        items = [i[1] for i in itemlist]
+        sio = StringIO(newline=None)
+        write_items(sio, *items)
+        before = sio.getvalue()
+        sio.close()
+        edited = busy.editor(before)
+        sio2 = StringIO(edited)
+        new_items = read_items(sio2, self.itemclass)
+        sio2.close()
         self.replace(indices, new_items)
 
     @classmethod

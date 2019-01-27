@@ -2,7 +2,6 @@ from csv import DictReader
 from csv import DictWriter
 from pathlib import Path
 
-from .queue import Queue
 from .item import Item
 
 def read_items(fileish, itemclass=Item):
