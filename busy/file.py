@@ -10,20 +10,29 @@ class File:
     def __init__(self, path):
         self._path = path
 
+    @classmethod
+    def read_items(self, fileish, itemclass=Item):
+        reader = DictReader(fileish, itemclass.schema, delimiter="|")
+        return [itemclass.create(i) for i in reader if i]
+
     def read(self, itemclass=Item):
         if self._path.is_file():
             with open(self._path) as datafile:
-                reader = DictReader(datafile, itemclass.schema, delimiter="|")
-                return [itemclass.create(i) for i in reader if i]
+                return self.read_items(datafile, itemclass)
         return []
+
+    @classmethod
+    def write_items(self, fileish, *items):
+        schema = items[0].schema
+        writer = DictWriter(fileish, schema, delimiter="|")
+        for item in items:
+            values = dict([(f, getattr(item, f)) for f in schema])
+            writer.writerow(values)
+
 
     def save(self, *items):
         if items:
-            schema = items[0].schema
             with open(self._path, 'w') as datafile:
-                writer = DictWriter(datafile, schema, delimiter="|")
-                for item in items:
-                    values = dict([(f, getattr(item, f)) for f in schema])
-                    writer.writerow(values)
+                self.write_items(datafile, *items)
         else:
             Path(self._path).write_text('')

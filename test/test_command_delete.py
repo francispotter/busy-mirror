@@ -15,7 +15,9 @@ class TestCommandDelete(TestCase):
             p = Path(t, 'tasks.txt')
             p.write_text('a\nb\nc\nd')
             c = Commander(root=t)
+            print("Handling...")
             c.handle('delete','--yes','3-')
+            print("...handled")
             o = p.read_text()
             self.assertEqual(o, 'a\nb\n')
 
