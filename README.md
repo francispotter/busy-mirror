@@ -1,8 +1,10 @@
-# Busy
+# BUSY
 
-A task and plan management tool, for use from the terminal prompt on Linux and MacOS systems.
+Task and plan management tool, for use from the terminal prompt on Linux and MacOS systems.
 
 ## Installation
+
+Requires Python 3.6.5 or later.
 
 ```
 pip3 install busy
