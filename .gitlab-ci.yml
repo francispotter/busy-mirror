@@ -1,21 +1,28 @@
+include:
+  template: SAST.gitlab-ci.yml
+
 stages:
   - test
   - build
   - publish
+
 Test:
   image: python
   script: "make test"
+
 Test Coverage:
   image: python
   script: "make cover"
   before_script:
     - "pip3 install coverage"
   coverage: '/TOTAL +\d+ +\d+ +(\d+)\%\s*$/'
+
 Style Check:
   image: python
   script: "make style"
   before_script:
     - "pip3 install pycodestyle"
+
 Code Quality:
   image: docker:stable
   variables:
@@ -33,6 +40,7 @@ Code Quality:
   artifacts:
     reports:
       codequality: gl-code-quality-report.json
+
 Build Package:
   stage: build
   image: python
@@ -43,6 +51,7 @@ Build Package:
   artifacts:
     paths:
       - dist/
+
 Publish Package:
   stage: publish
   image: python
